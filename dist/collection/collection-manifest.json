@@ -1,0 +1,935 @@
+{
+  "components": [
+    {
+      "tag": "clock-tag",
+      "dependencies": [],
+      "componentClass": "ClockTag",
+      "componentPath": "components/clock-tag/clock-tag.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/clock-tag/clock-tag.css"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "angle",
+          "type": "Number",
+          "mutable": true,
+          "attr": "angle"
+        },
+        {
+          "name": "clockObject",
+          "type": "Any",
+          "attr": "clock-object",
+          "watch": [
+            "init"
+          ]
+        },
+        {
+          "name": "containerHeight",
+          "type": "Number",
+          "mutable": true,
+          "attr": "container-height"
+        },
+        {
+          "name": "containerWidth",
+          "type": "Number",
+          "mutable": true,
+          "attr": "container-width"
+        },
+        {
+          "name": "customMask",
+          "type": "String",
+          "mutable": true,
+          "attr": "custom-mask"
+        },
+        {
+          "name": "fill",
+          "type": "String",
+          "mutable": true,
+          "attr": "fill"
+        },
+        {
+          "name": "fontFamily",
+          "type": "String",
+          "mutable": true,
+          "attr": "font-family"
+        },
+        {
+          "name": "fontSize",
+          "type": "Number",
+          "mutable": true,
+          "attr": "font-size"
+        },
+        {
+          "name": "fontStyle",
+          "type": "String",
+          "mutable": true,
+          "attr": "font-style"
+        },
+        {
+          "name": "fontWeight",
+          "type": "String",
+          "mutable": true,
+          "attr": "font-weight"
+        },
+        {
+          "name": "height",
+          "type": "Number",
+          "mutable": true,
+          "attr": "height"
+        },
+        {
+          "name": "left",
+          "type": "Number",
+          "mutable": true,
+          "attr": "left"
+        },
+        {
+          "name": "lineHeight",
+          "type": "Number",
+          "mutable": true,
+          "attr": "line-height"
+        },
+        {
+          "name": "originX",
+          "type": "String",
+          "mutable": true,
+          "attr": "origin-x"
+        },
+        {
+          "name": "originY",
+          "type": "String",
+          "mutable": true,
+          "attr": "origin-y"
+        },
+        {
+          "name": "scaleX",
+          "type": "Number",
+          "mutable": true,
+          "attr": "scale-x"
+        },
+        {
+          "name": "scaleY",
+          "type": "Number",
+          "mutable": true,
+          "attr": "scale-y"
+        },
+        {
+          "name": "slideState",
+          "type": "Number",
+          "mutable": true,
+          "attr": "slide-state",
+          "watch": [
+            "checkSlideState"
+          ]
+        },
+        {
+          "name": "stroke",
+          "type": "String",
+          "mutable": true,
+          "attr": "stroke"
+        },
+        {
+          "name": "strokeLineCap",
+          "type": "String",
+          "mutable": true,
+          "attr": "stroke-line-cap"
+        },
+        {
+          "name": "strokeLineJoin",
+          "type": "String",
+          "mutable": true,
+          "attr": "stroke-line-join"
+        },
+        {
+          "name": "strokeWidth",
+          "type": "Number",
+          "mutable": true,
+          "attr": "stroke-width"
+        },
+        {
+          "name": "textAlign",
+          "type": "String",
+          "mutable": true,
+          "attr": "text-align"
+        },
+        {
+          "name": "top",
+          "type": "Number",
+          "mutable": true,
+          "attr": "top"
+        },
+        {
+          "name": "width",
+          "type": "Number",
+          "mutable": true,
+          "attr": "width"
+        },
+        {
+          "name": "zIndex",
+          "type": "Number",
+          "mutable": true,
+          "attr": "z-index"
+        }
+      ],
+      "states": [
+        {
+          "name": "time"
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      }
+    },
+    {
+      "tag": "content-player-tag",
+      "dependencies": [
+        "content-slide-tag"
+      ],
+      "componentClass": "ContentPlayerTag",
+      "componentPath": "components/content-player-tag/content-player-tag.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/content-player-tag/content-player-tag.css"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "currentContentId",
+          "type": "String",
+          "mutable": true,
+          "attr": "current-content-id"
+        },
+        {
+          "name": "slides",
+          "type": "Any",
+          "mutable": true,
+          "attr": "slides"
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      }
+    },
+    {
+      "tag": "content-slide-tag",
+      "dependencies": [
+        "custom-content-tag",
+        "video-tag"
+      ],
+      "componentClass": "ContentSlideTag",
+      "componentPath": "components/content-slide-tag/content-slide-tag.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/content-slide-tag/content-slide-tag.css"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "animationEnd",
+          "type": "Boolean",
+          "mutable": true,
+          "attr": "animation-end"
+        },
+        {
+          "name": "content",
+          "type": "Any",
+          "mutable": true,
+          "attr": "content"
+        },
+        {
+          "name": "contentSlideObject",
+          "type": "Any",
+          "attr": "content-slide-object",
+          "watch": [
+            "init"
+          ]
+        },
+        {
+          "name": "opacity",
+          "type": "Number",
+          "mutable": true,
+          "attr": "opacity"
+        },
+        {
+          "name": "visible",
+          "type": "Boolean",
+          "mutable": true,
+          "attr": "visible"
+        }
+      ],
+      "states": [
+        {
+          "name": "status"
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      }
+    },
+    {
+      "tag": "custom-content-tag",
+      "dependencies": [
+        "clock-tag",
+        "text-tag",
+        "video-tag",
+        "weather-tag"
+      ],
+      "componentClass": "CustomContentTag",
+      "componentPath": "components/custom-content-tag/custom-content-tag.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/custom-content-tag/custom-content-tag.css"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "adjustment",
+          "type": "Any",
+          "attr": "adjustment"
+        },
+        {
+          "name": "data",
+          "type": "Any",
+          "attr": "data"
+        }
+      ]
+    },
+    {
+      "tag": "loading-content-tag",
+      "dependencies": [
+        "content-player-tag",
+        "progress-bar-tag"
+      ],
+      "componentClass": "LoadingContentTag",
+      "componentPath": "components/loading-content-tag/loading-content-tag.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/loading-content-tag/loading-content-tag.css"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "containerHeight",
+          "type": "Number",
+          "mutable": true,
+          "attr": "container-height"
+        },
+        {
+          "name": "containerWidth",
+          "type": "Number",
+          "mutable": true,
+          "attr": "container-width"
+        },
+        {
+          "name": "current",
+          "type": "Number",
+          "mutable": true,
+          "attr": "current"
+        },
+        {
+          "name": "progress",
+          "type": "Number",
+          "mutable": true,
+          "attr": "progress"
+        },
+        {
+          "name": "state",
+          "type": "String",
+          "mutable": true,
+          "attr": "state"
+        },
+        {
+          "name": "total",
+          "type": "Number",
+          "mutable": true,
+          "attr": "total"
+        },
+        {
+          "name": "visible",
+          "type": "Boolean",
+          "mutable": true,
+          "attr": "visible"
+        }
+      ]
+    },
+    {
+      "tag": "progress-bar-tag",
+      "dependencies": [],
+      "componentClass": "ProgressBarTag",
+      "componentPath": "components/progress-bar-tag/progress-bar-tag.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/progress-bar-tag/progress-bar-tag.css"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "baseColor",
+          "type": "String",
+          "attr": "base-color"
+        },
+        {
+          "name": "containerWidth",
+          "type": "Number",
+          "attr": "container-width"
+        },
+        {
+          "name": "progress",
+          "type": "Number",
+          "attr": "progress"
+        },
+        {
+          "name": "secondaryColor",
+          "type": "String",
+          "attr": "secondary-color"
+        },
+        {
+          "name": "visible",
+          "type": "Boolean",
+          "attr": "visible"
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      }
+    },
+    {
+      "tag": "text-tag",
+      "dependencies": [],
+      "componentClass": "TextTag",
+      "componentPath": "components/text-tag/text-tag.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/text-tag/text-tag.css"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "angle",
+          "type": "Number",
+          "mutable": true,
+          "attr": "angle"
+        },
+        {
+          "name": "containerHeight",
+          "type": "Number",
+          "mutable": true,
+          "attr": "container-height"
+        },
+        {
+          "name": "containerWidth",
+          "type": "Number",
+          "mutable": true,
+          "attr": "container-width"
+        },
+        {
+          "name": "fill",
+          "type": "String",
+          "mutable": true,
+          "attr": "fill"
+        },
+        {
+          "name": "fontFamily",
+          "type": "String",
+          "mutable": true,
+          "attr": "font-family"
+        },
+        {
+          "name": "fontSize",
+          "type": "Number",
+          "mutable": true,
+          "attr": "font-size"
+        },
+        {
+          "name": "fontStyle",
+          "type": "String",
+          "mutable": true,
+          "attr": "font-style"
+        },
+        {
+          "name": "fontWeight",
+          "type": "String",
+          "mutable": true,
+          "attr": "font-weight"
+        },
+        {
+          "name": "height",
+          "type": "Number",
+          "mutable": true,
+          "attr": "height"
+        },
+        {
+          "name": "left",
+          "type": "Number",
+          "mutable": true,
+          "attr": "left"
+        },
+        {
+          "name": "lineHeight",
+          "type": "Number",
+          "mutable": true,
+          "attr": "line-height"
+        },
+        {
+          "name": "originX",
+          "type": "String",
+          "mutable": true,
+          "attr": "origin-x"
+        },
+        {
+          "name": "originY",
+          "type": "String",
+          "mutable": true,
+          "attr": "origin-y"
+        },
+        {
+          "name": "scaleX",
+          "type": "Number",
+          "mutable": true,
+          "attr": "scale-x"
+        },
+        {
+          "name": "scaleY",
+          "type": "Number",
+          "mutable": true,
+          "attr": "scale-y"
+        },
+        {
+          "name": "slideState",
+          "type": "Number",
+          "mutable": true,
+          "attr": "slide-state",
+          "watch": [
+            "checkSlideState"
+          ]
+        },
+        {
+          "name": "stroke",
+          "type": "String",
+          "mutable": true,
+          "attr": "stroke"
+        },
+        {
+          "name": "strokeLineCap",
+          "type": "String",
+          "mutable": true,
+          "attr": "stroke-line-cap"
+        },
+        {
+          "name": "strokeLineJoin",
+          "type": "String",
+          "mutable": true,
+          "attr": "stroke-line-join"
+        },
+        {
+          "name": "strokeWidth",
+          "type": "Number",
+          "mutable": true,
+          "attr": "stroke-width"
+        },
+        {
+          "name": "text",
+          "type": "String",
+          "mutable": true,
+          "attr": "text"
+        },
+        {
+          "name": "textAlign",
+          "type": "String",
+          "mutable": true,
+          "attr": "text-align"
+        },
+        {
+          "name": "textObject",
+          "type": "Any",
+          "attr": "text-object",
+          "watch": [
+            "init"
+          ]
+        },
+        {
+          "name": "top",
+          "type": "Number",
+          "mutable": true,
+          "attr": "top"
+        },
+        {
+          "name": "width",
+          "type": "Number",
+          "mutable": true,
+          "attr": "width"
+        },
+        {
+          "name": "zIndex",
+          "type": "Number",
+          "mutable": true,
+          "attr": "z-index"
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      }
+    },
+    {
+      "tag": "video-tag",
+      "dependencies": [],
+      "componentClass": "VideoTag",
+      "componentPath": "components/video-tag/video-tag.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/video-tag/video-tag.css"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "adjustment",
+          "type": "Any",
+          "attr": "adjustment",
+          "watch": [
+            "changeStyle"
+          ]
+        },
+        {
+          "name": "angle",
+          "type": "Number",
+          "mutable": true,
+          "attr": "angle"
+        },
+        {
+          "name": "autoplay",
+          "type": "Boolean",
+          "mutable": true,
+          "attr": "autoplay"
+        },
+        {
+          "name": "containerHeight",
+          "type": "Number",
+          "mutable": true,
+          "attr": "container-height"
+        },
+        {
+          "name": "containerWidth",
+          "type": "Number",
+          "mutable": true,
+          "attr": "container-width"
+        },
+        {
+          "name": "height",
+          "type": "Number",
+          "mutable": true,
+          "attr": "height"
+        },
+        {
+          "name": "left",
+          "type": "Number",
+          "mutable": true,
+          "attr": "left"
+        },
+        {
+          "name": "loop",
+          "type": "Boolean",
+          "mutable": true,
+          "attr": "loop"
+        },
+        {
+          "name": "originX",
+          "type": "String",
+          "mutable": true,
+          "attr": "origin-x"
+        },
+        {
+          "name": "originY",
+          "type": "String",
+          "mutable": true,
+          "attr": "origin-y"
+        },
+        {
+          "name": "scaleX",
+          "type": "Number",
+          "mutable": true,
+          "attr": "scale-x"
+        },
+        {
+          "name": "scaleY",
+          "type": "Number",
+          "mutable": true,
+          "attr": "scale-y"
+        },
+        {
+          "name": "slideState",
+          "type": "Number",
+          "mutable": true,
+          "attr": "slide-state",
+          "watch": [
+            "checkSlideState"
+          ]
+        },
+        {
+          "name": "src",
+          "type": "String",
+          "mutable": true,
+          "attr": "src"
+        },
+        {
+          "name": "top",
+          "type": "Number",
+          "mutable": true,
+          "attr": "top"
+        },
+        {
+          "name": "videoObject",
+          "type": "Any",
+          "attr": "video-object",
+          "watch": [
+            "init"
+          ]
+        },
+        {
+          "name": "width",
+          "type": "Number",
+          "mutable": true,
+          "attr": "width"
+        },
+        {
+          "name": "zIndex",
+          "type": "Number",
+          "mutable": true,
+          "attr": "z-index"
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      }
+    },
+    {
+      "tag": "weather-tag",
+      "dependencies": [],
+      "componentClass": "WeatherTag",
+      "componentPath": "components/weather-tag/weather-tag.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/weather-tag/weather-tag.css"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "angle",
+          "type": "Number",
+          "mutable": true,
+          "attr": "angle"
+        },
+        {
+          "name": "containerHeight",
+          "type": "Number",
+          "mutable": true,
+          "attr": "container-height"
+        },
+        {
+          "name": "containerWidth",
+          "type": "Number",
+          "mutable": true,
+          "attr": "container-width"
+        },
+        {
+          "name": "fill",
+          "type": "String",
+          "mutable": true,
+          "attr": "fill"
+        },
+        {
+          "name": "fontFamily",
+          "type": "String",
+          "mutable": true,
+          "attr": "font-family"
+        },
+        {
+          "name": "fontSize",
+          "type": "Number",
+          "mutable": true,
+          "attr": "font-size"
+        },
+        {
+          "name": "fontStyle",
+          "type": "String",
+          "mutable": true,
+          "attr": "font-style"
+        },
+        {
+          "name": "fontWeight",
+          "type": "String",
+          "mutable": true,
+          "attr": "font-weight"
+        },
+        {
+          "name": "height",
+          "type": "Number",
+          "mutable": true,
+          "attr": "height"
+        },
+        {
+          "name": "latitude",
+          "type": "Number",
+          "mutable": true,
+          "attr": "latitude"
+        },
+        {
+          "name": "left",
+          "type": "Number",
+          "mutable": true,
+          "attr": "left"
+        },
+        {
+          "name": "lineHeight",
+          "type": "Number",
+          "mutable": true,
+          "attr": "line-height"
+        },
+        {
+          "name": "longitude",
+          "type": "Number",
+          "mutable": true,
+          "attr": "longitude"
+        },
+        {
+          "name": "originX",
+          "type": "String",
+          "mutable": true,
+          "attr": "origin-x"
+        },
+        {
+          "name": "originY",
+          "type": "String",
+          "mutable": true,
+          "attr": "origin-y"
+        },
+        {
+          "name": "scaleX",
+          "type": "Number",
+          "mutable": true,
+          "attr": "scale-x"
+        },
+        {
+          "name": "scaleY",
+          "type": "Number",
+          "mutable": true,
+          "attr": "scale-y"
+        },
+        {
+          "name": "slideState",
+          "type": "Number",
+          "mutable": true,
+          "attr": "slide-state",
+          "watch": [
+            "checkSlideState"
+          ]
+        },
+        {
+          "name": "stroke",
+          "type": "String",
+          "mutable": true,
+          "attr": "stroke"
+        },
+        {
+          "name": "strokeLineCap",
+          "type": "String",
+          "mutable": true,
+          "attr": "stroke-line-cap"
+        },
+        {
+          "name": "strokeLineJoin",
+          "type": "String",
+          "mutable": true,
+          "attr": "stroke-line-join"
+        },
+        {
+          "name": "strokeWidth",
+          "type": "Number",
+          "mutable": true,
+          "attr": "stroke-width"
+        },
+        {
+          "name": "temperatureType",
+          "type": "String",
+          "mutable": true,
+          "attr": "temperature-type"
+        },
+        {
+          "name": "temperatureUnit",
+          "type": "String",
+          "mutable": true,
+          "attr": "temperature-unit"
+        },
+        {
+          "name": "textAlign",
+          "type": "String",
+          "mutable": true,
+          "attr": "text-align"
+        },
+        {
+          "name": "top",
+          "type": "Number",
+          "mutable": true,
+          "attr": "top"
+        },
+        {
+          "name": "weatherObject",
+          "type": "Any",
+          "attr": "weather-object",
+          "watch": [
+            "init"
+          ]
+        },
+        {
+          "name": "width",
+          "type": "Number",
+          "mutable": true,
+          "attr": "width"
+        },
+        {
+          "name": "zIndex",
+          "type": "Number",
+          "mutable": true,
+          "attr": "z-index"
+        }
+      ],
+      "states": [
+        {
+          "name": "temperature"
+        },
+        {
+          "name": "weather"
+        }
+      ],
+      "hostElement": {
+        "name": "el"
+      }
+    }
+  ],
+  "collections": [],
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "0.16.2",
+    "typescriptVersion": "3.2.2"
+  },
+  "bundles": []
+}

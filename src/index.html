@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"
+    />
+    <title>Stencil Component Starter</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Alike|Baloo|Bevan|Bowlby+One|Bowlby+One+SC|Chango|Comfortaa|Contrail+One|Courgette|Damion|Fredoka+One|Galada|Gidugu|Hind+Madurai|IM+Fell+DW+Pica|IM+Fell+English|Keania+One|Khand|Lalezar|Mada|Montserrat+Alternates|Paytone+One|Permanent+Marker|Quando|Russo+One|Seymour+One|Sree+Krushnadevaraya|Timmana|Roboto"
+    />
+    <script src="/build/contentplayer.js"></script>
+  </head>
+
+  <body>
+    <!-- <text-tag text="hello"></text-tag>
+  <clock-tag top="100"></clock-tag>
+  <weather-tag id="test1"></weather-tag>
+  <video-tag></video-tag> -->
+    <!-- <div id="app" style="position: fixed; top: 0px; left: 0px; width:960px; height:540px; overflow: hidden;"> -->
+    <!-- <div id="app" style="position: fixed; top: 0px; left: 0px; width:704px; height:224px; border: solid;"> -->
+    <!-- <div id="app" style="position: fixed; top: 0px; left: 0px; width:432px; height:216px; border: solid 1px;"> -->
+    <!-- <div id="app" style="position: fixed; top: 0px; left: 0px; width:640px; height:380px; border: solid 1px;"> -->
+    <div
+      id="app"
+      style="
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 39px;
+        height: 128px;
+        border: solid 1px;
+        background: black;
+      "
+    >
+      <content-player-tag id="player"></content-player-tag>
+      <!-- <loading-content-tag state="playing" progress="30" visible="true"></loading-content-tag> -->
+      <!-- <progress-bar-tag visible="true" progress="35.566564665" base-color="#00ACC2" secondary-color="#407C84">
+    </progress-bar-tag> -->
+    </div>
+    <script>
+      let customOnly = {
+        content: {
+          __data__: {
+            background: "#fff",
+            objects: [
+              {
+                angle: 0,
+                backgroundColor: "",
+                charSpacing: 0,
+                clipTo: null,
+                customData: {
+                  name: "Farenheit",
+                  position: "v",
+                  type: "weather",
+                  units: "c",
+                },
+                fill: "rgb(0,0,0)",
+                fillRule: "nonzero",
+                flipX: false,
+                flipY: false,
+                fontFamily: "Impact",
+                fontSize: 40,
+                fontStyle: "",
+                fontWeight: "normal",
+                globalCompositeOperation: "source-over",
+                height: 45,
+                left: 565,
+                lineHeight: 1.16,
+                opacity: 1,
+                originX: "left",
+                originY: "top",
+                scaleX: 1,
+                scaleY: 1,
+                shadow: {
+                  affectStroke: false,
+                  blur: 0,
+                  color: "rgba(0,0,0,0)",
+                  offsetX: 0,
+                  offsetY: 0,
+                },
+                skewX: 0,
+                skewY: 0,
+                stroke: null,
+                strokeDashArray: null,
+                strokeLineCap: "butt",
+                strokeLineJoin: "miter",
+                strokeMiterLimit: 10,
+                strokeWidth: 1,
+                styles: {},
+                text: "☼",
+                textAlign: "left",
+                textBackgroundColor: "",
+                textDecoration: "",
+                top: 193,
+                transformMatrix: null,
+                type: "weather",
+                visible: false,
+                width: 36,
+                zIndex: 0,
+              },
+              {
+                alignX: "none",
+                alignY: "none",
+                angle: 0,
+                backgroundColor: "",
+                clipTo: null,
+                countIndex: 1,
+                crossOrigin: "anonymous",
+                fill: "rgb(0,0,0)",
+                fillRule: "nonzero",
+                filters: [],
+                flipX: false,
+                flipY: false,
+                globalCompositeOperation: "source-over",
+                height: 214.56550218340612,
+                id: 1409,
+                left: 28,
+                lockUniScaling: false,
+                meetOrSlice: "meet",
+                name: "Image 1",
+                opacity: 1,
+                originX: "left",
+                originY: "top",
+                resizeFilters: [],
+                scaleX: 0.5862445414847162,
+                scaleY: 0.5862445414847162,
+                shadow: null,
+                skewX: 0,
+                skewY: 0,
+                src:
+                  "https://cms-banner-prod.s3.amazonaws.com/contents/company_21/59e5809d-a184-4111-a678-2152b9edccb0.jpg",
+                stroke: null,
+                strokeDashArray: null,
+                strokeLineCap: "butt",
+                strokeLineJoin: "miter",
+                strokeMiterLimit: 10,
+                strokeWidth: 0,
+                top: 91,
+                transformMatrix: null,
+                type: "image",
+                visible: false,
+                width: 322.4344978165939,
+                zIndex: 1,
+              },
+              {
+                Animation: {
+                  Appear: {
+                    duration: 1000,
+                    id: 0,
+                    name: "Slide Up",
+                    startTime: 2,
+                  },
+                  Disappear: {
+                    duration: 1000,
+                    id: 0,
+                    name: "Slide Up",
+                    startTime: 5,
+                  },
+                },
+                angle: 0,
+                backgroundColor: "",
+                charSpacing: 0,
+                clipTo: null,
+                customData: {
+                  name: "Farenheit",
+                  position: "v",
+                  type: "temperature",
+                  units: "c",
+                },
+                fill: "rgb(0,0,0)",
+                fillRule: "nonzero",
+                flipX: false,
+                flipY: false,
+                fontFamily: "Galada",
+                fontSize: 40,
+                fontStyle: "",
+                fontWeight: "normal",
+                globalCompositeOperation: "source-over",
+                height: 45,
+                left: 540,
+                lineHeight: 1.16,
+                opacity: 1,
+                originX: "left",
+                originY: "top",
+                scaleX: 1,
+                scaleY: 1,
+                shadow: {
+                  affectStroke: false,
+                  blur: 0,
+                  color: "rgba(0,0,0,0)",
+                  offsetX: 0,
+                  offsetY: 0,
+                },
+                skewX: 0,
+                skewY: 0,
+                stroke: null,
+                strokeDashArray: null,
+                strokeLineCap: "butt",
+                strokeLineJoin: "miter",
+                strokeMiterLimit: 10,
+                strokeWidth: 1,
+                styles: {},
+                text: "99 ºC",
+                textAlign: "left",
+                textBackgroundColor: "",
+                textDecoration: "",
+                top: 132,
+                transformMatrix: null,
+                type: "weather",
+                visible: false,
+                width: 80,
+                zIndex: 2,
+              },
+            ],
+          },
+          animation: "fade",
+          company: 21,
+          custom_duration: 10,
+          duration: 10,
+          extension: "json",
+          folder: null,
+          height: 540,
+          id: 1410,
+          index: 0,
+          name: "weatherContent2",
+          playlist_item_id: 1156,
+          shared: false,
+          size: null,
+          thumbnail:
+            "https://cms-banner-prod.s3.amazonaws.com/contents/company_21/6869594d-6f99-4d96-bf4b-e409073c3977_thumbnail.png",
+          type: "customContent",
+          updated_date: "2019-02-12T16:56:07.562396",
+          uploaded_date: "2019-02-12T16:50:43.640585",
+          url:
+            "https://cms-banner-prod.s3.amazonaws.com/contents/company_21/6869594d-6f99-4d96-bf4b-e409073c3977.json",
+          uuid: "6869594d-6f99-4d96-bf4b-e409073c3977",
+          width: 960,
+        },
+        visible: false,
+        animationEnd: false,
+      };
+      let videoOnly = {
+        content: {
+          animation: "slideLeft",
+          company: 50,
+          custom_duration: 8,
+          duration: 8,
+          extension: "mp4",
+          folder: null,
+          height: 224,
+          id: 1406,
+          index: 0,
+          name: "JanEmployee_8Feb19",
+          playlist_item_id: 1150,
+          shared: false,
+          size: 9007154,
+          thumbnail:
+            "https://cms-banner-prod.s3.amazonaws.com/contents/company_50/ef9a1d37-aac2-4b77-b943-7a97b382f0e7_thumbnail.blob",
+          type: "video",
+          updated_date: "2019-02-08T21:42:33.212681",
+          uploaded_date: "2019-02-08T21:42:32.787908",
+          url:
+            "https://cms-banner-prod.s3.amazonaws.com/contents/company_50/ef9a1d37-aac2-4b77-b943-7a97b382f0e7.mp4",
+          uuid: "ef9a1d37-aac2-4b77-b943-7a97b382f0e7",
+          width: 704,
+        },
+        visible: false,
+      };
+      let imageOnly = {
+        id: 404,
+        company: 21,
+        url:
+          "https://cms-banner-prod.s3.amazonaws.com/contents/company_21/7c80806f-c20b-44bc-aebe-7b4c7bb7030c.gif",
+        type: "image",
+        thumbnail:
+          "https://cms-banner-prod.s3.amazonaws.com/contents/company_21/7c80806f-c20b-44bc-aebe-7b4c7bb7030c_thumbnail.blob",
+        uploaded_date: "2018-01-25T16:50:46.031854",
+        updated_date: "2018-01-25T16:50:46.990700",
+        name: "_boat_Micael_Reynaud_1000_p20",
+        uuid: "7c80806f-c20b-44bc-aebe-7b4c7bb7030c",
+        width: 797,
+        height: 598,
+        size: 22383589,
+        duration: 10,
+        shared: false,
+        extension: "gif",
+        folder: null,
+        animation: "none",
+        custom_duration: 10,
+        playlist_item_id: 10354,
+        index: 0,
+      };
+
+      let customContent = {
+        content: customOnly.content,
+        visible: false,
+        animationEnd: false,
+      };
+
+      let imageContent = {
+        content: imageOnly,
+        visible: false,
+        animationEnd: false,
+      };
+
+      let videoContent = {
+        content: videoOnly.content,
+        visible: false,
+        animationEnd: false,
+      };
+
+      let contents = [videoContent];
+
+      console.log(contents);
+      let timeout;
+
+      window["geoinfo"] = {
+        latitude: 32.5009,
+        longitude: -116.9642,
+      };
+
+      window["device_window_size"] = {
+        width: 32,
+        height: 128,
+      };
+
+      window["player_window_size"] = {
+        width: 39,
+        height: 128,
+      };
+
+      function testContents(contents, index) {
+        index = index || 0;
+        index = index >= contents.length ? 0 : index;
+        current = contents.filter(function (item) {
+          return item.content.index === index;
+        })[0];
+        let event = new CustomEvent("CONTENT_PLAYER_CHANGED", {
+          detail: current,
+        });
+        console.log("sending content");
+        window.dispatchEvent(event);
+        // testContents(contents);
+        if (current.content.type === "video") {
+          function waitVideoEnd() {
+            window.removeEventListener("VIDEO_CONTENT_ENDED", waitVideoEnd);
+            testContents(contents, index + 1);
+          }
+          window.addEventListener("VIDEO_CONTENT_ENDED", waitVideoEnd);
+        } else {
+          timeout = setTimeout(() => {
+            testContents(contents, index + 1);
+          }, current.content.duration * 1000);
+        }
+      }
+
+      function LoadContents() {
+        let event = new CustomEvent("CONTENT_PLAYER_LOAD", {
+          detail: contents,
+        });
+        window.dispatchEvent(event);
+      }
+
+      setTimeout(() => {
+        let ev = new CustomEvent("CONTENT_STATUS", {
+          detail: {
+            state: "loading",
+            containerWidth: 100,
+            containerHeight: 100,
+          },
+        });
+        window.dispatchEvent(ev);
+      }, 2000);
+
+      setTimeout(() => {
+        let ev = new CustomEvent("CONTENT_STATUS", {
+          detail: {
+            state: "loading",
+            containerWidth: 200,
+            containerHeight: 200,
+          },
+        });
+        window.dispatchEvent(ev);
+      }, 3000);
+
+      setTimeout(() => {
+        let ev = new CustomEvent("CONTENT_STATUS", {
+          detail: {
+            state: "loading",
+            containerWidth: 960,
+            containerHeight: 540,
+          },
+        });
+        window.dispatchEvent(ev);
+      }, 6000);
+
+      setTimeout(() => {
+        LoadContents();
+      }, 2000);
+
+      setTimeout(() => {
+        testContents(contents);
+      }, 5000);
+
+      // setTimeout(()=>{
+      //   clearTimeout(timeout);
+      //   contents = [dummy8, dummy7, dummy6];
+      //   LoadContents();
+      // }, 2 * 60 * 1000)
+    </script>
+  </body>
+</html>

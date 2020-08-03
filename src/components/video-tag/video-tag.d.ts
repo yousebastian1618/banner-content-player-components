@@ -1,0 +1,31 @@
+import '../../../dist/types/stencil.core';
+export declare class VideoTag {
+    el: HTMLStencilElement;
+    videoObject: any;
+    originX: string;
+    originY: string;
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+    angle: number;
+    scaleX: number;
+    scaleY: number;
+    zIndex: number;
+    src: string;
+    loop: boolean;
+    autoplay: boolean;
+    containerWidth: number;
+    containerHeight: number;
+    slideState: number;
+    alreadyEnded: boolean;
+    init(attr: any): void;
+    checkSlideState(slideState: any, oldState: any): void;
+    componentDidLoad(): void;
+    componentWillLoad(): void;
+    componentDidUpdate(): void;
+    componentDidUnload(): void;
+    play: () => void;
+    ended: () => void;
+    render(): JSX.Element;
+}

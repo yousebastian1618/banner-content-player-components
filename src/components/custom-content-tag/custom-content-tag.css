@@ -1,0 +1,15 @@
+custom-content-tag {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+custom-content-tag div.custom-content-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+custom-content-tag .custom-content-image {
+  position: absolute;
+}

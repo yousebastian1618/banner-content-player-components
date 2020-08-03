@@ -1,0 +1,19 @@
+clock-tag {
+  display: block;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+clock-tag div {
+  position: absolute;
+  display: flex;
+}
+
+clock-tag div svg {
+  width: 100%;
+  overflow: visible !important;
+}
