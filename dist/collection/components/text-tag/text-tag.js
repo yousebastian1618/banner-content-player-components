@@ -17,6 +17,12 @@ export class TextTag {
         this.zIndex = 1;
         this.text = "";
     }
+    /**
+     * Updates the 'textObject' prop with the value of attr.
+     *
+     * As 'init' is called in 'componentWillLoad', it's only executed one time
+     * @param {any} attr
+     */
     init(attr) {
         try {
             Object.assign(this, Object.assign({}, attr));
@@ -29,9 +35,17 @@ export class TextTag {
         let ele = this.el.querySelector(".text-wrapper");
         checkSlideState(slideState, ele, this, this.textObject);
     }
+    /**
+     * Lifecycle method that is called once when the component is first
+     * connected to the DOM.
+     */
     componentWillLoad() {
         this.init(this.textObject);
     }
+    /**
+     * Lifecycle method that is called once when the component is fully loaded
+     * and the first render() occurs.
+     */
     componentDidLoad() { }
     render() {
         if (this.text) {

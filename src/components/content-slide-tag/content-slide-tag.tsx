@@ -58,7 +58,6 @@ function calculateHeightAdjustment(height) {
  */
 function renderContentImage(content) {
   let deviceDimensions = getDeviceDimensions();
-  console.log("Window Dimensions (in content image)", deviceDimensions);
 
   let width = calculateWidthAdjustment(deviceDimensions.width);
   let height = calculateHeightAdjustment(deviceDimensions.height);
@@ -68,6 +67,7 @@ function renderContentImage(content) {
   };
 
   if (content.type === "image") {
+    console.log("render image");
     return (
       <div id="image-wrappper" style={adjustment}>
         <img class={"full-screen"} src={content.url} />
@@ -85,7 +85,6 @@ function renderContentImage(content) {
  */
 function renderContentVideo(content, slideState) {
   let deviceDimensions = getDeviceDimensions();
-  console.log("Window Dimensions (in content video)", deviceDimensions);
 
   let width = calculateWidthAdjustment(deviceDimensions.width);
   let height = calculateHeightAdjustment(deviceDimensions.height);
@@ -93,8 +92,8 @@ function renderContentVideo(content, slideState) {
     width: `${width}%`,
     height: `${height}%`,
   };
-
   if (content.type === "video") {
+    console.log("render video");
     // This is passed down to the video-tag as a videoObject prop
     let video = {
       src: content.url,
@@ -127,7 +126,6 @@ function renderContentVideo(content, slideState) {
  */
 function renderCustomContent(content, slideState) {
   let deviceDimensions = getDeviceDimensions();
-  console.log("Window Dimensions (in custom content)", deviceDimensions);
 
   let width = calculateWidthAdjustment(deviceDimensions.width);
   let height = calculateHeightAdjustment(deviceDimensions.height);
@@ -137,6 +135,8 @@ function renderCustomContent(content, slideState) {
   };
 
   if (content.type === "customContent") {
+    console.log("render custom");
+    console.log("adjust", adjustment);
     // This is passed down to the custom-content-tag as a data prop
     let data = Object.assign({}, content.__data__, {
       containerWidth: content.width,
@@ -378,6 +378,7 @@ export class ContentSlideTag {
   };
 
   render() {
+    console.log("content", this.content);
     return (
       <div class="content-slide-wrapper" style={{ opacity: `${this.opacity}` }}>
         {this.content ? renderContentImage(this.content) : null}

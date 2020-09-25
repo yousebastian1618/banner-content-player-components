@@ -10,14 +10,14 @@ function getBackground(data, adjustment) {
     bg = {
       "background-image": `url(${data.backgroundImage.src})`,
       "background-size": "100% 100%",
-      "height": `${adjustment.height}`,
-      "width": `${adjustment.width}`,
+      height: `${adjustment.height}`,
+      width: `${adjustment.width}`,
     };
   } else {
     bg = {
       "background-color": `${data.background}`,
-      "height": `${adjustment.height}`,
-      "width": `${adjustment.width}`,
+      height: `${adjustment.height}`,
+      width: `${adjustment.width}`,
     };
   }
   return bg;
@@ -28,24 +28,29 @@ function getBackground(data, adjustment) {
  * @param {object}
  * @return {HTMLStencilElement}
  */
-function renderVideos({
-  objects,
-  containerWidth,
-  containerHeight,
-  slideState,
-}) {
+function renderVideos(
+  { objects, containerWidth, containerHeight, slideState },
+  adjustment
+) {
   // Returns only the objects that are videos
   let videos = objects.filter((obj) => {
     return obj.type === "video";
   });
   // Returns all the videos as video-tags components
   return videos.map((video) => {
+    console.log("renderVideos data:");
+    console.log("video", video);
+    console.log("cWidth", containerWidth);
+    console.log("cHeight", containerHeight);
+    console.log("slideState", slideState);
+    console.log("adjustment", adjustment);
     return (
       <video-tag
         videoObject={video}
         containerWidth={containerWidth}
         containerHeight={containerHeight}
         slideState={slideState}
+        adjustment={adjustment}
       />
     );
   });
@@ -162,12 +167,13 @@ export class CustomContentTag {
   @Prop() adjustment: any;
 
   render() {
+    console.log("this.adjustment", this.adjustment);
     return (
       <div
         class="custom-content-container"
         style={getBackground(this.data, this.adjustment)}
       >
-        {renderVideos(this.data)}
+        {renderVideos(this.data, this.adjustment)}
         {renderTexts(this.data)}
         {renderClocks(this.data)}
         {renderWeathers(this.data)}

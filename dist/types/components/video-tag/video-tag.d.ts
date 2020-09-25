@@ -42,9 +42,9 @@ export declare class VideoTag {
      * Updates the 'videoObject' prop with the value of any.
      *
      * As 'init' is called in 'componentWillLoad', it's only executed one time
-     * @param {any} attr
+     * @param {any} videoObject
      */
-    init(attr: any): void;
+    init(videoObject: any): void;
     /**
      * Styling hot fix for video-wrapper div
      */

@@ -58,12 +58,12 @@ export class VideoTag {
    * Updates the 'videoObject' prop with the value of any.
    *
    * As 'init' is called in 'componentWillLoad', it's only executed one time
-   * @param {any} attr
+   * @param {any} videoObject
    */
   @Watch("videoObject")
-  init(attr: any) {
+  init(videoObject: any) {
     try {
-      Object.assign(this, { ...attr });
+      Object.assign(this, { ...videoObject });
     } catch (err) {
       console.log(err.message);
     }
@@ -117,6 +117,7 @@ export class VideoTag {
    * connected to the DOM.
    */
   componentWillLoad() {
+    console.log("this", this);
     this.init(this.videoObject);
     this.changeStyle(this.adjustment);
   }
@@ -167,7 +168,9 @@ export class VideoTag {
   };
 
   render() {
+    console.log("src", this.src);
     if (this.src) {
+      console.log("video-tag adj", this);
       let style = {
         top: `${(this.top / this.containerHeight) * 100}%`,
         left: `${(this.left / this.containerWidth) * 100}%`,
