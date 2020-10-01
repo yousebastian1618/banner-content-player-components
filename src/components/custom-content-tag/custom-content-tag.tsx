@@ -38,12 +38,6 @@ function renderVideos(
   });
   // Returns all the videos as video-tags components
   return videos.map((video) => {
-    console.log("renderVideos data:");
-    console.log("video", video);
-    console.log("cWidth", containerWidth);
-    console.log("cHeight", containerHeight);
-    console.log("slideState", slideState);
-    console.log("adjustment", adjustment);
     return (
       <video-tag
         videoObject={video}
@@ -167,7 +161,6 @@ export class CustomContentTag {
   @Prop() adjustment: any;
 
   render() {
-    console.log("this.adjustment", this.adjustment);
     return (
       <div
         class="custom-content-container"

@@ -1,13 +1,9 @@
-// const base64x64Image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4wIbEQkKjS/bYgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAATUlEQVRo3u3PQQ0AAAgEILV/5zOFDzdoQCepz6aeExAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQELi3cqoDfV7ZY54AAAAASUVORK5CYII=";
 export class LoadingContentTag {
     constructor() {
         this.current = 0;
         this.total = 0;
         this.containerWidth = 0;
         this.containerHeight = 0;
-        /**
-         * Changes state according to the event presented
-         */
         this.changeState = (event) => {
             console.log("content status", event.detail);
             let { state, progress, current, total, containerWidth, containerHeight, } = event.detail;
@@ -23,19 +19,6 @@ export class LoadingContentTag {
             }
         };
     }
-    /**
-     * LoadingContentTag events
-     *
-     * Listens events:
-     *  CONTENT_STATUS
-     *
-     */
-    /**
-     * Lifecycle method that is called once when the component is fully loaded
-     * and the first render() occurs.
-     *
-     * Adds an event listener for 'CONTENT_STATUS' and passes changeState as a Callback
-     */
     componentDidLoad() {
         window.addEventListener("CONTENT_STATUS", this.changeState);
     }

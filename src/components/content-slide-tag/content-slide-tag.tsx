@@ -67,7 +67,6 @@ function renderContentImage(content) {
   };
 
   if (content.type === "image") {
-    console.log("render image");
     return (
       <div id="image-wrappper" style={adjustment}>
         <img class={"full-screen"} src={content.url} />
@@ -93,7 +92,6 @@ function renderContentVideo(content, slideState) {
     height: `${height}%`,
   };
   if (content.type === "video") {
-    console.log("render video");
     // This is passed down to the video-tag as a videoObject prop
     let video = {
       src: content.url,
@@ -135,8 +133,6 @@ function renderCustomContent(content, slideState) {
   };
 
   if (content.type === "customContent") {
-    console.log("render custom");
-    console.log("adjust", adjustment);
     // This is passed down to the custom-content-tag as a data prop
     let data = Object.assign({}, content.__data__, {
       containerWidth: content.width,
@@ -378,7 +374,6 @@ export class ContentSlideTag {
   };
 
   render() {
-    console.log("content", this.content);
     return (
       <div class="content-slide-wrapper" style={{ opacity: `${this.opacity}` }}>
         {this.content ? renderContentImage(this.content) : null}
