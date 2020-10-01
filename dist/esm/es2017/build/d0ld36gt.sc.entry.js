@@ -9936,7 +9936,6 @@ function calculateHeightAdjustment(height) {
 }
 function renderContentImage(content) {
     let deviceDimensions = getDeviceDimensions();
-    console.log("Window Dimensions (in content image)", deviceDimensions);
     let width = calculateWidthAdjustment(deviceDimensions.width);
     let height = calculateHeightAdjustment(deviceDimensions.height);
     let adjustment = {
@@ -9951,7 +9950,6 @@ function renderContentImage(content) {
 }
 function renderContentVideo(content, slideState) {
     let deviceDimensions = getDeviceDimensions();
-    console.log("Window Dimensions (in content video)", deviceDimensions);
     let width = calculateWidthAdjustment(deviceDimensions.width);
     let height = calculateHeightAdjustment(deviceDimensions.height);
     let adjustment = {
@@ -9976,7 +9974,6 @@ function renderContentVideo(content, slideState) {
 }
 function renderCustomContent(content, slideState) {
     let deviceDimensions = getDeviceDimensions();
-    console.log("Window Dimensions (in custom content)", deviceDimensions);
     let width = calculateWidthAdjustment(deviceDimensions.width);
     let height = calculateHeightAdjustment(deviceDimensions.height);
     let adjustment = {
@@ -10152,25 +10149,25 @@ function getBackground(data, adjustment) {
         bg = {
             "background-image": `url(${data.backgroundImage.src})`,
             "background-size": "100% 100%",
-            "height": `${adjustment.height}`,
-            "width": `${adjustment.width}`,
+            height: `${adjustment.height}`,
+            width: `${adjustment.width}`,
         };
     }
     else {
         bg = {
             "background-color": `${data.background}`,
-            "height": `${adjustment.height}`,
-            "width": `${adjustment.width}`,
+            height: `${adjustment.height}`,
+            width: `${adjustment.width}`,
         };
     }
     return bg;
 }
-function renderVideos({ objects, containerWidth, containerHeight, slideState, }) {
+function renderVideos({ objects, containerWidth, containerHeight, slideState }, adjustment) {
     let videos = objects.filter((obj) => {
         return obj.type === "video";
     });
     return videos.map((video) => {
-        return (h("video-tag", { videoObject: video, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
+        return (h("video-tag", { videoObject: video, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState, adjustment: adjustment }));
     });
 }
 function renderTexts({ objects, containerWidth, containerHeight, slideState }) {
@@ -10220,7 +10217,7 @@ function renderImages({ objects, containerWidth, containerHeight }) {
 class CustomContentTag {
     render() {
         return (h("div", { class: "custom-content-container", style: getBackground(this.data, this.adjustment) },
-            renderVideos(this.data),
+            renderVideos(this.data, this.adjustment),
             renderTexts(this.data),
             renderClocks(this.data),
             renderWeathers(this.data),

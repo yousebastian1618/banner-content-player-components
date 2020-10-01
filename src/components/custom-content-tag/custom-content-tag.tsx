@@ -10,14 +10,14 @@ function getBackground(data, adjustment) {
     bg = {
       "background-image": `url(${data.backgroundImage.src})`,
       "background-size": "100% 100%",
-      "height": `${adjustment.height}`,
-      "width": `${adjustment.width}`,
+      height: `${adjustment.height}`,
+      width: `${adjustment.width}`,
     };
   } else {
     bg = {
       "background-color": `${data.background}`,
-      "height": `${adjustment.height}`,
-      "width": `${adjustment.width}`,
+      height: `${adjustment.height}`,
+      width: `${adjustment.width}`,
     };
   }
   return bg;
@@ -28,12 +28,10 @@ function getBackground(data, adjustment) {
  * @param {object}
  * @return {HTMLStencilElement}
  */
-function renderVideos({
-  objects,
-  containerWidth,
-  containerHeight,
-  slideState,
-}) {
+function renderVideos(
+  { objects, containerWidth, containerHeight, slideState },
+  adjustment
+) {
   // Returns only the objects that are videos
   let videos = objects.filter((obj) => {
     return obj.type === "video";
@@ -46,6 +44,7 @@ function renderVideos({
         containerWidth={containerWidth}
         containerHeight={containerHeight}
         slideState={slideState}
+        adjustment={adjustment}
       />
     );
   });
@@ -167,7 +166,7 @@ export class CustomContentTag {
         class="custom-content-container"
         style={getBackground(this.data, this.adjustment)}
       >
-        {renderVideos(this.data)}
+        {renderVideos(this.data, this.adjustment)}
         {renderTexts(this.data)}
         {renderClocks(this.data)}
         {renderWeathers(this.data)}

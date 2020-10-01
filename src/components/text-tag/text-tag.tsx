@@ -50,8 +50,7 @@ export class TextTag implements BaseText {
   init(attr: any) {
     try {
       Object.assign(this, { ...attr });
-    }
-    catch (err) {
+    } catch (err) {
       console.log(err.message);
     }
   }

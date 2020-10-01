@@ -58,12 +58,12 @@ export class VideoTag {
    * Updates the 'videoObject' prop with the value of any.
    *
    * As 'init' is called in 'componentWillLoad', it's only executed one time
-   * @param {any} attr
+   * @param {any} videoObject
    */
   @Watch("videoObject")
-  init(attr: any) {
+  init(videoObject: any) {
     try {
-      Object.assign(this, { ...attr });
+      Object.assign(this, { ...videoObject });
     } catch (err) {
       console.log(err.message);
     }

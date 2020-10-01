@@ -42,9 +42,9 @@ class VideoTag {
             }
         };
     }
-    init(attr) {
+    init(videoObject) {
         try {
-            Object.assign(this, Object.assign({}, attr));
+            Object.assign(this, Object.assign({}, videoObject));
         }
         catch (err) {
             console.log(err.message);

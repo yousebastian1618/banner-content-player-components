@@ -26,7 +26,6 @@ function calculateHeightAdjustment(height) {
 }
 function renderContentImage(content) {
     let deviceDimensions = getDeviceDimensions();
-    console.log("Window Dimensions (in content image)", deviceDimensions);
     let width = calculateWidthAdjustment(deviceDimensions.width);
     let height = calculateHeightAdjustment(deviceDimensions.height);
     let adjustment = {
@@ -41,7 +40,6 @@ function renderContentImage(content) {
 }
 function renderContentVideo(content, slideState) {
     let deviceDimensions = getDeviceDimensions();
-    console.log("Window Dimensions (in content video)", deviceDimensions);
     let width = calculateWidthAdjustment(deviceDimensions.width);
     let height = calculateHeightAdjustment(deviceDimensions.height);
     let adjustment = {
@@ -66,7 +64,6 @@ function renderContentVideo(content, slideState) {
 }
 function renderCustomContent(content, slideState) {
     let deviceDimensions = getDeviceDimensions();
-    console.log("Window Dimensions (in custom content)", deviceDimensions);
     let width = calculateWidthAdjustment(deviceDimensions.width);
     let height = calculateHeightAdjustment(deviceDimensions.height);
     let adjustment = {
