@@ -117,7 +117,6 @@ export class VideoTag {
    * connected to the DOM.
    */
   componentWillLoad() {
-    console.log("this", this);
     this.init(this.videoObject);
     this.changeStyle(this.adjustment);
   }
@@ -168,9 +167,7 @@ export class VideoTag {
   };
 
   render() {
-    console.log("src", this.src);
     if (this.src) {
-      console.log("video-tag adj", this);
       let style = {
         top: `${(this.top / this.containerHeight) * 100}%`,
         left: `${(this.left / this.containerWidth) * 100}%`,
