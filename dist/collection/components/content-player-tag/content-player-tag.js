@@ -18,7 +18,6 @@ export class ContentPlayerTag {
         window.removeEventListener("CONTENT_PLAYER_CHANGED", this.playNextContent);
         let closeEvent = new Event("CONTENT_PLAYER_CLOSE");
         window.dispatchEvent(closeEvent);
-        console.log(this.slides);
     }
     render() {
         return (h("div", { class: "content-player-wrapper" }, this.slides.map((slideObject) => {

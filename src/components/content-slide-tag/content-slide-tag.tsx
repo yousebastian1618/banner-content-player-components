@@ -91,6 +91,7 @@ function renderContentVideo(content, slideState) {
     width: `${width}%`,
     height: `${height}%`,
   };
+
   if (content.type === "video") {
     // This is passed down to the video-tag as a videoObject prop
     let video = {
@@ -278,22 +279,27 @@ export class ContentSlideTag {
   };
 
   contentChanged = (event) => {
-    let { content } = event.detail;
-    if (content === undefined) {
+    if (!event.detail) {
       this.status = SlideState.HIDE;
       this.lastContentId = undefined;
-      return;
-    }
-    if (content.id === this.content.id) {
-      this.el.style.zIndex = "2";
-      this.status = SlideState.START_ANIMATION;
-    } else if (this.content.id === this.lastContentId) {
-      this.el.style.zIndex = "1";
     } else {
-      this.el.style.zIndex = "0";
-      this.status = SlideState.HIDE;
+      let { content } = event.detail;
+      if (content === undefined) {
+        this.status = SlideState.HIDE;
+        this.lastContentId = undefined;
+        return;
+      }
+      if (content.id === this.content.id) {
+        this.el.style.zIndex = "2";
+        this.status = SlideState.START_ANIMATION;
+      } else if (this.content.id === this.lastContentId) {
+        this.el.style.zIndex = "1";
+      } else {
+        this.el.style.zIndex = "0";
+        this.status = SlideState.HIDE;
+      }
+      this.lastContentId = content.id;
     }
-    this.lastContentId = content.id;
   };
 
   /**

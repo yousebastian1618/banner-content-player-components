@@ -341,7 +341,6 @@
         let event = new CustomEvent("CONTENT_PLAYER_CHANGED", {
           detail: current,
         });
-        console.log("sending content");
         window.dispatchEvent(event);
         // testContents(contents);
         if (current.content.type === "video") {

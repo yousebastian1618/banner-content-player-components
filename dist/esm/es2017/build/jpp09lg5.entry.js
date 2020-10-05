@@ -9884,7 +9884,6 @@ class ContentPlayerTag {
         window.removeEventListener("CONTENT_PLAYER_CHANGED", this.playNextContent);
         let closeEvent = new Event("CONTENT_PLAYER_CLOSE");
         window.dispatchEvent(closeEvent);
-        console.log(this.slides);
     }
     render() {
         return (h("div", { class: "content-player-wrapper" }, this.slides.map((slideObject) => {
@@ -10001,24 +10000,30 @@ class ContentSlideTag {
             }
         };
         this.contentChanged = (event) => {
-            let { content } = event.detail;
-            if (content === undefined) {
+            if (!event.detail) {
                 this.status = SlideState.HIDE;
                 this.lastContentId = undefined;
-                return;
-            }
-            if (content.id === this.content.id) {
-                this.el.style.zIndex = "2";
-                this.status = SlideState.START_ANIMATION;
-            }
-            else if (this.content.id === this.lastContentId) {
-                this.el.style.zIndex = "1";
             }
             else {
-                this.el.style.zIndex = "0";
-                this.status = SlideState.HIDE;
+                let { content } = event.detail;
+                if (content === undefined) {
+                    this.status = SlideState.HIDE;
+                    this.lastContentId = undefined;
+                    return;
+                }
+                if (content.id === this.content.id) {
+                    this.el.style.zIndex = "2";
+                    this.status = SlideState.START_ANIMATION;
+                }
+                else if (this.content.id === this.lastContentId) {
+                    this.el.style.zIndex = "1";
+                }
+                else {
+                    this.el.style.zIndex = "0";
+                    this.status = SlideState.HIDE;
+                }
+                this.lastContentId = content.id;
             }
-            this.lastContentId = content.id;
         };
         this.getAnimation = () => {
             let container = this.el.querySelector(".content-slide-wrapper");
@@ -10244,7 +10249,6 @@ class LoadingContentTag {
         this.containerWidth = 0;
         this.containerHeight = 0;
         this.changeState = (event) => {
-            console.log("content status", event.detail);
             let { state, progress, current, total, containerWidth, containerHeight, } = event.detail;
             this.state = state;
             this.progress = progress;

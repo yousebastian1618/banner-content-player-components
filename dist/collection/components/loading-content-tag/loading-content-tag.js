@@ -5,7 +5,6 @@ export class LoadingContentTag {
         this.containerWidth = 0;
         this.containerHeight = 0;
         this.changeState = (event) => {
-            console.log("content status", event.detail);
             let { state, progress, current, total, containerWidth, containerHeight, } = event.detail;
             this.state = state;
             this.progress = progress;

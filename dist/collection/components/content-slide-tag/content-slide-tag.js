@@ -91,24 +91,30 @@ export class ContentSlideTag {
             }
         };
         this.contentChanged = (event) => {
-            let { content } = event.detail;
-            if (content === undefined) {
+            if (!event.detail) {
                 this.status = SlideState.HIDE;
                 this.lastContentId = undefined;
-                return;
-            }
-            if (content.id === this.content.id) {
-                this.el.style.zIndex = "2";
-                this.status = SlideState.START_ANIMATION;
-            }
-            else if (this.content.id === this.lastContentId) {
-                this.el.style.zIndex = "1";
             }
             else {
-                this.el.style.zIndex = "0";
-                this.status = SlideState.HIDE;
+                let { content } = event.detail;
+                if (content === undefined) {
+                    this.status = SlideState.HIDE;
+                    this.lastContentId = undefined;
+                    return;
+                }
+                if (content.id === this.content.id) {
+                    this.el.style.zIndex = "2";
+                    this.status = SlideState.START_ANIMATION;
+                }
+                else if (this.content.id === this.lastContentId) {
+                    this.el.style.zIndex = "1";
+                }
+                else {
+                    this.el.style.zIndex = "0";
+                    this.status = SlideState.HIDE;
+                }
+                this.lastContentId = content.id;
             }
-            this.lastContentId = content.id;
         };
         this.getAnimation = () => {
             let container = this.el.querySelector(".content-slide-wrapper");
