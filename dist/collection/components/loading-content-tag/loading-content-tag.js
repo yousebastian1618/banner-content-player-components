@@ -1,90 +1,154 @@
+// const base64x64Image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4wIbEQkKjS/bYgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAATUlEQVRo3u3PQQ0AAAgEILV/5zOFDzdoQCepz6aeExAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQELi3cqoDfV7ZY54AAAAASUVORK5CYII=";
 export class LoadingContentTag {
-    constructor() {
-        this.current = 0;
-        this.total = 0;
-        this.containerWidth = 0;
-        this.containerHeight = 0;
-        this.changeState = (event) => {
-            console.log("content status", event.detail);
-            let { state, progress, current, total, containerWidth, containerHeight, } = event.detail;
-            this.state = state;
-            this.progress = progress;
-            this.current = current;
-            this.total = total;
-            if (containerWidth !== undefined) {
-                this.containerWidth = containerWidth;
-            }
-            if (containerHeight !== undefined) {
-                this.containerHeight = containerHeight;
-            }
-        };
-    }
-    componentDidLoad() {
-        window.addEventListener("CONTENT_STATUS", this.changeState);
-    }
-    render() {
-        let min = this.containerWidth < this.containerHeight
-            ? this.containerWidth
-            : this.containerHeight;
-        return (h("div", { class: "loading-content" },
-            h("div", { class: "loader-wrapper", style: {
-                    display: this.state === "loading" ? "block" : "none",
-                    width: `${this.containerWidth}px`,
-                    height: `${this.containerHeight}px`,
-                } },
-                h("div", { class: "lds-ellipsis", style: { width: `${min * 0.9}px`, height: `${min * 0.9}px` } },
-                    h("div", null),
-                    h("div", null),
-                    h("div", null),
-                    h("div", null))),
-            h("div", { class: "progress-bar-wrapper", style: { display: this.state === "downloading" ? "flex" : "none" } },
-                h("span", { style: {
-                        "font-size": `${this.containerWidth * 0.8 * 0.041 * 0.6}px`,
-                    } },
-                    "Downloading contents ",
-                    `(${this.current}/${this.total})`,
-                    " "),
-                h("br", null),
-                h("progress-bar-tag", { progress: this.progress, visible: true, "base-color": "#00ACC2", "secondary-color": "#407C84", "container-width": this.containerWidth })),
-            h("content-player-tag", { style: { display: this.state === "playing" ? "block" : "none" } })));
-    }
-    static get is() { return "loading-content-tag"; }
-    static get properties() { return {
-        "containerHeight": {
-            "type": Number,
-            "attr": "container-height",
-            "mutable": true
+  constructor() {
+    this.current = 0;
+    this.total = 0;
+    this.containerWidth = 0;
+    this.containerHeight = 0;
+    /**
+     * Changes state according to the event presented
+     */
+    this.changeState = (event) => {
+      let {
+        state,
+        progress,
+        current,
+        total,
+        containerWidth,
+        containerHeight,
+      } = event.detail;
+      this.state = state;
+      this.progress = progress;
+      this.current = current;
+      this.total = total;
+      if (containerWidth !== undefined) {
+        this.containerWidth = containerWidth;
+      }
+      if (containerHeight !== undefined) {
+        this.containerHeight = containerHeight;
+      }
+    };
+  }
+  /**
+   * LoadingContentTag events
+   *
+   * Listens events:
+   *  CONTENT_STATUS
+   *
+   */
+  /**
+   * Lifecycle method that is called once when the component is fully loaded
+   * and the first render() occurs.
+   *
+   * Adds an event listener for 'CONTENT_STATUS' and passes changeState as a Callback
+   */
+  componentDidLoad() {
+    window.addEventListener("CONTENT_STATUS", this.changeState);
+  }
+  render() {
+    let min =
+      this.containerWidth < this.containerHeight
+        ? this.containerWidth
+        : this.containerHeight;
+    return h(
+      "div",
+      { class: "loading-content" },
+      h(
+        "div",
+        {
+          class: "loader-wrapper",
+          style: {
+            display: this.state === "loading" ? "block" : "none",
+            width: `${this.containerWidth}px`,
+            height: `${this.containerHeight}px`,
+          },
         },
-        "containerWidth": {
-            "type": Number,
-            "attr": "container-width",
-            "mutable": true
+        h(
+          "div",
+          {
+            class: "lds-ellipsis",
+            style: { width: `${min * 0.9}px`, height: `${min * 0.9}px` },
+          },
+          h("div", null),
+          h("div", null),
+          h("div", null),
+          h("div", null)
+        )
+      ),
+      h(
+        "div",
+        {
+          class: "progress-bar-wrapper",
+          style: { display: this.state === "downloading" ? "flex" : "none" },
         },
-        "current": {
-            "type": Number,
-            "attr": "current",
-            "mutable": true
-        },
-        "progress": {
-            "type": Number,
-            "attr": "progress",
-            "mutable": true
-        },
-        "state": {
-            "type": String,
-            "attr": "state",
-            "mutable": true
-        },
-        "total": {
-            "type": Number,
-            "attr": "total",
-            "mutable": true
-        },
-        "visible": {
-            "type": Boolean,
-            "attr": "visible",
-            "mutable": true
-        }
-    }; }
-    static get style() { return "/**style-placeholder:loading-content-tag:**/"; }
+        h(
+          "span",
+          {
+            style: {
+              "font-size": `${this.containerWidth * 0.8 * 0.041 * 0.6}px`,
+            },
+          },
+          "Downloading contents ",
+          `(${this.current}/${this.total})`,
+          " "
+        ),
+        h("br", null),
+        h("progress-bar-tag", {
+          progress: this.progress,
+          visible: true,
+          "base-color": "#00ACC2",
+          "secondary-color": "#407C84",
+          "container-width": this.containerWidth,
+        })
+      ),
+      h("content-player-tag", {
+        style: { display: this.state === "playing" ? "block" : "none" },
+      })
+    );
+  }
+  static get is() {
+    return "loading-content-tag";
+  }
+  static get properties() {
+    return {
+      containerHeight: {
+        type: Number,
+        attr: "container-height",
+        mutable: true,
+      },
+      containerWidth: {
+        type: Number,
+        attr: "container-width",
+        mutable: true,
+      },
+      current: {
+        type: Number,
+        attr: "current",
+        mutable: true,
+      },
+      progress: {
+        type: Number,
+        attr: "progress",
+        mutable: true,
+      },
+      state: {
+        type: String,
+        attr: "state",
+        mutable: true,
+      },
+      total: {
+        type: Number,
+        attr: "total",
+        mutable: true,
+      },
+      visible: {
+        type: Boolean,
+        attr: "visible",
+        mutable: true,
+      },
+    };
+  }
+  static get style() {
+    return "/**style-placeholder:loading-content-tag:**/";
+  }
 }

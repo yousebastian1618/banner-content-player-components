@@ -2,19 +2,32 @@ import moment from "moment";
 import { getBaseTextStyle } from "../../common/get-base-text-style";
 import checkSlideState from "../../common/text-behaviour";
 let clockInterval;
+/**
+ * Array of clock-tag elements
+ */
 let clockObservers;
 const clockHandler = {
+    /**
+     * Initilizes the clockObservers array
+     */
     init() {
         if (!clockObservers) {
             clockObservers = [];
         }
     },
+    /**
+     * Adds a ClockTag
+     * @param {ClockTag} observer
+     * @return {undefined}
+     */
     subscribe(observer) {
         let index = clockObservers.indexOf(observer);
+        // Adds the ClockTag to the array if it's not present
         if (index === -1) {
             clockObservers.push(observer);
             observer.time = moment();
         }
+        // Sets the time interval for every ClockTag
         if (!clockInterval) {
             clockInterval = setInterval(() => {
                 let time = moment();
@@ -24,6 +37,11 @@ const clockHandler = {
             }, 1000);
         }
     },
+    /**
+     * Removes a ClockTag
+     * @param observer
+     * @return {undefined}
+     */
     unsubscribe(observer) {
         let index = clockObservers.indexOf(observer);
         if (index >= 0) {
@@ -38,6 +56,13 @@ export class ClockTag {
     constructor() {
         this.customMask = "HH:mm:ss";
     }
+    /**
+     * Updates the 'clockObject' and the 'customMask' properties
+     *
+     * As 'init' is called in 'componentWillLoad', it's only executed one time
+     * @param {any} attr
+     *
+     */
     init(attr) {
         try {
             Object.assign(this, Object.assign({}, attr), { customMask: attr.customData.mask });
@@ -50,10 +75,18 @@ export class ClockTag {
         let ele = this.el.querySelector(".text-wrapper");
         checkSlideState(slideState, ele, this, this.clockObject);
     }
+    /**
+     * Lifecycle method that is called once when the component is first
+     * connected to the DOM.
+     */
     componentWillLoad() {
         clockHandler.init();
         this.init(this.clockObject);
     }
+    /**
+     * Lifecycle method that is called once when the component is fully loaded
+     * and the first render() occurs.
+     */
     componentDidLoad() {
         clockHandler.subscribe(this);
     }

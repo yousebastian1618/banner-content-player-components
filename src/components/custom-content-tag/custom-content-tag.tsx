@@ -32,12 +32,15 @@ function renderVideos(
   { objects, containerWidth, containerHeight, slideState },
   adjustment
 ) {
+  console.log("custom renderVideos");
   // Returns only the objects that are videos
   let videos = objects.filter((obj) => {
     return obj.type === "video";
   });
+  console.log("videso length", videos.length);
   // Returns all the videos as video-tags components
   return videos.map((video) => {
+    console.log("doing a video");
     return (
       <video-tag
         videoObject={video}
