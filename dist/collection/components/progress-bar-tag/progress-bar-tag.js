@@ -4,15 +4,7 @@ export class ProgressBarTag {
         this.progress = 0;
         this.visible = false;
     }
-    /**
-     * Lifecycle method that is called once when the component is first
-     * connected to the DOM.
-     */
     componentWillLoad() { }
-    /**
-     * Lifecycle method that is called once when the component is fully loaded
-     * and the first render() occurs.
-     */
     componentDidLoad() { }
     render() {
         if (this.visible) {

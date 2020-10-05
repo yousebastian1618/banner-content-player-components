@@ -27,7 +27,6 @@ export class ContentPlayerTag {
    * Adds event listeners for "CONTENT_PLAYER_CHANGED" and for "CONTENT_PLAYER_LOAD"
    */
   componentDidLoad() {
-    console.log("contentplayertag did load");
     window.addEventListener("CONTENT_PLAYER_LOAD", this.loadContents);
     window.addEventListener("CONTENT_PLAYER_CHANGED", this.playNextContent);
   }
@@ -36,12 +35,10 @@ export class ContentPlayerTag {
    * Removes event listeners for "CONTENT_PLAYER_LOAD" and for "CONTENT_PLAYER_CHANGED"
    */
   componentDidUnload() {
-    console.log("contentplayertag did unload");
     window.removeEventListener("CONTENT_PLAYER_LOAD", this.loadContents);
     window.removeEventListener("CONTENT_PLAYER_CHANGED", this.playNextContent);
     let closeEvent = new Event("CONTENT_PLAYER_CLOSE");
     window.dispatchEvent(closeEvent);
-    console.log(this.slides);
   }
 
   /**

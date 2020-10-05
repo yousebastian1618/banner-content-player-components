@@ -67,7 +67,6 @@ function renderContentImage(content) {
   };
 
   if (content.type === "image") {
-    console.log("renderImage");
     return (
       <div id="image-wrappper" style={adjustment}>
         <img class={"full-screen"} src={content.url} />
@@ -94,7 +93,6 @@ function renderContentVideo(content, slideState) {
   };
 
   if (content.type === "video") {
-    console.log("renderVideo");
     // This is passed down to the video-tag as a videoObject prop
     let video = {
       src: content.url,
@@ -136,14 +134,12 @@ function renderCustomContent(content, slideState) {
   };
 
   if (content.type === "customContent") {
-    console.log("renderCustom");
     // This is passed down to the custom-content-tag as a data prop
     let data = Object.assign({}, content.__data__, {
       containerWidth: content.width,
       containerHeight: content.height,
       slideState: slideState,
     });
-    console.log("data", data);
     return (
       <custom-content-tag
         class={"full-screen"}
@@ -258,10 +254,8 @@ export class ContentSlideTag {
    * Adds event listeners for "CONTENT_PLAYER_CHANGED" and for "HIDE_LAST_SLIDE"
    */
   componentDidLoad() {
-    console.log("slide did load");
     this.status = SlideState.INIT;
     window.addEventListener("CONTENT_PLAYER_CHANGED", this.contentChanged);
-    console.log("TRANSITION");
     window.addEventListener("HIDE_LAST_SLIDE", this.hideLastSlide);
   }
 
@@ -270,13 +264,11 @@ export class ContentSlideTag {
    * and for "HIDE_LAST_SLIDE"
    */
   componentDidUnload() {
-    console.log("slide did unload");
     window.removeEventListener("CONTENT_PLAYER_CHANGED", this.contentChanged);
     window.removeEventListener("HIDE_LAST_SLIDE", this.hideLastSlide);
   }
 
   hideLastSlide = (event) => {
-    console.log("event", event);
     let { currentIndex } = event.detail;
     if (
       this.content.index !== currentIndex &&
@@ -287,14 +279,10 @@ export class ContentSlideTag {
   };
 
   contentChanged = (event) => {
-    console.log("event", event);
-    console.log("REGIST");
     if (!event.detail) {
-      console.log("no event detail");
       this.status = SlideState.HIDE;
       this.lastContentId = undefined;
     } else {
-      console.log("going with it");
       let { content } = event.detail;
       if (content === undefined) {
         this.status = SlideState.HIDE;

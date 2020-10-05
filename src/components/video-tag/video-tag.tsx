@@ -157,7 +157,6 @@ export class VideoTag {
    * for the Content Player
    */
   ended = () => {
-    console.log("ENDED()");
     let ele = this.el.querySelector("video");
     if (this.playState === PlayState.PLAYING) {
       this.playState = PlayState.STOP;

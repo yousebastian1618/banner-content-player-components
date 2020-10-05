@@ -333,7 +333,6 @@
       };
 
       function testContents(contents, index) {
-        console.log("START TEST CONTENTS");
         index = index || 0;
         index = index >= contents.length ? 0 : index;
         current = contents.filter(function (item) {
@@ -342,10 +341,8 @@
         let event = new CustomEvent("CONTENT_PLAYER_CHANGED", {
           detail: current,
         });
-        console.log("sending content");
         window.dispatchEvent(event);
         // testContents(contents);
-        console.log("test contents", current);
         if (current.content.type === "video") {
           function waitVideoEnd() {
             window.removeEventListener("VIDEO_CONTENT_ENDED", waitVideoEnd);

@@ -37,7 +37,6 @@ export class LoadingContentTag {
    * Changes state according to the event presented
    */
   changeState = (event) => {
-    console.log("content status", event.detail);
     let {
       state,
       progress,
