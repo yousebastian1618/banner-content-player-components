@@ -1,4 +1,8 @@
 import SlideState from "../../common/slide-state";
+/**
+ * STOP: 0
+ * PLAYING: 1
+ */
 var PlayState;
 (function (PlayState) {
     PlayState[PlayState["STOP"] = 0] = "STOP";
@@ -21,6 +25,13 @@ export class VideoTag {
         this.scaleY = 1;
         this.alreadyEnded = true;
         this.playState = PlayState.STOP;
+        /**
+         * Changes 'playState' from 'STOP' to 'PLAYING'
+         * and   playing the content.
+         *
+         * Adds an event listener for "ended" and passes function 'ended' as Callback
+         * @return {undefined}
+         */
         this.play = () => {
             let ele = this.el.querySelector("video");
             if (ele && this.playState === PlayState.STOP) {
@@ -29,6 +40,13 @@ export class VideoTag {
                 ele.play();
             }
         };
+        /**
+         * Changes 'playState' from 'PLAYING' to 'STOP'
+         * and stops playing the content
+         *
+         * Removes "ended" event listener and dispatches "VIDEO_CONTENT_ENDED"
+         * for the Content Player
+         */
         this.ended = () => {
             let ele = this.el.querySelector("video");
             if (this.playState === PlayState.PLAYING) {
@@ -39,6 +57,21 @@ export class VideoTag {
             }
         };
     }
+    /**
+     * VideoTag events
+     *
+     * Listens events:
+     *  ended
+     *
+     * Dispatches events:
+     *  VIDEO_CONTENT_ENDED
+     */
+    /**
+     * Updates the 'videoObject' prop with the value of any.
+     *
+     * As 'init' is called in 'componentWillLoad', it's only executed one time
+     * @param {any} videoObject
+     */
     init(videoObject) {
         try {
             Object.assign(this, Object.assign({}, videoObject));
@@ -47,14 +80,23 @@ export class VideoTag {
             console.log(err.message);
         }
     }
-    changeStyle(attr) {
-        try {
-            Object.assign(this, Object.assign({}, attr));
-        }
-        catch (err) {
-            console.log(err.message);
-        }
-    }
+    /**
+     * Styling hot fix for video-wrapper div
+     */
+    // @Watch("adjustment")
+    // changeStyle(attr: any) {
+    //   console.log("attr", attr);
+    //   try {
+    //     Object.assign(this, { ...attr });
+    //   } catch (err) {
+    //     console.log(err.message);
+    //   }
+    // }
+    /**
+     * Whenever 'slideState' changes, it runs 'checkSlideState'
+     * @param slideState
+     * @param oldState
+     */
     checkSlideState(slideState, oldState) {
         if (oldState === SlideState.SHOW &&
             slideState === SlideState.START_ANIMATION) {
@@ -76,17 +118,34 @@ export class VideoTag {
             }
         }
     }
+    /**
+     * Lifecycle method that is called once when the component is first
+     * connected to the DOM.
+     */
     componentWillLoad() {
         this.init(this.videoObject);
-        this.changeStyle(this.adjustment);
+        // this.changeStyle(this.adjustment);
     }
+    /**
+     * Lifecycle method that is called once when the component is fully loaded
+     * and the first render() occurs.
+     */
     componentDidLoad() { }
+    /**
+     * Lifecycle method that is called ojust after the component updates. It's never
+     * called during the first render
+     */
     componentDidUpdate() { }
     render() {
+        console.log("this.adjustment", this.adjustment);
         if (this.src) {
             let style = {
                 top: `${(this.top / this.containerHeight) * 100}%`,
                 left: `${(this.left / this.containerWidth) * 100}%`,
+                // width: `${((this.width * this.scaleX) / this.containerWidth) * 100}%`,
+                // height: `${
+                //   ((this.height * this.scaleY) / this.containerHeight) * 100
+                // }%`,
                 width: this.adjustment.width,
                 height: this.adjustment.height,
                 transform: `rotate(${this.angle}deg)`,
@@ -104,8 +163,7 @@ export class VideoTag {
     static get properties() { return {
         "adjustment": {
             "type": "Any",
-            "attr": "adjustment",
-            "watchCallbacks": ["changeStyle"]
+            "attr": "adjustment"
         },
         "angle": {
             "type": Number,

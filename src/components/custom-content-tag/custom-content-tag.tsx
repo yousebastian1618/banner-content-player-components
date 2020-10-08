@@ -128,20 +128,29 @@ function renderWeathers({
  * Renders images tags
  * @param {object}
  */
-function renderImages({ objects, containerWidth, containerHeight }) {
+function renderImages(
+  { objects, containerWidth, containerHeight },
+  adjustment
+) {
   let images = objects.filter((obj) => {
     return obj.type === "image";
   });
   images = images.map((image) => {
+    console.log("this customer content image", image);
+    console.log(containerHeight, containerWidth);
     return (
       <img
         class="custom-content-image"
         src={image.src}
         style={{
-          top: `${(image.top / containerHeight) * 100}%`,
-          left: `${(image.left / containerWidth) * 100}%`,
-          width: `${((image.width * image.scaleX) / containerWidth) * 100}%`,
-          height: `${((image.height * image.scaleY) / containerHeight) * 100}%`,
+          top: `${image.top}px`,
+          left: `${image.left}px`,
+          // top: `${(image.top / containerHeight) * 100}%`,
+          // left: `${(image.left / containerWidth) * 100}%`,
+          // width: `${((image.width * image.scaleX) / containerWidth) * 100}%`,
+          // height: `${((image.height * image.scaleY) / containerHeight) * 100}%`,
+          width: adjustment.width,
+          height: adjustment.height,
           transform: `rotate(${image.angle}deg)`,
           "transform-origin": `${image.originX} ${image.originY}`,
           "z-index": `${image.zIndex}`,
@@ -161,6 +170,7 @@ export class CustomContentTag {
   @Prop() adjustment: any;
 
   render() {
+    console.log("custom content", this.data);
     return (
       <div
         class="custom-content-container"
@@ -170,7 +180,7 @@ export class CustomContentTag {
         {renderTexts(this.data)}
         {renderClocks(this.data)}
         {renderWeathers(this.data)}
-        {renderImages(this.data)}
+        {renderImages(this.data, this.adjustment)}
       </div>
     );
   }

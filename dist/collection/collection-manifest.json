@@ -602,10 +602,7 @@
         {
           "name": "adjustment",
           "type": "Any",
-          "attr": "adjustment",
-          "watch": [
-            "changeStyle"
-          ]
+          "attr": "adjustment"
         },
         {
           "name": "angle",

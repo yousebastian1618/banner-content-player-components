@@ -72,14 +72,15 @@ export class VideoTag {
   /**
    * Styling hot fix for video-wrapper div
    */
-  @Watch("adjustment")
-  changeStyle(attr: any) {
-    try {
-      Object.assign(this, { ...attr });
-    } catch (err) {
-      console.log(err.message);
-    }
-  }
+  // @Watch("adjustment")
+  // changeStyle(attr: any) {
+  //   console.log("attr", attr);
+  //   try {
+  //     Object.assign(this, { ...attr });
+  //   } catch (err) {
+  //     console.log(err.message);
+  //   }
+  // }
 
   /**
    * Whenever 'slideState' changes, it runs 'checkSlideState'
@@ -118,7 +119,7 @@ export class VideoTag {
    */
   componentWillLoad() {
     this.init(this.videoObject);
-    this.changeStyle(this.adjustment);
+    // this.changeStyle(this.adjustment);
   }
 
   /**
@@ -167,6 +168,7 @@ export class VideoTag {
   };
 
   render() {
+    console.log("this.adjustment", this.adjustment);
     if (this.src) {
       let style = {
         top: `${(this.top / this.containerHeight) * 100}%`,
