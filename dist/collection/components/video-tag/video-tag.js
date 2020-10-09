@@ -140,7 +140,7 @@ export class VideoTag {
         console.log("this.adjustment", this.adjustment);
         if (this.src) {
             let style = {
-                top: `${(this.top / this.containerHeight) * 100}%`,
+                // top: `${(this.top / this.containerHeight) * 100}%`,
                 left: `${(this.left / this.containerWidth) * 100}%`,
                 // width: `${((this.width * this.scaleX) / this.containerWidth) * 100}%`,
                 // height: `${

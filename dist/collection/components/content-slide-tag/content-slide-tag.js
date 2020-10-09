@@ -71,6 +71,7 @@ function renderContentImage(content) {
 function renderContentVideo(content, slideState) {
     if (content.type === "video") {
         let deviceDimensions = getDeviceDimensions();
+        console.log("deviceDimensions", deviceDimensions);
         let width = calculateWidthAdjustment(deviceDimensions.width);
         let height = calculateHeightAdjustment(deviceDimensions.height);
         let adjustment = {
@@ -109,7 +110,6 @@ function renderCustomContent(content, slideState) {
             width: `${width}%`,
             height: `${height}%`,
         };
-        console.log("adj", adjustment);
         // This is passed down to the custom-content-tag as a data prop
         let data = Object.assign({}, content.__data__, {
             containerWidth: content.width,
@@ -283,7 +283,7 @@ export class ContentSlideTag {
         window.removeEventListener("HIDE_LAST_SLIDE", this.hideLastSlide);
     }
     render() {
-        console.log("this.content", this.content);
+        console.log("slide", this.content);
         return (h("div", { class: "content-slide-wrapper", style: { opacity: `${this.opacity}` } },
             this.content ? renderContentImage(this.content) : null,
             this.content ? renderContentVideo(this.content, this.status) : null,

@@ -26,13 +26,15 @@ function getBackground(data, adjustment) {
  * @param {object}
  * @return {HTMLStencilElement}
  */
-function renderVideos({ objects, containerWidth, containerHeight, slideState }, adjustment) {
+function renderVideos({ objects, containerWidth, containerHeight, slideState, }) {
+    console.log("RENDER VIDEOS", objects);
     // Returns only the objects that are videos
     let videos = objects.filter((obj) => {
         return obj.type === "video";
     });
     // Returns all the videos as video-tags components
     return videos.map((video) => {
+        const adjustment = { width: video.width, height: video.height };
         return (h("video-tag", { videoObject: video, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState, adjustment: adjustment }));
     });
 }
@@ -80,38 +82,52 @@ function renderWeathers({ objects, containerWidth, containerHeight, slideState, 
  * Renders images tags
  * @param {object}
  */
-function renderImages({ objects, containerWidth, containerHeight }, adjustment) {
+function renderImages({ objects }) {
+    console.log("RENDER IMAGES");
     let images = objects.filter((obj) => {
         return obj.type === "image";
     });
     images = images.map((image) => {
-        console.log("this customer content image", image);
-        console.log(containerHeight, containerWidth);
-        return (h("img", { class: "custom-content-image", src: image.src, style: {
+        return (h("div", { id: "image-wrappper", style: {
                 top: `${image.top}px`,
                 left: `${image.left}px`,
-                // top: `${(image.top / containerHeight) * 100}%`,
-                // left: `${(image.left / containerWidth) * 100}%`,
-                // width: `${((image.width * image.scaleX) / containerWidth) * 100}%`,
-                // height: `${((image.height * image.scaleY) / containerHeight) * 100}%`,
-                width: adjustment.width,
-                height: adjustment.height,
+                width: "100%",
+                height: "100%",
                 transform: `rotate(${image.angle}deg)`,
                 "transform-origin": `${image.originX} ${image.originY}`,
                 "z-index": `${image.zIndex}`,
-            } }));
+            } },
+            h("img", { class: "full-screen", src: image.src }))
+        // <img
+        //   class="custom-content-image"
+        //   src={image.src}
+        //   style={{
+        //     top: `${image.top}px`,
+        //     left: `${image.left}px`,
+        //     // top: `${(image.top / containerHeight) * 100}%`,
+        //     // left: `${(image.left / containerWidth) * 100}%`,
+        //     // width: `${((image.width * image.scaleX) / containerWidth) * 100}%`,
+        //     // height: `${((image.height * image.scaleY) / containerHeight) * 100}%`,
+        //     width: adjustment.width,
+        //     height: adjustment.height,
+        //     transform: `rotate(${image.angle}deg)`,
+        //     "transform-origin": `${image.originX} ${image.originY}`,
+        //     "z-index": `${image.zIndex}`,
+        //   }}
+        // />
+        );
     });
     return images;
 }
 export class CustomContentTag {
     render() {
-        console.log("custom content", this.data);
+        console.log("custom content data", this.data);
         return (h("div", { class: "custom-content-container", style: getBackground(this.data, this.adjustment) },
-            renderVideos(this.data, this.adjustment),
+            renderVideos(this.data),
             renderTexts(this.data),
             renderClocks(this.data),
             renderWeathers(this.data),
-            renderImages(this.data, this.adjustment)));
+            renderImages(this.data)));
     }
     static get is() { return "custom-content-tag"; }
     static get properties() { return {
