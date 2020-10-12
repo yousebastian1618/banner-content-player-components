@@ -28,24 +28,20 @@ function getBackground(data, adjustment) {
  * @param {object}
  * @return {HTMLStencilElement}
  */
-function renderVideos({ object, containerWidth, containerHeight, slideState }) {
-  // Returns only the objects that are videos
-  // let videos = objects.filter((obj) => {
-  //   return obj.type === "video";
-  // });
-  // console.log("VIDEOS", videos);
-  // Returns all the videos as video-tags components
-  // return videos.map((video) => {
-  // const adjustment = { width: video.width, height: video.height };
+function renderVideos({
+  content,
+  containerWidth,
+  containerHeight,
+  slideState,
+}) {
   return (
     <video-tag
-      videoObject={object}
+      videoObject={content}
       containerWidth={containerWidth}
       containerHeight={containerHeight}
       slideState={slideState}
     />
   );
-  // });
 }
 
 /**
@@ -53,42 +49,35 @@ function renderVideos({ object, containerWidth, containerHeight, slideState }) {
  * @param {object}
  * @return {HTMLStencilElement}
  */
-function renderTexts({ object, containerWidth, containerHeight, slideState }) {
-  // let texts = objects.filter((obj) => {
-  //   return obj.type === "i-text";
-  // });
-  // texts = texts.map((t) => {
+function renderTexts({ content, containerWidth, containerHeight, slideState }) {
   return (
     <text-tag
-      textObject={object}
+      textObject={content}
       containerWidth={containerWidth}
       containerHeight={containerHeight}
       slideState={slideState}
     />
   );
-  // });
-  // return texts;
 }
 
 /**
  * Renders clock tags as <clock-tag />
  * @param {object}
  */
-function renderClocks({ object, containerWidth, containerHeight, slideState }) {
-  // let clocks = objects.filter((obj) => {
-  //   return obj.type === "time";
-  // });
-  // clocks = clocks.map((c) => {
+function renderClocks({
+  content,
+  containerWidth,
+  containerHeight,
+  slideState,
+}) {
   return (
     <clock-tag
-      clockObject={object}
+      clockObject={content}
       containerWidth={containerWidth}
       containerHeight={containerHeight}
       slideState={slideState}
     />
   );
-  // });
-  // return clocks;
 }
 
 /**
@@ -96,85 +85,49 @@ function renderClocks({ object, containerWidth, containerHeight, slideState }) {
  * @param {object}
  */
 function renderWeathers({
-  object,
+  content,
   containerWidth,
   containerHeight,
   slideState,
 }) {
-  // let weathers = objects.filter((obj) => {
-  //   return obj.type === "weather";
-  // });
-  // weathers = weathers.map((w) => {
   return (
     <weather-tag
-      weatherObject={object}
+      weatherObject={content}
       containerWidth={containerWidth}
       containerHeight={containerHeight}
       slideState={slideState}
     />
   );
-  // });
-  // return weathers;
 }
 
 /**
  * Renders images tags
  * @param {object}
  */
-function renderImages({ object, containerHeight, containerWidth }) {
-  console.log("RENDER IMAGES");
-  console.log("containerWidth", containerWidth);
-  console.log("containerHeight", containerHeight);
-  console.log("obj", object);
-
-  // let images = objects.filter((obj) => {
-  //   return obj.type === "image";
-  // });
-  // console.log("images", images);
-  // images = images.map((image) => {
+function renderImages({ content, containerHeight, containerWidth }) {
   return (
-    // <div
-    //   id="image-wrappper"
-    //   style={{
-    //     top: `${image.top}px`,
-    //     left: `${image.left}px`,
-    //     width: `(${image.width} * ${image.scaleX})px`,
-    //     height: `(${image.height} * ${image.scaleY})px`,
-    //     transform: `rotate(${image.angle}deg)`,
-    //     "transform-origin": `${image.originX} ${image.originY}`,
-    //     "z-index": `${image.zIndex}`,
-    //   }}
-    // >
-    //   <img class={"full-screen"} src={image.src} />
-    // </div>
-
     <img
       class="custom-content-image"
-      src={object.src}
+      src={content.src}
       style={{
-        top: `${(object.top / containerHeight) * 100}%`,
-        left: `${(object.left / containerWidth) * 100}%`,
+        top: `${(content.top / containerHeight) * 100}%`,
+        left: `${(content.left / containerWidth) * 100}%`,
         "min-height": `${
-          ((object.height * object.scaleY) / containerHeight) * 100
+          ((content.height * content.scaleY) / containerHeight) * 100
         }%`,
         "min-width": `${
-          ((object.width * object.scaleX) / containerWidth) * 100
+          ((content.width * content.scaleX) / containerWidth) * 100
         }%`,
-        // width: `${((image.width * image.scaleX) / 200) * 100}px`,
-        // height: `${((image.height * image.scaleY) / 300) * 100}px`,
-        transform: `rotate(${object.angle}deg)`,
-        "transform-origin": `${object.originX} ${object.originY}`,
-        "z-index": `${object.zIndex}`,
+        transform: `rotate(${content.angle}deg)`,
+        "transform-origin": `${content.originX} ${content.originY}`,
+        "z-index": `${content.zIndex}`,
       }}
     />
   );
-  // });
-  // return images;
 }
 
 /**
  * Pairs content type to rendering function
- * @param {object}
  */
 const render = {
   "i-text": renderTexts,
@@ -202,7 +155,7 @@ export class CustomContentTag {
         background: this.data.background,
         containerHeight: this.data.containerHeight,
         containerWidth: this.data.containerWidth,
-        object: obj,
+        content: obj,
         slideState: this.data.slideState,
       };
 
