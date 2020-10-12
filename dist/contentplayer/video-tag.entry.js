@@ -140,17 +140,12 @@ class VideoTag {
      */
     componentDidUpdate() { }
     render() {
-        console.log("this.adjustment", this.adjustment);
         if (this.src) {
             let style = {
-                // top: `${(this.top / this.containerHeight) * 100}%`,
+                top: `${(this.top / this.containerHeight) * 100}%`,
                 left: `${(this.left / this.containerWidth) * 100}%`,
-                // width: `${((this.width * this.scaleX) / this.containerWidth) * 100}%`,
-                // height: `${
-                //   ((this.height * this.scaleY) / this.containerHeight) * 100
-                // }%`,
-                width: this.adjustment.width,
-                height: this.adjustment.height,
+                width: `${((this.width * this.scaleX) / this.containerWidth) * 100}%`,
+                height: `${((this.height * this.scaleY) / this.containerHeight) * 100}%`,
                 transform: `rotate(${this.angle}deg)`,
                 "transform-origin": `${this.originX} ${this.originY}`,
                 zIndex: `${this.zIndex}`,

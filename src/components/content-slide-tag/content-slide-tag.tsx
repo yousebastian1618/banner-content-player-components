@@ -125,6 +125,7 @@ function renderContentVideo(content, slideState) {
  * @return {HTMLStencilElement | null}
  */
 function renderCustomContent(content, slideState) {
+  console.log("CONTENT", content);
   if (content.type === "customContent") {
     let deviceDimensions = getDeviceDimensions();
 

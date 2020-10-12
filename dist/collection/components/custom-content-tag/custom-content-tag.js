@@ -26,108 +26,127 @@ function getBackground(data, adjustment) {
  * @param {object}
  * @return {HTMLStencilElement}
  */
-function renderVideos({ objects, containerWidth, containerHeight, slideState, }) {
-    console.log("RENDER VIDEOS", objects);
+function renderVideos({ object, containerWidth, containerHeight, slideState }) {
     // Returns only the objects that are videos
-    let videos = objects.filter((obj) => {
-        return obj.type === "video";
-    });
+    // let videos = objects.filter((obj) => {
+    //   return obj.type === "video";
+    // });
+    // console.log("VIDEOS", videos);
     // Returns all the videos as video-tags components
-    return videos.map((video) => {
-        const adjustment = { width: video.width, height: video.height };
-        return (h("video-tag", { videoObject: video, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState, adjustment: adjustment }));
-    });
+    // return videos.map((video) => {
+    // const adjustment = { width: video.width, height: video.height };
+    return (h("video-tag", { videoObject: object, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
+    // });
 }
 /**
  * Renders text tags as <text-tag />
  * @param {object}
  * @return {HTMLStencilElement}
  */
-function renderTexts({ objects, containerWidth, containerHeight, slideState }) {
-    let texts = objects.filter((obj) => {
-        return obj.type === "i-text";
-    });
-    texts = texts.map((t) => {
-        return (h("text-tag", { textObject: t, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
-    });
-    return texts;
+function renderTexts({ object, containerWidth, containerHeight, slideState }) {
+    // let texts = objects.filter((obj) => {
+    //   return obj.type === "i-text";
+    // });
+    // texts = texts.map((t) => {
+    return (h("text-tag", { textObject: object, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
+    // });
+    // return texts;
 }
 /**
  * Renders clock tags as <clock-tag />
  * @param {object}
  */
-function renderClocks({ objects, containerWidth, containerHeight, slideState, }) {
-    let clocks = objects.filter((obj) => {
-        return obj.type === "time";
-    });
-    clocks = clocks.map((c) => {
-        return (h("clock-tag", { clockObject: c, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
-    });
-    return clocks;
+function renderClocks({ object, containerWidth, containerHeight, slideState }) {
+    // let clocks = objects.filter((obj) => {
+    //   return obj.type === "time";
+    // });
+    // clocks = clocks.map((c) => {
+    return (h("clock-tag", { clockObject: object, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
+    // });
+    // return clocks;
 }
 /**
  * Renders weather tags as <weather-tag />
  * @param {object}
  */
-function renderWeathers({ objects, containerWidth, containerHeight, slideState, }) {
-    let weathers = objects.filter((obj) => {
-        return obj.type === "weather";
-    });
-    weathers = weathers.map((w) => {
-        return (h("weather-tag", { weatherObject: w, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
-    });
-    return weathers;
+function renderWeathers({ object, containerWidth, containerHeight, slideState, }) {
+    // let weathers = objects.filter((obj) => {
+    //   return obj.type === "weather";
+    // });
+    // weathers = weathers.map((w) => {
+    return (h("weather-tag", { weatherObject: object, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
+    // });
+    // return weathers;
 }
 /**
  * Renders images tags
  * @param {object}
  */
-function renderImages({ objects }) {
+function renderImages({ object, containerHeight, containerWidth }) {
     console.log("RENDER IMAGES");
-    let images = objects.filter((obj) => {
-        return obj.type === "image";
-    });
-    images = images.map((image) => {
-        return (h("div", { id: "image-wrappper", style: {
-                top: `${image.top}px`,
-                left: `${image.left}px`,
-                width: "100%",
-                height: "100%",
-                transform: `rotate(${image.angle}deg)`,
-                "transform-origin": `${image.originX} ${image.originY}`,
-                "z-index": `${image.zIndex}`,
-            } },
-            h("img", { class: "full-screen", src: image.src }))
-        // <img
-        //   class="custom-content-image"
-        //   src={image.src}
-        //   style={{
-        //     top: `${image.top}px`,
-        //     left: `${image.left}px`,
-        //     // top: `${(image.top / containerHeight) * 100}%`,
-        //     // left: `${(image.left / containerWidth) * 100}%`,
-        //     // width: `${((image.width * image.scaleX) / containerWidth) * 100}%`,
-        //     // height: `${((image.height * image.scaleY) / containerHeight) * 100}%`,
-        //     width: adjustment.width,
-        //     height: adjustment.height,
-        //     transform: `rotate(${image.angle}deg)`,
-        //     "transform-origin": `${image.originX} ${image.originY}`,
-        //     "z-index": `${image.zIndex}`,
-        //   }}
-        // />
-        );
-    });
-    return images;
+    console.log("containerWidth", containerWidth);
+    console.log("containerHeight", containerHeight);
+    console.log("obj", object);
+    // let images = objects.filter((obj) => {
+    //   return obj.type === "image";
+    // });
+    // console.log("images", images);
+    // images = images.map((image) => {
+    return (
+    // <div
+    //   id="image-wrappper"
+    //   style={{
+    //     top: `${image.top}px`,
+    //     left: `${image.left}px`,
+    //     width: `(${image.width} * ${image.scaleX})px`,
+    //     height: `(${image.height} * ${image.scaleY})px`,
+    //     transform: `rotate(${image.angle}deg)`,
+    //     "transform-origin": `${image.originX} ${image.originY}`,
+    //     "z-index": `${image.zIndex}`,
+    //   }}
+    // >
+    //   <img class={"full-screen"} src={image.src} />
+    // </div>
+    h("img", { class: "custom-content-image", src: object.src, style: {
+            top: `${(object.top / containerHeight) * 100}%`,
+            left: `${(object.left / containerWidth) * 100}%`,
+            "min-height": `${((object.height * object.scaleY) / containerHeight) * 100}%`,
+            "min-width": `${((object.width * object.scaleX) / containerWidth) * 100}%`,
+            // width: `${((image.width * image.scaleX) / 200) * 100}px`,
+            // height: `${((image.height * image.scaleY) / 300) * 100}px`,
+            transform: `rotate(${object.angle}deg)`,
+            "transform-origin": `${object.originX} ${object.originY}`,
+            "z-index": `${object.zIndex}`,
+        } }));
+    // });
+    // return images;
 }
+/**
+ * Pairs content type to rendering function
+ * @param {object}
+ */
+const render = {
+    "i-text": renderTexts,
+    image: renderImages,
+    video: renderVideos,
+    time: renderClocks,
+    weather: renderWeathers,
+};
 export class CustomContentTag {
     render() {
         console.log("custom content data", this.data);
-        return (h("div", { class: "custom-content-container", style: getBackground(this.data, this.adjustment) },
-            renderVideos(this.data),
-            renderTexts(this.data),
-            renderClocks(this.data),
-            renderWeathers(this.data),
-            renderImages(this.data)));
+        const content = [];
+        this.data.objects.forEach((obj) => {
+            const singleObj = {
+                background: this.data.background,
+                containerHeight: this.data.containerHeight,
+                containerWidth: this.data.containerWidth,
+                object: obj,
+                slideState: this.data.slideState,
+            };
+            content.push(render[obj.type](singleObj));
+        });
+        return (h("div", { class: "custom-content-container", style: getBackground(this.data, this.adjustment) }, content));
     }
     static get is() { return "custom-content-tag"; }
     static get properties() { return {
