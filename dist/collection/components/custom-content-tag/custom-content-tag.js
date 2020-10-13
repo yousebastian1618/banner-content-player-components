@@ -1,7 +1,3 @@
-/**
- * Generates CSS for custom-content-container
- * @return {object}
- */
 function getBackground(data, adjustment) {
     let bg = {};
     if (data.backgroundImage) {
@@ -21,40 +17,18 @@ function getBackground(data, adjustment) {
     }
     return bg;
 }
-/**
- * Renders videos tags as <video-tag />
- * @param {object}
- * @return {HTMLStencilElement}
- */
 function renderVideos({ content, containerWidth, containerHeight, slideState, }) {
     return (h("video-tag", { videoObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-/**
- * Renders text tags as <text-tag />
- * @param {object}
- * @return {HTMLStencilElement}
- */
 function renderTexts({ content, containerWidth, containerHeight, slideState }) {
     return (h("text-tag", { textObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-/**
- * Renders clock tags as <clock-tag />
- * @param {object}
- */
 function renderClocks({ content, containerWidth, containerHeight, slideState, }) {
     return (h("clock-tag", { clockObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-/**
- * Renders weather tags as <weather-tag />
- * @param {object}
- */
 function renderWeathers({ content, containerWidth, containerHeight, slideState, }) {
     return (h("weather-tag", { weatherObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-/**
- * Renders images tags
- * @param {object}
- */
 function renderImages({ content, containerHeight, containerWidth }) {
     return (h("img", { class: "custom-content-image", src: content.src, style: {
             top: `${(content.top / containerHeight) * 100}%`,
@@ -66,9 +40,6 @@ function renderImages({ content, containerHeight, containerWidth }) {
             "z-index": `${content.zIndex}`,
         } }));
 }
-/**
- * Pairs content type to rendering function
- */
 const render = {
     "i-text": renderTexts,
     image: renderImages,

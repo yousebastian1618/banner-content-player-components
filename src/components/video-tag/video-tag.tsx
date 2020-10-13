@@ -72,7 +72,7 @@ export class VideoTag {
   /**
    * Styling hot fix for video-wrapper div
    */
-  // @Watch("adjustment")
+  @Watch("adjustment")
   changeStyle(attr: any) {
     try {
       Object.assign(this.adjustment, { ...attr });

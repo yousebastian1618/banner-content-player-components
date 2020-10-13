@@ -1,10 +1,13 @@
-import SlideState from "../../common/slide-state";
+import { h } from '../contentplayer.core.js';
+
+import { a as SlideState } from './chunk-1fc3cad0.js';
+
 var PlayState;
 (function (PlayState) {
     PlayState[PlayState["STOP"] = 0] = "STOP";
     PlayState[PlayState["PLAYING"] = 1] = "PLAYING";
 })(PlayState || (PlayState = {}));
-export class VideoTag {
+class VideoTag {
     constructor() {
         this.videoObject = {
             top: 100,
@@ -201,5 +204,7 @@ export class VideoTag {
             "mutable": true
         }
     }; }
-    static get style() { return "/**style-placeholder:video-tag:**/"; }
+    static get style() { return "video-tag div.video-wrapper{display:block;position:absolute;background-color:#1e1e1e}video-tag div.video-wrapper .video-helper{position:relative;height:100%;padding-left:100%}video-tag .video-helper video{position:absolute;top:0;left:0;width:100%;height:100%;-o-object-fit:fill;object-fit:fill}"; }
 }
+
+export { VideoTag };

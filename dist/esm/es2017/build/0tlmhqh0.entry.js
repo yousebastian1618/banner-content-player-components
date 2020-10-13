@@ -1,6 +1,6 @@
-const h = window.contentplayer.h;
+import { h } from '../contentplayer.core.js';
 
-import { a as SlideState } from './chunk-8e68d4bc.js';
+import { a as SlideState } from './chunk-1fc3cad0.js';
 
 var hookCallback;
 
@@ -3261,7 +3261,7 @@ function isSameOrBefore (input, units) {
 function diff (input, units, asFloat) {
     var that,
         zoneDelta,
-        delta, output;
+        output;
 
     if (!this.isValid()) {
         return NaN;
@@ -4629,22 +4629,8 @@ function getBaseTextStyle(baseText) {
     return style;
 }
 
-var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-function commonjsRequire () {
-	throw new Error('Dynamic requires are not currently supported by rollup-plugin-commonjs');
-}
-
-function unwrapExports (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
-}
-
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-function getCjsExportFromNamespace (n) {
-	return n && n.default || n;
 }
 
 var velocity = createCommonjsModule(function (module) {
@@ -4661,7 +4647,6 @@ var velocity = createCommonjsModule(function (module) {
 /* Browser support: Using this shim instead of jQuery proper removes support for IE8. */
 
 (function(window) {
-	"use strict";
 	/***************
 	 Setup
 	 ***************/
@@ -5071,19 +5056,12 @@ var velocity = createCommonjsModule(function (module) {
  ******************/
 
 (function(factory) {
-	"use strict";
 	/* CommonJS module. */
-	if ('object' === "object" && 'object' === "object") {
+	{
 		module.exports = factory();
 		/* AMD module. */
-	} else if (typeof undefined === "function" && undefined.amd) {
-		undefined(factory);
-		/* Browser globals. */
-	} else {
-		factory();
 	}
 }(function() {
-	"use strict";
 	return function(global, window, document, undefined) {
 
 		/***************
@@ -9679,32 +9657,19 @@ function checkSlideState(slideState, ele, baseText, data) {
 }
 
 let clockInterval;
-/**
- * Array of clock-tag elements
- */
 let clockObservers;
 const clockHandler = {
-    /**
-     * Initilizes the clockObservers array
-     */
     init() {
         if (!clockObservers) {
             clockObservers = [];
         }
     },
-    /**
-     * Adds a ClockTag
-     * @param {ClockTag} observer
-     * @return {undefined}
-     */
     subscribe(observer) {
         let index = clockObservers.indexOf(observer);
-        // Adds the ClockTag to the array if it's not present
         if (index === -1) {
             clockObservers.push(observer);
             observer.time = hooks();
         }
-        // Sets the time interval for every ClockTag
         if (!clockInterval) {
             clockInterval = setInterval(() => {
                 let time = hooks();
@@ -9714,11 +9679,6 @@ const clockHandler = {
             }, 1000);
         }
     },
-    /**
-     * Removes a ClockTag
-     * @param observer
-     * @return {undefined}
-     */
     unsubscribe(observer) {
         let index = clockObservers.indexOf(observer);
         if (index >= 0) {
@@ -9733,13 +9693,6 @@ class ClockTag {
     constructor() {
         this.customMask = "HH:mm:ss";
     }
-    /**
-     * Updates the 'clockObject' and the 'customMask' properties
-     *
-     * As 'init' is called in 'componentWillLoad', it's only executed one time
-     * @param {any} attr
-     *
-     */
     init(attr) {
         try {
             Object.assign(this, Object.assign({}, attr), { customMask: attr.customData.mask });
@@ -9752,18 +9705,10 @@ class ClockTag {
         let ele = this.el.querySelector(".text-wrapper");
         checkSlideState(slideState, ele, this, this.clockObject);
     }
-    /**
-     * Lifecycle method that is called once when the component is first
-     * connected to the DOM.
-     */
     componentWillLoad() {
         clockHandler.init();
         this.init(this.clockObject);
     }
-    /**
-     * Lifecycle method that is called once when the component is fully loaded
-     * and the first render() occurs.
-     */
     componentDidLoad() {
         clockHandler.subscribe(this);
     }
@@ -9916,53 +9861,24 @@ class ClockTag {
             "mutable": true
         }
     }; }
-    static get style() { return "clock-tag {\n  display: block;\n  position: absolute;\n  top: 0%;\n  left: 0%;\n  width: 100%;\n  height: 100%;\n  overflow: visible;\n}\n\nclock-tag div {\n  position: absolute;\n  display: -ms-flexbox;\n  display: flex;\n}\n\nclock-tag div svg {\n  width: 100%;\n  overflow: visible !important;\n}"; }
+    static get style() { return "clock-tag{display:block;position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible}clock-tag div{position:absolute;display:-ms-flexbox;display:flex}clock-tag div svg{width:100%;overflow:visible!important}"; }
 }
 
 class ContentPlayerTag {
     constructor() {
         this.slides = [];
-        /**
-         * Loads contents into the array of slides. Each content represents a slide
-         * Starts showing the current content
-         * @param {any} event
-         * @return {undefined}
-         */
         this.loadContents = (event) => {
             this.el.style.opacity = "0";
             this.slides = event.detail;
         };
-        /**
-         * Stops showing current content to play the next one
-         * @return {undefined}
-         */
         this.playNextContent = () => {
             this.el.style.opacity = "1";
         };
     }
-    /**
-     * ContentPlayerTag events
-     *
-     * Listens events:
-     *  CONTENT_PLAYER_LOAD
-     *  CONTENT_PLAYER_CHANGED
-     *
-     * Dispatches events:
-     *  CONTENT_PLAYER_CLOSE
-     */
-    /**
-     * Lifecycle method that is called once when the component is fully loaded
-     * and the first render() occurs.
-     *
-     * Adds event listeners for "CONTENT_PLAYER_CHANGED" and for "CONTENT_PLAYER_LOAD"
-     */
     componentDidLoad() {
         window.addEventListener("CONTENT_PLAYER_LOAD", this.loadContents);
         window.addEventListener("CONTENT_PLAYER_CHANGED", this.playNextContent);
     }
-    /**
-     * Removes event listeners for "CONTENT_PLAYER_LOAD" and for "CONTENT_PLAYER_CHANGED"
-     */
     componentDidUnload() {
         window.removeEventListener("CONTENT_PLAYER_LOAD", this.loadContents);
         window.removeEventListener("CONTENT_PLAYER_CHANGED", this.playNextContent);
@@ -9990,31 +9906,17 @@ class ContentPlayerTag {
             "mutable": true
         }
     }; }
-    static get style() { return "content-player-tag {\n  display: block;\n  width: 100%;\n  height: 100%;\n}\n\ncontent-player-tag div.content-player-wrapper {\n  position: relative;\n  width: 100%;\n  height: 100%;\n}\n\ncontent-player-tag .full-screen {\n  display: block;\n  position: static;\n  margin: auto;\n  width: 100%;\n  height: 100%;\n}"; }
+    static get style() { return "content-player-tag{display:block;width:100%;height:100%}content-player-tag div.content-player-wrapper{position:relative;width:100%;height:100%}content-player-tag .full-screen{display:block;position:static;margin:auto;width:100%;height:100%}"; }
 }
 
-// import { duration } from "moment";
-/**
- * Gets device size dimensions
- * @return {object} deviceDimensions
- */
 function getDeviceDimensions() {
     let deviceDimensions = window["device_window_size"];
     return deviceDimensions;
 }
-/**
- * Gets player size dimensions
- * @return {object} playerDimensions
- */
 function getPlayerDimensions() {
     let playerDimensions = window["player_window_size"];
     return playerDimensions;
 }
-/**
- * Calculates the device width attribute size as a percentage of the window width for the content
- * @param {number} deviceWidth
- * @return {number} Percetage for the width attribute
- */
 function calculateWidthAdjustment(deviceWidth) {
     let playerDimensions = getPlayerDimensions();
     let windowWidthThreshold = playerDimensions.width;
@@ -10023,11 +9925,6 @@ function calculateWidthAdjustment(deviceWidth) {
     }
     return 100;
 }
-/**
- * Calculates the device height attribute size as a percentage of the window height for the content
- * @param {number} deviceHeight
- * @return {number} Percetage for the height attribute
- */
 function calculateHeightAdjustment(deviceHeight) {
     let playerDimensions = getPlayerDimensions();
     let windowHeightThreshold = playerDimensions.height;
@@ -10036,11 +9933,6 @@ function calculateHeightAdjustment(deviceHeight) {
     }
     return 100;
 }
-/**
- * Renders a simple image tag to represent the content
- * @prop {any} content
- * @return {HTMLElement | null}
- */
 function renderContentImage(content) {
     if (content.type === "image") {
         let deviceDimensions = getDeviceDimensions();
@@ -10055,12 +9947,6 @@ function renderContentImage(content) {
     }
     return null;
 }
-/**
- * Renders the <video-tag /> to represent the content
- * @prop {any} content
- * @prop {SlideState} slideState
- * @return {HTMLElement | null}
- */
 function renderContentVideo(content, slideState) {
     if (content.type === "video") {
         let deviceDimensions = getDeviceDimensions();
@@ -10070,7 +9956,6 @@ function renderContentVideo(content, slideState) {
             width: `${width}%`,
             height: `${height}%`,
         };
-        // This is passed down to the video-tag as a videoObject prop
         let video = {
             src: content.url,
             top: 0,
@@ -10086,13 +9971,6 @@ function renderContentVideo(content, slideState) {
     }
     return null;
 }
-/**
- * Renders the <custom-content-tag /> to represent custom content
- * created by the user
- * @prop {any} content
- * @prop {SlideState} slideState
- * @return {HTMLStencilElement | null}
- */
 function renderCustomContent(content, slideState) {
     if (content.type === "customContent") {
         let deviceDimensions = getDeviceDimensions();
@@ -10102,7 +9980,6 @@ function renderCustomContent(content, slideState) {
             width: `${width}%`,
             height: `${height}%`,
         };
-        // This is passed down to the custom-content-tag as a data prop
         let data = Object.assign({}, content.__data__, {
             containerWidth: content.width,
             containerHeight: content.height,
@@ -10148,75 +10025,40 @@ class ContentSlideTag {
                 this.lastContentId = content.id;
             }
         };
-        /**
-         * Gets animation for the content
-         * @return {Promise}
-         */
         this.getAnimation = () => {
             let container = this.el.querySelector(".content-slide-wrapper");
-            // Returns animation for the .content-slide-wrapper class
             switch (this.content.animation) {
-                // Animation from botton to top
                 case "slideUp":
                     return velocity(container, { translateY: "100%", opacity: 1 }, { duration: 0 }).then(() => {
                         return velocity(container, { translateY: "0%" }, { duration: 2 * 1000 });
                     });
-                // Animation from top to bottom
                 case "slideDown":
                     return velocity(container, { translateY: "-100%", opacity: 1 }, { duration: 0 }).then(() => {
                         return velocity(container, { translateY: "0%" }, { duration: 2 * 1000 });
                     });
-                // Animation from left to right
                 case "slideRight":
                     return velocity(container, { translateX: "-100%", opacity: 1 }, { duration: 0 }).then(() => {
                         return velocity(container, { translateX: "0%" }, { duration: 2 * 1000 });
                     });
-                // Animation from right to left
                 case "slideLeft":
                     return velocity(container, { translateX: "100%", opacity: 1 }, { duration: 0 }).then(() => {
                         return velocity(container, { translateX: "0%" }, { duration: 2 * 1000 });
                     });
-                // Fading animation
                 case "fade":
                     return velocity(container, { opacity: 0 }, { duration: 0 }).then(() => {
                         return velocity(container, { opacity: 1 }, { duration: 2 * 1000 });
                     });
-                // No animation by default
                 default:
                     return velocity(container, { opacity: 1 }, { duration: 1 });
             }
         };
     }
-    /**
-     * ContentSlideTag events
-     *
-     * Listens events:
-     *  CONTENT_PLAYER_CHANGED
-     *  HIDE_LAST_SLIDE
-     *
-     * Dispatches events:
-     *  HIDE_LAST_SLIDE
-     *
-     */
-    /**
-     * Updates the contentSlideObject with the value of 'att'
-     *
-     * As 'init' is called in 'componentWillLoad', it's only executed one time
-     */
     init(att) {
         Object.assign(this, Object.assign({}, att));
     }
-    /**
-     * Lifecycle method that is called once when the component is first
-     * connected to the DOM.
-     */
     componentWillLoad() {
         this.init(this.contentSlideObject);
     }
-    /**
-     * Lifecycle method that is called just after the component updates.
-     * It's never called during the first render()
-     */
     componentDidUpdate() {
         (function (status) {
             console.log([
@@ -10229,7 +10071,6 @@ class ContentSlideTag {
             ][status]);
         })(this.status);
         let ele = this.el.querySelector(".content-slide-wrapper");
-        // According to the status of the content, change the opacity to show or hide
         switch (this.status) {
             case SlideState.INIT:
                 if (ele) {
@@ -10255,21 +10096,11 @@ class ContentSlideTag {
                 break;
         }
     }
-    /**
-     * Lifecycle method that is called once when the component is fully loaded
-     * and the first render() occurs.
-     *
-     * Adds event listeners for "CONTENT_PLAYER_CHANGED" and for "HIDE_LAST_SLIDE"
-     */
     componentDidLoad() {
         this.status = SlideState.INIT;
         window.addEventListener("CONTENT_PLAYER_CHANGED", this.contentChanged);
         window.addEventListener("HIDE_LAST_SLIDE", this.hideLastSlide);
     }
-    /**
-     * When the component is no unloaded, it removes the events listeners for "CONTENT_PLAYER_CHANGED"
-     * and for "HIDE_LAST_SLIDE"
-     */
     componentDidUnload() {
         window.removeEventListener("CONTENT_PLAYER_CHANGED", this.contentChanged);
         window.removeEventListener("HIDE_LAST_SLIDE", this.hideLastSlide);
@@ -10314,13 +10145,9 @@ class ContentSlideTag {
             "mutable": true
         }
     }; }
-    static get style() { return "content-slide-tag {\n  display: block;\n  position: absolute;\n  top: 0%;\n  left: 0%;\n  width: 100%;\n  height: 100%;\n}\n\ncontent-slide-tag .content-slide-wrapper {\n  width: 100%;\n  height: 100%;\n}"; }
+    static get style() { return "content-slide-tag{display:block;position:absolute;top:0;left:0}content-slide-tag,content-slide-tag .content-slide-wrapper{width:100%;height:100%}"; }
 }
 
-/**
- * Generates CSS for custom-content-container
- * @return {object}
- */
 function getBackground(data, adjustment) {
     let bg = {};
     if (data.backgroundImage) {
@@ -10340,40 +10167,18 @@ function getBackground(data, adjustment) {
     }
     return bg;
 }
-/**
- * Renders videos tags as <video-tag />
- * @param {object}
- * @return {HTMLStencilElement}
- */
 function renderVideos({ content, containerWidth, containerHeight, slideState, }) {
     return (h("video-tag", { videoObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-/**
- * Renders text tags as <text-tag />
- * @param {object}
- * @return {HTMLStencilElement}
- */
 function renderTexts({ content, containerWidth, containerHeight, slideState }) {
     return (h("text-tag", { textObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-/**
- * Renders clock tags as <clock-tag />
- * @param {object}
- */
 function renderClocks({ content, containerWidth, containerHeight, slideState, }) {
     return (h("clock-tag", { clockObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-/**
- * Renders weather tags as <weather-tag />
- * @param {object}
- */
 function renderWeathers({ content, containerWidth, containerHeight, slideState, }) {
     return (h("weather-tag", { weatherObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-/**
- * Renders images tags
- * @param {object}
- */
 function renderImages({ content, containerHeight, containerWidth }) {
     return (h("img", { class: "custom-content-image", src: content.src, style: {
             top: `${(content.top / containerHeight) * 100}%`,
@@ -10385,9 +10190,6 @@ function renderImages({ content, containerHeight, containerWidth }) {
             "z-index": `${content.zIndex}`,
         } }));
 }
-/**
- * Pairs content type to rendering function
- */
 const render = {
     "i-text": renderTexts,
     image: renderImages,
@@ -10421,19 +10223,15 @@ class CustomContentTag {
             "attr": "data"
         }
     }; }
-    static get style() { return "custom-content-tag {\n  display: block;\n  width: 100%;\n  height: 100%;\n}\n\ncustom-content-tag div.custom-content-container {\n  position: relative;\n  width: 100%;\n  height: 100%;\n}\n\ncustom-content-tag .custom-content-image {\n  position: absolute;\n}"; }
+    static get style() { return "custom-content-tag{display:block;width:100%;height:100%}custom-content-tag div.custom-content-container{position:relative;width:100%;height:100%}custom-content-tag .custom-content-image{position:absolute}"; }
 }
 
-// const base64x64Image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4wIbEQkKjS/bYgAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAAATUlEQVRo3u3PQQ0AAAgEILV/5zOFDzdoQCepz6aeExAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQELi3cqoDfV7ZY54AAAAASUVORK5CYII=";
 class LoadingContentTag {
     constructor() {
         this.current = 0;
         this.total = 0;
         this.containerWidth = 0;
         this.containerHeight = 0;
-        /**
-         * Changes state according to the event presented
-         */
         this.changeState = (event) => {
             let { state, progress, current, total, containerWidth, containerHeight, } = event.detail;
             this.state = state;
@@ -10448,19 +10246,6 @@ class LoadingContentTag {
             }
         };
     }
-    /**
-     * LoadingContentTag events
-     *
-     * Listens events:
-     *  CONTENT_STATUS
-     *
-     */
-    /**
-     * Lifecycle method that is called once when the component is fully loaded
-     * and the first render() occurs.
-     *
-     * Adds an event listener for 'CONTENT_STATUS' and passes changeState as a Callback
-     */
     componentDidLoad() {
         window.addEventListener("CONTENT_STATUS", this.changeState);
     }
@@ -10528,7 +10313,7 @@ class LoadingContentTag {
             "mutable": true
         }
     }; }
-    static get style() { return ".loading-content {\n  width: 100%;\n  height: 100%;\n  background-color: black;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -ms-flex-align: center;\n  align-items: center;\n}\n\n.loader-wrapper {\n  position: relative;\n  width: 100%;\n  height: 90%;\n}\n\n.ratio {\n  height: 100%;\n  width: auto;\n  visibility: hidden;\n}\n\n.lds-ellipsis {\n  display: inline-block;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  width: 100%;\n  height: 100%;\n  -webkit-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n}\n\n.lds-ellipsis div {\n  position: absolute;\n  top: 40%;\n  width: 20%;\n  height: 20%;\n  border-radius: 50%;\n  background: #fff;\n  -webkit-animation-timing-function: cubic-bezier(0, 1, 1, 0);\n  animation-timing-function: cubic-bezier(0, 1, 1, 0);\n}\n\n.lds-ellipsis div:nth-child(1) {\n  left: 0%;\n  -webkit-animation: lds-ellipsis1 0.6s infinite;\n  animation: lds-ellipsis1 0.6s infinite;\n}\n\n.lds-ellipsis div:nth-child(2) {\n  left: 0%;\n  -webkit-animation: lds-ellipsis2 0.6s infinite;\n  animation: lds-ellipsis2 0.6s infinite;\n}\n\n.lds-ellipsis div:nth-child(3) {\n  left: 40%;\n  -webkit-animation: lds-ellipsis2 0.6s infinite;\n  animation: lds-ellipsis2 0.6s infinite;\n}\n\n.lds-ellipsis div:nth-child(4) {\n  left: 80%;\n  -webkit-animation: lds-ellipsis3 0.6s infinite;\n  animation: lds-ellipsis3 0.6s infinite;\n}\n\n\@-webkit-keyframes lds-ellipsis1 {\n  0% {\n    -webkit-transform: scale(0);\n    transform: scale(0);\n  }\n\n  100% {\n    -webkit-transform: scale(1);\n    transform: scale(1);\n  }\n}\n\n\@keyframes lds-ellipsis1 {\n  0% {\n    -webkit-transform: scale(0);\n    transform: scale(0);\n  }\n\n  100% {\n    -webkit-transform: scale(1);\n    transform: scale(1);\n  }\n}\n\n\@-webkit-keyframes lds-ellipsis3 {\n  0% {\n    -webkit-transform: scale(1);\n    transform: scale(1);\n  }\n\n  100% {\n    -webkit-transform: scale(0);\n    transform: scale(0);\n  }\n}\n\n\@keyframes lds-ellipsis3 {\n  0% {\n    -webkit-transform: scale(1);\n    transform: scale(1);\n  }\n\n  100% {\n    -webkit-transform: scale(0);\n    transform: scale(0);\n  }\n}\n\n\@-webkit-keyframes lds-ellipsis2 {\n  0% {\n    -webkit-transform: translate(0, 0);\n    transform: translate(0, 0);\n  }\n\n  100% {\n    -webkit-transform: translate(200%, 0);\n    transform: translate(200%, 0);\n  }\n}\n\n\@keyframes lds-ellipsis2 {\n  0% {\n    -webkit-transform: translate(0, 0);\n    transform: translate(0, 0);\n  }\n\n  100% {\n    -webkit-transform: translate(200%, 0);\n    transform: translate(200%, 0);\n  }\n}\n\n.progress-bar-wrapper {\n  width: 100%;\n  height: 100%;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-flow: column;\n  flex-flow: column;\n  -ms-flex-pack: center;\n  justify-content: center;\n  -ms-flex-align: center;\n  align-items: center;\n  padding-left: 10%;\n  padding-right: 10%;\n  text-align: center;\n  background-color: #5d5d5d;\n}\n\n.progress-bar-wrapper progress-bar-tag {\n  width: 100%;\n}\n\n.progress-bar-wrapper span {\n  color: #ffff;\n  font-family: Roboto, Arial, Helvetica, sans-serif;\n}"; }
+    static get style() { return ".loading-content{width:100%;height:100%;background-color:#000;display:-ms-flexbox;display:flex;-ms-flex-pack:center;justify-content:center;-ms-flex-align:center;align-items:center}.loader-wrapper{position:relative;width:100%;height:90%}.ratio{height:100%;width:auto;visibility:hidden}.lds-ellipsis{display:inline-block;position:absolute;top:50%;left:50%;width:100%;height:100%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}.lds-ellipsis div{position:absolute;top:40%;width:20%;height:20%;border-radius:50%;background:#fff;-webkit-animation-timing-function:cubic-bezier(0,1,1,0);animation-timing-function:cubic-bezier(0,1,1,0)}.lds-ellipsis div:first-child{left:0;-webkit-animation:lds-ellipsis1 .6s infinite;animation:lds-ellipsis1 .6s infinite}.lds-ellipsis div:nth-child(2){left:0}.lds-ellipsis div:nth-child(2),.lds-ellipsis div:nth-child(3){-webkit-animation:lds-ellipsis2 .6s infinite;animation:lds-ellipsis2 .6s infinite}.lds-ellipsis div:nth-child(3){left:40%}.lds-ellipsis div:nth-child(4){left:80%;-webkit-animation:lds-ellipsis3 .6s infinite;animation:lds-ellipsis3 .6s infinite}\@-webkit-keyframes lds-ellipsis1{0%{-webkit-transform:scale(0);transform:scale(0)}to{-webkit-transform:scale(1);transform:scale(1)}}\@keyframes lds-ellipsis1{0%{-webkit-transform:scale(0);transform:scale(0)}to{-webkit-transform:scale(1);transform:scale(1)}}\@-webkit-keyframes lds-ellipsis3{0%{-webkit-transform:scale(1);transform:scale(1)}to{-webkit-transform:scale(0);transform:scale(0)}}\@keyframes lds-ellipsis3{0%{-webkit-transform:scale(1);transform:scale(1)}to{-webkit-transform:scale(0);transform:scale(0)}}\@-webkit-keyframes lds-ellipsis2{0%{-webkit-transform:translate(0);transform:translate(0)}to{-webkit-transform:translate(200%);transform:translate(200%)}}\@keyframes lds-ellipsis2{0%{-webkit-transform:translate(0);transform:translate(0)}to{-webkit-transform:translate(200%);transform:translate(200%)}}.progress-bar-wrapper{width:100%;height:100%;display:-ms-flexbox;display:flex;-ms-flex-flow:column;flex-flow:column;-ms-flex-pack:center;justify-content:center;-ms-flex-align:center;align-items:center;padding-left:10%;padding-right:10%;text-align:center;background-color:#5d5d5d}.progress-bar-wrapper progress-bar-tag{width:100%}.progress-bar-wrapper span{color:#fff;font-family:Roboto,Arial,Helvetica,sans-serif}"; }
 }
 
 const base64GifImage = "data:image/gif;base64,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";
@@ -10537,15 +10322,7 @@ class ProgressBarTag {
         this.progress = 0;
         this.visible = false;
     }
-    /**
-     * Lifecycle method that is called once when the component is first
-     * connected to the DOM.
-     */
     componentWillLoad() { }
-    /**
-     * Lifecycle method that is called once when the component is fully loaded
-     * and the first render() occurs.
-     */
     componentDidLoad() { }
     render() {
         if (this.visible) {
@@ -10594,7 +10371,7 @@ class ProgressBarTag {
             "attr": "visible"
         }
     }; }
-    static get style() { return ".progress-bar {\n  width: 100%;\n  padding-top: 4.1%;\n  background-color: #ffffff;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  border-radius: 50px;\n  border-style: solid;\n  border-width: 2px;\n  border-color: #ffffff;\n  overflow: hidden;\n  position: relative;\n}\n\n.progress-bar .message {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n  color: #ffffff;\n  font-size: 1.5em;\n  z-index: 4;\n  font-family: Roboto, Arial, Helvetica, sans-serif;\n}\n.progress-bar .black-layer,\n.progress-animation,\n.progress-bar-indicator {\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 100%;\n}\n\n.progress-bar .progress-bar-indicator {\n  width: 0%;\n  background-color: #8f8e92;\n  z-index: 3;\n}\n\n.progress-bar .progress-animation {\n  z-index: 1;\n}\n\n.progress-bar .black-layer {\n  z-index: 2;\n  background-color: rgba(0, 0, 0, 0.5);\n}"; }
+    static get style() { return ".progress-bar{width:100%;padding-top:4.1%;background-color:#fff;-webkit-box-sizing:border-box;box-sizing:border-box;border-radius:50px;border-style:solid;border-width:2px;border-color:#fff;overflow:hidden;position:relative}.progress-bar .message{position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);color:#fff;font-size:1.5em;z-index:4;font-family:Roboto,Arial,Helvetica,sans-serif}.progress-animation,.progress-bar-indicator,.progress-bar .black-layer{position:absolute;top:0;left:0;width:100%;height:100%}.progress-bar .progress-bar-indicator{width:0;background-color:#8f8e92;z-index:3}.progress-bar .progress-animation{z-index:1}.progress-bar .black-layer{z-index:2;background-color:rgba(0,0,0,.5)}"; }
 }
 
 function renderMultiline({ text, lineHeight }) {
@@ -10621,12 +10398,6 @@ class TextTag {
         this.zIndex = 1;
         this.text = "";
     }
-    /**
-     * Updates the 'textObject' prop with the value of attr.
-     *
-     * As 'init' is called in 'componentWillLoad', it's only executed one time
-     * @param {any} attr
-     */
     init(attr) {
         try {
             Object.assign(this, Object.assign({}, attr));
@@ -10639,17 +10410,9 @@ class TextTag {
         let ele = this.el.querySelector(".text-wrapper");
         checkSlideState(slideState, ele, this, this.textObject);
     }
-    /**
-     * Lifecycle method that is called once when the component is first
-     * connected to the DOM.
-     */
     componentWillLoad() {
         this.init(this.textObject);
     }
-    /**
-     * Lifecycle method that is called once when the component is fully loaded
-     * and the first render() occurs.
-     */
     componentDidLoad() { }
     render() {
         if (this.text) {
@@ -10795,50 +10558,29 @@ class TextTag {
             "mutable": true
         }
     }; }
-    static get style() { return "text-tag {\n  display: block;\n  position: absolute;\n  top: 0%;\n  left: 0%;\n  width: 100%;\n  height: 100%;\n  overflow: visible;\n}\n\ntext-tag div {\n  position: absolute;\n  display: -ms-flexbox;\n  display: flex;\n}\n\ntext-tag div svg {\n  width: 100%;\n  height: 100%;\n  overflow: visible !important;\n}"; }
+    static get style() { return "text-tag{display:block;position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible}text-tag div{position:absolute;display:-ms-flexbox;display:flex}text-tag div svg{width:100%;height:100%;overflow:visible!important}"; }
 }
 
 let weatherInterval;
 let weatherObservers = [];
-// http://api.openweathermap.org/data/2.5/weather?lat=32.5149469&lon=-117.0382471&appid=<api-key>
 const WEATHER_API = "http://api.openweathermap.org/data/2.5/weather";
 const WEATHER_API_KEY = "0f93a4013a0b381ea772b09917255c1f";
-const WEATHER_INTERVAL_TIME = 10 * 60 * 1000; //10 min
-// Global variables
+const WEATHER_INTERVAL_TIME = 10 * 60 * 1000;
 let latitude, longitude, lastWeatherStatus, throttlingTimeout;
-/**
- *
- * Create query to fetch Open Weather Map API
- * @param {*} latitude - latitude coordenate
- * @param {*} longitude - longitude coordenate
- * @return {string}
- */
 function getWeatherQuery(latitude, longitude) {
     return `?lat=${latitude}&lon=${longitude}&appid=${WEATHER_API_KEY}`;
 }
-/**
- * Fetches the Open Weather Map API with a query
- * @param {*} latitude - latitude coordenate
- * @param {*} longitude - longitude coordenate
- * @return {Promise}
- */
 function requestWeather(latitude, longitude) {
     let url = WEATHER_API + getWeatherQuery(latitude, longitude);
     return fetch(url);
 }
 const WeatherTagHandler = {
-    /**
-     * Adds a WeatherTag
-     * @param {WeatherTag} observer - Weather tag web component class
-     * @return {undefined}
-     */
     subscribe(observer) {
         let index = weatherObservers.indexOf(observer);
         if (index === -1) {
             weatherObservers.push(observer);
         }
         this.startWeatherUpdate();
-        // Change the weather status if there's a new one
         if (lastWeatherStatus) {
             Object.assign(observer, lastWeatherStatus);
         }
@@ -10849,28 +10591,17 @@ const WeatherTagHandler = {
             }, 500);
         }
     },
-    /**
-     * Removes a WeatherTag
-     * @param {WeatherTag} observer - Weather tag web component class
-     * @return {undefined}
-     */
     unsubscribe(observer) {
         let index = weatherObservers.indexOf(observer);
         if (index >= 0) {
-            // Removes the WeatherTag element from the array
             weatherObservers.splice(index, 1);
         }
-        // If there are no WeatherTag elements in the array, clear properties
         if (weatherObservers.length === 0) {
             clearInterval(weatherInterval);
             weatherInterval = undefined;
             lastWeatherStatus = undefined;
         }
     },
-    /**
-     * Gets weather from coordenates and updates status
-     * @return {Promise}
-     */
     getWeatherUpdate() {
         let geoinfo = window["geoinfo"];
         if (geoinfo) {
@@ -10880,12 +10611,10 @@ const WeatherTagHandler = {
         return requestWeather(latitude, longitude)
             .then((response) => {
             return response.json().then((data) => {
-                // Sets the current weather status
                 lastWeatherStatus = {
                     weather: data.weather,
                     temperature: data.main.temp,
                 };
-                // Dispatch new event
                 let weatherEvent = new CustomEvent("WEATHER_DATA_CHANGED", {
                     detail: lastWeatherStatus,
                 });
@@ -10896,10 +10625,6 @@ const WeatherTagHandler = {
             console.log("an error happen getting the weather", e);
         });
     },
-    /**
-     * Updates the weather interval if it's empty
-     * @return {undefined}
-     */
     startWeatherUpdate() {
         if (!weatherInterval) {
             weatherInterval = setInterval(this.getWeatherUpdate, WEATHER_INTERVAL_TIME);
@@ -10912,23 +10637,12 @@ class WeatherTag {
         this.temperatureType = "temperature";
         this.latitude = 0;
         this.longitude = 0;
-        /**
-         *
-         */
         this.weatherChanged = (event) => {
             if (event.detail) {
                 Object.assign(this, Object.assign({}, event.detail));
             }
         };
     }
-    /**
-     * Updates the 'temperatureUnit' and 'temperatureType' props with the values of
-     * 'weatherObject' passed as argument
-     *
-     * As 'init' is called in 'componentWillLoad', it's only executed one time
-     * @param {any} attr
-     *
-     */
     init(attr) {
         try {
             Object.assign(this, Object.assign({}, attr), {
@@ -10944,17 +10658,9 @@ class WeatherTag {
         let ele = this.el.querySelector(".text-wrapper");
         checkSlideState(slideState, ele, this, this.weatherObject);
     }
-    /**
-     * Lifecycle method that is called once when the component is first
-     * connected to the DOM.
-     */
     componentWillLoad() {
         this.init(this.weatherObject);
     }
-    /**
-     * Lifecycle method that is called once when the component is fully loaded
-     * and the first render() occurs.
-     */
     componentDidLoad() {
         window.addEventListener("WEATHER_DATA_CHANGED", this.weatherChanged);
         WeatherTagHandler.subscribe(this);
@@ -10963,21 +10669,12 @@ class WeatherTag {
         window.removeEventListener("WEATHER_DATA_CHANGED", this.weatherChanged);
         WeatherTagHandler.unsubscribe(this);
     }
-    /**
-     * Generates the corresponding temperature text for the weather tag
-     * @param {string} text - Weather information
-     * @return {HTMLElement}
-     */
     renderTemperature(text) {
         if (this.temperatureType === "temperature") {
             return (h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}` },
                 h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX}, ${this.scaleY})` }, text)));
         }
     }
-    /**
-     * Generates the corresponding weather icon for the weather tag
-     * @return {HTMLElement}
-     */
     renderIcon() {
         if (this.temperatureType !== "temperature" &&
             this.weather &&
@@ -11160,7 +10857,7 @@ class WeatherTag {
             "mutable": true
         }
     }; }
-    static get style() { return "weather-tag {\n  display: block;\n  position: absolute;\n  top: 0%;\n  left: 0%;\n  width: 100%;\n  height: 100%;\n  overflow: visible;\n}\n\nweather-tag div {\n  position: absolute;\n  display: -ms-flexbox;\n  display: flex;\n}\n\nweather-tag .weather-icon {\n  position: relative;\n  width: 100%;\n  height: 100%;\n}\n\nweather-tag div svg {\n  width: 100%;\n  overflow: visible !important;\n}"; }
+    static get style() { return "weather-tag{display:block;position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible}weather-tag div{position:absolute;display:-ms-flexbox;display:flex}weather-tag .weather-icon{position:relative;width:100%;height:100%}weather-tag div svg{width:100%;overflow:visible!important}"; }
 }
 
 export { ClockTag, ContentPlayerTag, ContentSlideTag, CustomContentTag, LoadingContentTag, ProgressBarTag, TextTag, WeatherTag };
