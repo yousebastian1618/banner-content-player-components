@@ -8,45 +8,45 @@ function getPlayerDimensions() {
     let playerDimensions = window["player_window_size"];
     return playerDimensions;
 }
-function calculateWidthAdjustment(width) {
+function calculateWidthAdjustment(deviceWidth) {
     let playerDimensions = getPlayerDimensions();
     let windowWidthThreshold = playerDimensions.width;
-    if (width < windowWidthThreshold) {
-        return (width * 100) / windowWidthThreshold;
+    if (deviceWidth < windowWidthThreshold) {
+        return (deviceWidth * 100) / windowWidthThreshold;
     }
     return 100;
 }
-function calculateHeightAdjustment(height) {
+function calculateHeightAdjustment(deviceHeight) {
     let playerDimensions = getPlayerDimensions();
     let windowHeightThreshold = playerDimensions.height;
-    if (height < windowHeightThreshold) {
-        return (height * 100) / windowHeightThreshold;
+    if (deviceHeight < windowHeightThreshold) {
+        return (deviceHeight * 100) / windowHeightThreshold;
     }
     return 100;
 }
 function renderContentImage(content) {
-    let deviceDimensions = getDeviceDimensions();
-    let width = calculateWidthAdjustment(deviceDimensions.width);
-    let height = calculateHeightAdjustment(deviceDimensions.height);
-    let adjustment = {
-        width: `${width}%`,
-        height: `${height}%`,
-    };
     if (content.type === "image") {
+        let deviceDimensions = getDeviceDimensions();
+        let width = calculateWidthAdjustment(deviceDimensions.width);
+        let height = calculateHeightAdjustment(deviceDimensions.height);
+        let adjustment = {
+            width: `${width}%`,
+            height: `${height}%`,
+        };
         return (h("div", { id: "image-wrappper", style: adjustment },
             h("img", { class: "full-screen", src: content.url })));
     }
     return null;
 }
 function renderContentVideo(content, slideState) {
-    let deviceDimensions = getDeviceDimensions();
-    let width = calculateWidthAdjustment(deviceDimensions.width);
-    let height = calculateHeightAdjustment(deviceDimensions.height);
-    let adjustment = {
-        width: `${width}%`,
-        height: `${height}%`,
-    };
     if (content.type === "video") {
+        let deviceDimensions = getDeviceDimensions();
+        let width = calculateWidthAdjustment(deviceDimensions.width);
+        let height = calculateHeightAdjustment(deviceDimensions.height);
+        let adjustment = {
+            width: `${width}%`,
+            height: `${height}%`,
+        };
         let video = {
             src: content.url,
             top: 0,
@@ -63,14 +63,14 @@ function renderContentVideo(content, slideState) {
     return null;
 }
 function renderCustomContent(content, slideState) {
-    let deviceDimensions = getDeviceDimensions();
-    let width = calculateWidthAdjustment(deviceDimensions.width);
-    let height = calculateHeightAdjustment(deviceDimensions.height);
-    let adjustment = {
-        width: `${width}%`,
-        height: `${height}%`,
-    };
     if (content.type === "customContent") {
+        let deviceDimensions = getDeviceDimensions();
+        let width = calculateWidthAdjustment(deviceDimensions.width);
+        let height = calculateHeightAdjustment(deviceDimensions.height);
+        let adjustment = {
+            width: `${width}%`,
+            height: `${height}%`,
+        };
         let data = Object.assign({}, content.__data__, {
             containerWidth: content.width,
             containerHeight: content.height,

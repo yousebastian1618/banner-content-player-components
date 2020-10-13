@@ -22,31 +22,31 @@ function getPlayerDimensions() {
 }
 
 /**
- * Calculates the width attribute size in percentage for the content
- * @param {number} width
+ * Calculates the device width attribute size as a percentage of the window width for the content
+ * @param {number} deviceWidth
  * @return {number} Percetage for the width attribute
  */
-function calculateWidthAdjustment(width) {
+function calculateWidthAdjustment(deviceWidth) {
   let playerDimensions = getPlayerDimensions();
   let windowWidthThreshold = playerDimensions.width;
 
-  if (width < windowWidthThreshold) {
-    return (width * 100) / windowWidthThreshold;
+  if (deviceWidth < windowWidthThreshold) {
+    return (deviceWidth * 100) / windowWidthThreshold;
   }
   return 100;
 }
 
 /**
- * Calculates the height attibute size in percentage for the content
- * @param {number} height
+ * Calculates the device height attribute size as a percentage of the window height for the content
+ * @param {number} deviceHeight
  * @return {number} Percetage for the height attribute
  */
-function calculateHeightAdjustment(height) {
+function calculateHeightAdjustment(deviceHeight) {
   let playerDimensions = getPlayerDimensions();
   let windowHeightThreshold = playerDimensions.height;
 
-  if (height < windowHeightThreshold) {
-    return (height * 100) / windowHeightThreshold;
+  if (deviceHeight < windowHeightThreshold) {
+    return (deviceHeight * 100) / windowHeightThreshold;
   }
   return 100;
 }
@@ -57,16 +57,16 @@ function calculateHeightAdjustment(height) {
  * @return {HTMLElement | null}
  */
 function renderContentImage(content) {
-  let deviceDimensions = getDeviceDimensions();
-
-  let width = calculateWidthAdjustment(deviceDimensions.width);
-  let height = calculateHeightAdjustment(deviceDimensions.height);
-  let adjustment = {
-    width: `${width}%`,
-    height: `${height}%`,
-  };
-
   if (content.type === "image") {
+    let deviceDimensions = getDeviceDimensions();
+
+    let width = calculateWidthAdjustment(deviceDimensions.width);
+    let height = calculateHeightAdjustment(deviceDimensions.height);
+    let adjustment = {
+      width: `${width}%`,
+      height: `${height}%`,
+    };
+
     return (
       <div id="image-wrappper" style={adjustment}>
         <img class={"full-screen"} src={content.url} />
@@ -83,16 +83,16 @@ function renderContentImage(content) {
  * @return {HTMLElement | null}
  */
 function renderContentVideo(content, slideState) {
-  let deviceDimensions = getDeviceDimensions();
-
-  let width = calculateWidthAdjustment(deviceDimensions.width);
-  let height = calculateHeightAdjustment(deviceDimensions.height);
-  let adjustment = {
-    width: `${width}%`,
-    height: `${height}%`,
-  };
-
   if (content.type === "video") {
+    let deviceDimensions = getDeviceDimensions();
+
+    let width = calculateWidthAdjustment(deviceDimensions.width);
+    let height = calculateHeightAdjustment(deviceDimensions.height);
+    let adjustment = {
+      width: `${width}%`,
+      height: `${height}%`,
+    };
+
     // This is passed down to the video-tag as a videoObject prop
     let video = {
       src: content.url,
@@ -124,16 +124,16 @@ function renderContentVideo(content, slideState) {
  * @return {HTMLStencilElement | null}
  */
 function renderCustomContent(content, slideState) {
-  let deviceDimensions = getDeviceDimensions();
-
-  let width = calculateWidthAdjustment(deviceDimensions.width);
-  let height = calculateHeightAdjustment(deviceDimensions.height);
-  let adjustment = {
-    width: `${width}%`,
-    height: `${height}%`,
-  };
-
   if (content.type === "customContent") {
+    let deviceDimensions = getDeviceDimensions();
+
+    let width = calculateWidthAdjustment(deviceDimensions.width);
+    let height = calculateHeightAdjustment(deviceDimensions.height);
+    let adjustment = {
+      width: `${width}%`,
+      height: `${height}%`,
+    };
+
     // This is passed down to the custom-content-tag as a data prop
     let data = Object.assign({}, content.__data__, {
       containerWidth: content.width,

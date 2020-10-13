@@ -49,7 +49,7 @@ export class VideoTag {
     }
     changeStyle(attr) {
         try {
-            Object.assign(this, Object.assign({}, attr));
+            Object.assign(this.adjustment, Object.assign({}, attr));
         }
         catch (err) {
             console.log(err.message);
@@ -87,12 +87,16 @@ export class VideoTag {
             let style = {
                 top: `${(this.top / this.containerHeight) * 100}%`,
                 left: `${(this.left / this.containerWidth) * 100}%`,
-                width: this.adjustment.width,
-                height: this.adjustment.height,
+                "min-width": `${((this.width * this.scaleX) / this.containerWidth) * 100}%`,
+                height: `${((this.height * this.scaleY) / this.containerHeight) * 100}%`,
                 transform: `rotate(${this.angle}deg)`,
                 "transform-origin": `${this.originX} ${this.originY}`,
                 zIndex: `${this.zIndex}`,
             };
+            if (this.adjustment) {
+                style.height = this.adjustment.height;
+                style["min-width"] = this.adjustment.width;
+            }
             return (h("div", { class: "video-wrapper", style: style },
                 h("div", { class: "video-helper" },
                     h("video", { src: this.src, autoplay: this.autoplay, loop: this.loop, muted: true }))));

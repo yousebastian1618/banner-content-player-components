@@ -17,66 +17,50 @@ function getBackground(data, adjustment) {
     }
     return bg;
 }
-function renderVideos({ objects, containerWidth, containerHeight, slideState }, adjustment) {
-    let videos = objects.filter((obj) => {
-        return obj.type === "video";
-    });
-    return videos.map((video) => {
-        return (h("video-tag", { videoObject: video, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState, adjustment: adjustment }));
-    });
+function renderVideos({ content, containerWidth, containerHeight, slideState, }) {
+    return (h("video-tag", { videoObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-function renderTexts({ objects, containerWidth, containerHeight, slideState }) {
-    let texts = objects.filter((obj) => {
-        return obj.type === "i-text";
-    });
-    texts = texts.map((t) => {
-        return (h("text-tag", { textObject: t, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
-    });
-    return texts;
+function renderTexts({ content, containerWidth, containerHeight, slideState }) {
+    return (h("text-tag", { textObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-function renderClocks({ objects, containerWidth, containerHeight, slideState, }) {
-    let clocks = objects.filter((obj) => {
-        return obj.type === "time";
-    });
-    clocks = clocks.map((c) => {
-        return (h("clock-tag", { clockObject: c, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
-    });
-    return clocks;
+function renderClocks({ content, containerWidth, containerHeight, slideState, }) {
+    return (h("clock-tag", { clockObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-function renderWeathers({ objects, containerWidth, containerHeight, slideState, }) {
-    let weathers = objects.filter((obj) => {
-        return obj.type === "weather";
-    });
-    weathers = weathers.map((w) => {
-        return (h("weather-tag", { weatherObject: w, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
-    });
-    return weathers;
+function renderWeathers({ content, containerWidth, containerHeight, slideState, }) {
+    return (h("weather-tag", { weatherObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-function renderImages({ objects, containerWidth, containerHeight }) {
-    let images = objects.filter((obj) => {
-        return obj.type === "image";
-    });
-    images = images.map((image) => {
-        return (h("img", { class: "custom-content-image", src: image.src, style: {
-                top: `${(image.top / containerHeight) * 100}%`,
-                left: `${(image.left / containerWidth) * 100}%`,
-                width: `${((image.width * image.scaleX) / containerWidth) * 100}%`,
-                height: `${((image.height * image.scaleY) / containerHeight) * 100}%`,
-                transform: `rotate(${image.angle}deg)`,
-                "transform-origin": `${image.originX} ${image.originY}`,
-                "z-index": `${image.zIndex}`,
-            } }));
-    });
-    return images;
+function renderImages({ content, containerHeight, containerWidth }) {
+    return (h("img", { class: "custom-content-image", src: content.src, style: {
+            top: `${(content.top / containerHeight) * 100}%`,
+            left: `${(content.left / containerWidth) * 100}%`,
+            height: `${((content.height * content.scaleY) / containerHeight) * 100}%`,
+            "min-width": `${((content.width * content.scaleX) / containerWidth) * 100}%`,
+            transform: `rotate(${content.angle}deg)`,
+            "transform-origin": `${content.originX} ${content.originY}`,
+            "z-index": `${content.zIndex}`,
+        } }));
 }
+const render = {
+    "i-text": renderTexts,
+    image: renderImages,
+    video: renderVideos,
+    time: renderClocks,
+    weather: renderWeathers,
+};
 export class CustomContentTag {
     render() {
-        return (h("div", { class: "custom-content-container", style: getBackground(this.data, this.adjustment) },
-            renderVideos(this.data, this.adjustment),
-            renderTexts(this.data),
-            renderClocks(this.data),
-            renderWeathers(this.data),
-            renderImages(this.data)));
+        const content = [];
+        this.data.objects.forEach((obj) => {
+            const singleObj = {
+                background: this.data.background,
+                containerHeight: this.data.containerHeight,
+                containerWidth: this.data.containerWidth,
+                content: obj,
+                slideState: this.data.slideState,
+            };
+            content.push(render[obj.type](singleObj));
+        });
+        return (h("div", { class: "custom-content-container", style: getBackground(this.data, this.adjustment) }, content));
     }
     static get is() { return "custom-content-tag"; }
     static get properties() { return {
