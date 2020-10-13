@@ -70,16 +70,6 @@ function renderContentImage(content) {
     return (
       <div id="image-wrappper" style={adjustment}>
         <img class={"full-screen"} src={content.url} />
-        {/* <div
-          id="adjustment"
-          style={{
-            height: `${100 - height}%`,
-            background: "black",
-            width: "100%",
-            position: "relative",
-            top: `0%`,
-          }}
-        ></div> */}
       </div>
     );
   }

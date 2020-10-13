@@ -196,16 +196,6 @@ export class VideoTag {
               loop={this.loop}
               muted
             />
-            {/* <div
-              id="video-adjustment"
-              style={{
-                height: `${100 - this.adjustment.height}%`,
-                background: "black",
-                width: "100%",
-                position: "relative",
-                top: `0%`,
-              }}
-            ></div> */}
           </div>
         </div>
       );
