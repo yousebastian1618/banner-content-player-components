@@ -157,7 +157,7 @@ export class CustomContentTag {
         slideState: this.data.slideState,
       };
 
-      content.push(render[obj.type](singleObj, this.adjustment));
+      content.push(render[obj.type](singleObj));
     });
 
     return (
@@ -166,16 +166,6 @@ export class CustomContentTag {
         style={getBackground(this.data, this.adjustment)}
       >
         {content}
-        {/* <div
-          id="adjustment"
-          style={{
-            height: "11px",
-            background: "black",
-            width: "100%",
-            position: "relative",
-            top: "43px",
-          }}
-        ></div> */}
       </div>
     );
   }

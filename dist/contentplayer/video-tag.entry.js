@@ -87,14 +87,14 @@ class VideoTag {
      * Styling hot fix for video-wrapper div
      */
     // @Watch("adjustment")
-    // changeStyle(attr: any) {
-    //   console.log("attr", attr);
-    //   try {
-    //     Object.assign(this, { ...attr });
-    //   } catch (err) {
-    //     console.log(err.message);
-    //   }
-    // }
+    changeStyle(attr) {
+        try {
+            Object.assign(this.adjustment, Object.assign({}, attr));
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+    }
     /**
      * Whenever 'slideState' changes, it runs 'checkSlideState'
      * @param slideState
@@ -127,7 +127,7 @@ class VideoTag {
      */
     componentWillLoad() {
         this.init(this.videoObject);
-        // this.changeStyle(this.adjustment);
+        this.changeStyle(this.adjustment);
     }
     /**
      * Lifecycle method that is called once when the component is fully loaded
@@ -150,6 +150,10 @@ class VideoTag {
                 "transform-origin": `${this.originX} ${this.originY}`,
                 zIndex: `${this.zIndex}`,
             };
+            if (this.adjustment) {
+                style.height = this.adjustment.height;
+                style["min-width"] = this.adjustment.width;
+            }
             return (h("div", { class: "video-wrapper", style: style },
                 h("div", { class: "video-helper" },
                     h("video", { src: this.src, autoplay: this.autoplay, loop: this.loop, muted: true }))));

@@ -87,7 +87,7 @@ export class CustomContentTag {
                 content: obj,
                 slideState: this.data.slideState,
             };
-            content.push(render[obj.type](singleObj, this.adjustment));
+            content.push(render[obj.type](singleObj));
         });
         return (h("div", { class: "custom-content-container", style: getBackground(this.data, this.adjustment) }, content));
     }
