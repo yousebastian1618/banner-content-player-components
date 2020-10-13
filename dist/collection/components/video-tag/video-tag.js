@@ -141,7 +141,7 @@ export class VideoTag {
             let style = {
                 top: `${(this.top / this.containerHeight) * 100}%`,
                 left: `${(this.left / this.containerWidth) * 100}%`,
-                width: `${((this.width * this.scaleX) / this.containerWidth) * 100}%`,
+                "min-width": `${((this.width * this.scaleX) / this.containerWidth) * 100}%`,
                 height: `${((this.height * this.scaleY) / this.containerHeight) * 100}%`,
                 transform: `rotate(${this.angle}deg)`,
                 "transform-origin": `${this.originX} ${this.originY}`,

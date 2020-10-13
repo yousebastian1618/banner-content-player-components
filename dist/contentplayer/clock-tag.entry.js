@@ -10064,7 +10064,6 @@ function renderContentImage(content) {
 function renderContentVideo(content, slideState) {
     if (content.type === "video") {
         let deviceDimensions = getDeviceDimensions();
-        console.log("deviceDimensions", deviceDimensions);
         let width = calculateWidthAdjustment(deviceDimensions.width);
         let height = calculateHeightAdjustment(deviceDimensions.height);
         let adjustment = {
@@ -10095,7 +10094,6 @@ function renderContentVideo(content, slideState) {
  * @return {HTMLStencilElement | null}
  */
 function renderCustomContent(content, slideState) {
-    console.log("CONTENT", content);
     if (content.type === "customContent") {
         let deviceDimensions = getDeviceDimensions();
         let width = calculateWidthAdjustment(deviceDimensions.width);
@@ -10277,7 +10275,6 @@ class ContentSlideTag {
         window.removeEventListener("HIDE_LAST_SLIDE", this.hideLastSlide);
     }
     render() {
-        console.log("slide", this.content);
         return (h("div", { class: "content-slide-wrapper", style: { opacity: `${this.opacity}` } },
             this.content ? renderContentImage(this.content) : null,
             this.content ? renderContentVideo(this.content, this.status) : null,
@@ -10381,7 +10378,7 @@ function renderImages({ content, containerHeight, containerWidth }) {
     return (h("img", { class: "custom-content-image", src: content.src, style: {
             top: `${(content.top / containerHeight) * 100}%`,
             left: `${(content.left / containerWidth) * 100}%`,
-            "min-height": `${((content.height * content.scaleY) / containerHeight) * 100}%`,
+            height: `${((content.height * content.scaleY) / containerHeight) * 100}%`,
             "min-width": `${((content.width * content.scaleX) / containerWidth) * 100}%`,
             transform: `rotate(${content.angle}deg)`,
             "transform-origin": `${content.originX} ${content.originY}`,
@@ -10400,7 +10397,6 @@ const render = {
 };
 class CustomContentTag {
     render() {
-        console.log("custom content data", this.data);
         const content = [];
         this.data.objects.forEach((obj) => {
             const singleObj = {
@@ -10410,7 +10406,7 @@ class CustomContentTag {
                 content: obj,
                 slideState: this.data.slideState,
             };
-            content.push(render[obj.type](singleObj));
+            content.push(render[obj.type](singleObj, this.adjustment));
         });
         return (h("div", { class: "custom-content-container", style: getBackground(this.data, this.adjustment) }, content));
     }

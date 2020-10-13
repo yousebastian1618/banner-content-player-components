@@ -112,7 +112,7 @@ function renderImages({ content, containerHeight, containerWidth }) {
       style={{
         top: `${(content.top / containerHeight) * 100}%`,
         left: `${(content.left / containerWidth) * 100}%`,
-        "min-height": `${
+        height: `${
           ((content.height * content.scaleY) / containerHeight) * 100
         }%`,
         "min-width": `${
@@ -146,8 +146,6 @@ export class CustomContentTag {
   @Prop() adjustment: any;
 
   render() {
-    console.log("custom content data", this.data);
-
     const content = [];
 
     this.data.objects.forEach((obj) => {
@@ -159,7 +157,7 @@ export class CustomContentTag {
         slideState: this.data.slideState,
       };
 
-      content.push(render[obj.type](singleObj));
+      content.push(render[obj.type](singleObj, this.adjustment));
     });
 
     return (
@@ -168,6 +166,16 @@ export class CustomContentTag {
         style={getBackground(this.data, this.adjustment)}
       >
         {content}
+        {/* <div
+          id="adjustment"
+          style={{
+            height: "11px",
+            background: "black",
+            width: "100%",
+            position: "relative",
+            top: "43px",
+          }}
+        ></div> */}
       </div>
     );
   }

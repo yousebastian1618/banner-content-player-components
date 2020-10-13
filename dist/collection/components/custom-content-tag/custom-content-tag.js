@@ -59,7 +59,7 @@ function renderImages({ content, containerHeight, containerWidth }) {
     return (h("img", { class: "custom-content-image", src: content.src, style: {
             top: `${(content.top / containerHeight) * 100}%`,
             left: `${(content.left / containerWidth) * 100}%`,
-            "min-height": `${((content.height * content.scaleY) / containerHeight) * 100}%`,
+            height: `${((content.height * content.scaleY) / containerHeight) * 100}%`,
             "min-width": `${((content.width * content.scaleX) / containerWidth) * 100}%`,
             transform: `rotate(${content.angle}deg)`,
             "transform-origin": `${content.originX} ${content.originY}`,
@@ -78,7 +78,6 @@ const render = {
 };
 export class CustomContentTag {
     render() {
-        console.log("custom content data", this.data);
         const content = [];
         this.data.objects.forEach((obj) => {
             const singleObj = {
@@ -88,7 +87,7 @@ export class CustomContentTag {
                 content: obj,
                 slideState: this.data.slideState,
             };
-            content.push(render[obj.type](singleObj));
+            content.push(render[obj.type](singleObj, this.adjustment));
         });
         return (h("div", { class: "custom-content-container", style: getBackground(this.data, this.adjustment) }, content));
     }

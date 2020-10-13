@@ -71,7 +71,6 @@ function renderContentImage(content) {
 function renderContentVideo(content, slideState) {
     if (content.type === "video") {
         let deviceDimensions = getDeviceDimensions();
-        console.log("deviceDimensions", deviceDimensions);
         let width = calculateWidthAdjustment(deviceDimensions.width);
         let height = calculateHeightAdjustment(deviceDimensions.height);
         let adjustment = {
@@ -102,7 +101,6 @@ function renderContentVideo(content, slideState) {
  * @return {HTMLStencilElement | null}
  */
 function renderCustomContent(content, slideState) {
-    console.log("CONTENT", content);
     if (content.type === "customContent") {
         let deviceDimensions = getDeviceDimensions();
         let width = calculateWidthAdjustment(deviceDimensions.width);
@@ -284,7 +282,6 @@ export class ContentSlideTag {
         window.removeEventListener("HIDE_LAST_SLIDE", this.hideLastSlide);
     }
     render() {
-        console.log("slide", this.content);
         return (h("div", { class: "content-slide-wrapper", style: { opacity: `${this.opacity}` } },
             this.content ? renderContentImage(this.content) : null,
             this.content ? renderContentVideo(this.content, this.status) : null,
