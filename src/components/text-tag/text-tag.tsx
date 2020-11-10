@@ -83,7 +83,6 @@ export class TextTag implements BaseText {
       const deviceWidth = window["device_window_size"].width;
 
       let previewerAdjustment = 1;
-      // check this against device < player
       if (deviceWidth != contentPlayerWidth) {
         console.log("in CMS previewer");
         previewerAdjustment = contentPlayerWidth / deviceWidth;
