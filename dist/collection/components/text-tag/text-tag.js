@@ -48,13 +48,22 @@ export class TextTag {
      */
     componentDidLoad() { }
     render() {
-        console.log("this", this);
         if (this.text) {
-            console.log("viewbox", this.width * this.scaleX);
-            const translation = (this.width * this.scaleX) / 2;
+            const contentPlayerWidth = document.getElementsByClassName("content-player-wrapper")[0].clientWidth;
+            const deviceWidth = window["device_window_size"].width;
+            let previewerAdjustment = 1;
+            // check this against device < player
+            if (deviceWidth != contentPlayerWidth) {
+                console.log("in CMS previewer");
+                previewerAdjustment = contentPlayerWidth / deviceWidth;
+            }
+            let translation = 0;
+            if (this.textAlign === "right") {
+                translation = (this.width * previewerAdjustment * this.scaleX) / 2;
+            }
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
                 h("svg", null,
-                    h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this)))));
+                    h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment)))));
         }
     }
     static get is() { return "text-tag"; }

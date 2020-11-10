@@ -11690,7 +11690,7 @@ class ProgressBarTag {
     static get style() { return ".progress-bar {\n  width: 100%;\n  padding-top: 4.1%;\n  background-color: #ffffff;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n  border-radius: 50px;\n  border-style: solid;\n  border-width: 2px;\n  border-color: #ffffff;\n  overflow: hidden;\n  position: relative;\n}\n\n.progress-bar .message {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n  color: #ffffff;\n  font-size: 1.5em;\n  z-index: 4;\n  font-family: Roboto, Arial, Helvetica, sans-serif;\n}\n.progress-bar .black-layer,\n.progress-animation,\n.progress-bar-indicator {\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 100%;\n}\n\n.progress-bar .progress-bar-indicator {\n  width: 0%;\n  background-color: #8f8e92;\n  z-index: 3;\n}\n\n.progress-bar .progress-animation {\n  z-index: 1;\n}\n\n.progress-bar .black-layer {\n  z-index: 2;\n  background-color: rgba(0, 0, 0, 0.5);\n}"; }
 }
 
-function renderMultiline({ text, lineHeight, textAlign, fontSize }) {
+function renderMultiline({ text, lineHeight, textAlign, fontSize, width, scaleX }, previewerAdjustment) {
     let decimal = parseFloat(lineHeight) % 1;
     let anchor = "start";
     if (textAlign === "center") {
@@ -11700,7 +11700,21 @@ function renderMultiline({ text, lineHeight, textAlign, fontSize }) {
         anchor = "end";
     }
     let lines = text.split("\n").map((t, i) => {
-        return (h("tspan", { x: "0", dy: i === 0 ? `${decimal}em` : `${parseFloat(lineHeight) + decimal}em`, "text-anchor": anchor }, t));
+        let style = {
+            fontSize: fontSize + "px",
+            lineHeight: lineHeight + "px",
+        };
+        if (previewerAdjustment) {
+            const newFontSize = fontSize * previewerAdjustment;
+            const newLineHeight = lineHeight / previewerAdjustment;
+            style.fontSize = newFontSize + "px";
+            style.lineHeight = newLineHeight + "px";
+        }
+        let xPosition = 0;
+        if (textAlign !== "left") {
+            xPosition = (width * previewerAdjustment * scaleX) / 2;
+        }
+        return (h("tspan", { style: style, x: xPosition, dy: i === 0 ? `${decimal}em` : `${parseFloat(lineHeight) + decimal}em`, "text-anchor": anchor }, t));
     });
     return lines;
 }
@@ -11752,13 +11766,22 @@ class TextTag {
      */
     componentDidLoad() { }
     render() {
-        console.log("this", this);
         if (this.text) {
-            console.log("viewbox", this.width * this.scaleX);
-            const translation = (this.width * this.scaleX) / 2;
+            const contentPlayerWidth = document.getElementsByClassName("content-player-wrapper")[0].clientWidth;
+            const deviceWidth = window["device_window_size"].width;
+            let previewerAdjustment = 1;
+            // check this against device < player
+            if (deviceWidth != contentPlayerWidth) {
+                console.log("in CMS previewer");
+                previewerAdjustment = contentPlayerWidth / deviceWidth;
+            }
+            let translation = 0;
+            if (this.textAlign === "right") {
+                translation = (this.width * previewerAdjustment * this.scaleX) / 2;
+            }
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
                 h("svg", null,
-                    h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this)))));
+                    h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment)))));
         }
     }
     static get is() { return "text-tag"; }
