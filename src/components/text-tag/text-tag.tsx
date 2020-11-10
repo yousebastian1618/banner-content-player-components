@@ -76,13 +76,16 @@ export class TextTag implements BaseText {
   componentDidLoad() {}
 
   render() {
+    console.log("this", this);
     if (this.text) {
+      console.log("viewbox", this.width * this.scaleX);
+      const translation = (this.width * this.scaleX) / 2;
       return (
         <div class="text-wrapper" style={getBaseTextStyle(this)}>
           <svg
-            viewBox={`0 0 ${this.width * this.scaleX} ${
-              this.height * this.scaleY
-            }`}
+          // viewBox={`0 0 ${this.width * this.scaleX} ${
+          //   this.height * this.scaleY
+          // }`}
           >
             <text
               x="0"
@@ -92,7 +95,7 @@ export class TextTag implements BaseText {
               dominant-baseline="hanging"
               fill={this.fill}
               style={getSvgTextStyle(this)}
-              transform={`scale(${this.scaleX},${this.scaleY})`}
+              transform={`translate(${translation})`}
             >
               {renderMultiline(this)}
             </text>

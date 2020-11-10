@@ -48,10 +48,13 @@ export class TextTag {
      */
     componentDidLoad() { }
     render() {
+        console.log("this", this);
         if (this.text) {
+            console.log("viewbox", this.width * this.scaleX);
+            const translation = (this.width * this.scaleX) / 2;
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
-                h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}` },
-                    h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `scale(${this.scaleX},${this.scaleY})` }, renderMultiline(this)))));
+                h("svg", null,
+                    h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this)))));
         }
     }
     static get is() { return "text-tag"; }
