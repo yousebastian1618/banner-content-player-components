@@ -17,6 +17,12 @@ export class TextTag {
         this.zIndex = 1;
         this.text = "";
     }
+    /**
+     * Updates the 'textObject' prop with the value of attr.
+     *
+     * As 'init' is called in 'componentWillLoad', it's only executed one time
+     * @param {any} attr
+     */
     init(attr) {
         try {
             Object.assign(this, Object.assign({}, attr));
@@ -29,16 +35,23 @@ export class TextTag {
         let ele = this.el.querySelector(".text-wrapper");
         checkSlideState(slideState, ele, this, this.textObject);
     }
+    /**
+     * Lifecycle method that is called once when the component is first
+     * connected to the DOM.
+     */
     componentWillLoad() {
         this.init(this.textObject);
     }
+    /**
+     * Lifecycle method that is called once when the component is fully loaded
+     * and the first render() occurs.
+     */
     componentDidLoad() { }
     render() {
         if (this.text) {
             const contentPlayerWidth = document.getElementsByClassName("content-player-wrapper")[0].clientWidth;
             const deviceWidth = window["device_window_size"].width;
             let previewerAdjustment = 1;
-            // check this against device < player
             if (deviceWidth != contentPlayerWidth) {
                 console.log("in CMS previewer");
                 previewerAdjustment = contentPlayerWidth / deviceWidth;

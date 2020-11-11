@@ -1,7 +1,11 @@
-import { h } from '../contentplayer.core.js';
+const h = window.contentplayer.h;
 
-import { a as SlideState } from './chunk-1fc3cad0.js';
+import { a as SlideState } from './chunk-8e68d4bc.js';
 
+/**
+ * STOP: 0
+ * PLAYING: 1
+ */
 var PlayState;
 (function (PlayState) {
     PlayState[PlayState["STOP"] = 0] = "STOP";
@@ -24,6 +28,13 @@ class VideoTag {
         this.scaleY = 1;
         this.alreadyEnded = true;
         this.playState = PlayState.STOP;
+        /**
+         * Changes 'playState' from 'STOP' to 'PLAYING'
+         * and   playing the content.
+         *
+         * Adds an event listener for "ended" and passes function 'ended' as Callback
+         * @return {undefined}
+         */
         this.play = () => {
             let ele = this.el.querySelector("video");
             if (ele && this.playState === PlayState.STOP) {
@@ -32,6 +43,13 @@ class VideoTag {
                 ele.play();
             }
         };
+        /**
+         * Changes 'playState' from 'PLAYING' to 'STOP'
+         * and stops playing the content
+         *
+         * Removes "ended" event listener and dispatches "VIDEO_CONTENT_ENDED"
+         * for the Content Player
+         */
         this.ended = () => {
             let ele = this.el.querySelector("video");
             if (this.playState === PlayState.PLAYING) {
@@ -42,6 +60,21 @@ class VideoTag {
             }
         };
     }
+    /**
+     * VideoTag events
+     *
+     * Listens events:
+     *  ended
+     *
+     * Dispatches events:
+     *  VIDEO_CONTENT_ENDED
+     */
+    /**
+     * Updates the 'videoObject' prop with the value of any.
+     *
+     * As 'init' is called in 'componentWillLoad', it's only executed one time
+     * @param {any} videoObject
+     */
     init(videoObject) {
         try {
             Object.assign(this, Object.assign({}, videoObject));
@@ -50,6 +83,9 @@ class VideoTag {
             console.log(err.message);
         }
     }
+    /**
+     * Styling hot fix for video-wrapper div
+     */
     changeStyle(attr) {
         try {
             Object.assign(this.adjustment, Object.assign({}, attr));
@@ -58,6 +94,11 @@ class VideoTag {
             console.log(err.message);
         }
     }
+    /**
+     * Whenever 'slideState' changes, it runs 'checkSlideState'
+     * @param slideState
+     * @param oldState
+     */
     checkSlideState(slideState, oldState) {
         if (oldState === SlideState.SHOW &&
             slideState === SlideState.START_ANIMATION) {
@@ -79,11 +120,23 @@ class VideoTag {
             }
         }
     }
+    /**
+     * Lifecycle method that is called once when the component is first
+     * connected to the DOM.
+     */
     componentWillLoad() {
         this.init(this.videoObject);
         this.changeStyle(this.adjustment);
     }
+    /**
+     * Lifecycle method that is called once when the component is fully loaded
+     * and the first render() occurs.
+     */
     componentDidLoad() { }
+    /**
+     * Lifecycle method that is called ojust after the component updates. It's never
+     * called during the first render
+     */
     componentDidUpdate() { }
     render() {
         if (this.src) {
@@ -204,7 +257,7 @@ class VideoTag {
             "mutable": true
         }
     }; }
-    static get style() { return "video-tag div.video-wrapper{display:block;position:absolute;background-color:#1e1e1e}video-tag div.video-wrapper .video-helper{position:relative;height:100%;padding-left:100%}video-tag .video-helper video{position:absolute;top:0;left:0;width:100%;height:100%;-o-object-fit:fill;object-fit:fill}"; }
+    static get style() { return "video-tag div.video-wrapper {\n  display: block;\n  position: absolute;\n  background-color: #1e1e1e;\n}\nvideo-tag div.video-wrapper .video-helper {\n  position: relative;\n  height: 100%;\n  padding-left: 100%;\n}\n\nvideo-tag .video-helper video {\n  position: absolute;\n  top: 0px;\n  left: 0px;\n  width: 100%;\n  height: 100%;\n  -o-object-fit: fill;\n  object-fit: fill;\n}"; }
 }
 
 export { VideoTag };
