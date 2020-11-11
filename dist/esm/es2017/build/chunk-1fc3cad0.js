@@ -1,13 +1,5 @@
-const h = window.contentplayer.h;
+import { h } from '../contentplayer.core.js';
 
-/**
- * INIT: 0
- * WAIT_ANIMATION: 1
- * START_ANIMATION: 2
- * SHOW: 3
- * TRANSITION: 4
- * HIDE: 5
- */
 var SlideState;
 (function (SlideState) {
     SlideState[SlideState["INIT"] = 0] = "INIT";

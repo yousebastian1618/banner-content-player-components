@@ -134,8 +134,6 @@ function renderCustomContent(content, slideState) {
       height: `${height}%`,
     };
 
-    console.log("adj", adjustment);
-
     // This is passed down to the custom-content-tag as a data prop
     let data = Object.assign({}, content.__data__, {
       containerWidth: content.width,
@@ -382,7 +380,6 @@ export class ContentSlideTag {
   };
 
   render() {
-    console.log("this.content", this.content);
     return (
       <div class="content-slide-wrapper" style={{ opacity: `${this.opacity}` }}>
         {this.content ? renderContentImage(this.content) : null}

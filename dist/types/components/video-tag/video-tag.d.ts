@@ -48,6 +48,7 @@ export declare class VideoTag {
     /**
      * Styling hot fix for video-wrapper div
      */
+    changeStyle(attr: any): void;
     /**
      * Whenever 'slideState' changes, it runs 'checkSlideState'
      * @param slideState
