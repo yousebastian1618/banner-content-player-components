@@ -77,13 +77,24 @@ export class TextTag implements BaseText {
 
   render() {
     if (this.text) {
+      const contentPlayerWidth = document.getElementsByClassName(
+        "content-player-wrapper"
+      )[0].clientWidth;
+      const deviceWidth = window["device_window_size"].width;
+
+      let previewerAdjustment = 1;
+      if (deviceWidth != contentPlayerWidth) {
+        console.log("in CMS previewer");
+        previewerAdjustment = contentPlayerWidth / deviceWidth;
+      }
+
+      let translation = 0;
+      if (this.textAlign === "right") {
+        translation = (this.width * previewerAdjustment * this.scaleX) / 2;
+      }
       return (
         <div class="text-wrapper" style={getBaseTextStyle(this)}>
-          <svg
-            viewBox={`0 0 ${this.width * this.scaleX} ${
-              this.height * this.scaleY
-            }`}
-          >
+          <svg>
             <text
               x="0"
               y="0"
@@ -92,9 +103,9 @@ export class TextTag implements BaseText {
               dominant-baseline="hanging"
               fill={this.fill}
               style={getSvgTextStyle(this)}
-              transform={`scale(${this.scaleX},${this.scaleY})`}
+              transform={`translate(${translation})`}
             >
-              {renderMultiline(this)}
+              {renderMultiline(this, previewerAdjustment)}
             </text>
           </svg>
         </div>

@@ -17,6 +17,12 @@ export class TextTag {
         this.zIndex = 1;
         this.text = "";
     }
+    /**
+     * Updates the 'textObject' prop with the value of attr.
+     *
+     * As 'init' is called in 'componentWillLoad', it's only executed one time
+     * @param {any} attr
+     */
     init(attr) {
         try {
             Object.assign(this, Object.assign({}, attr));
@@ -29,15 +35,34 @@ export class TextTag {
         let ele = this.el.querySelector(".text-wrapper");
         checkSlideState(slideState, ele, this, this.textObject);
     }
+    /**
+     * Lifecycle method that is called once when the component is first
+     * connected to the DOM.
+     */
     componentWillLoad() {
         this.init(this.textObject);
     }
+    /**
+     * Lifecycle method that is called once when the component is fully loaded
+     * and the first render() occurs.
+     */
     componentDidLoad() { }
     render() {
         if (this.text) {
+            const contentPlayerWidth = document.getElementsByClassName("content-player-wrapper")[0].clientWidth;
+            const deviceWidth = window["device_window_size"].width;
+            let previewerAdjustment = 1;
+            if (deviceWidth != contentPlayerWidth) {
+                console.log("in CMS previewer");
+                previewerAdjustment = contentPlayerWidth / deviceWidth;
+            }
+            let translation = 0;
+            if (this.textAlign === "right") {
+                translation = (this.width * previewerAdjustment * this.scaleX) / 2;
+            }
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
-                h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}` },
-                    h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `scale(${this.scaleX},${this.scaleY})` }, renderMultiline(this)))));
+                h("svg", null,
+                    h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment)))));
         }
     }
     static get is() { return "text-tag"; }

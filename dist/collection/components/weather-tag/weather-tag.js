@@ -2,24 +2,45 @@ import { getBaseTextStyle } from "../../common/get-base-text-style";
 import checkSlideState from "../../common/text-behaviour";
 let weatherInterval;
 let weatherObservers = [];
+// http://api.openweathermap.org/data/2.5/weather?lat=32.5149469&lon=-117.0382471&appid=<api-key>
 const WEATHER_API = "http://api.openweathermap.org/data/2.5/weather";
 const WEATHER_API_KEY = "0f93a4013a0b381ea772b09917255c1f";
-const WEATHER_INTERVAL_TIME = 10 * 60 * 1000;
+const WEATHER_INTERVAL_TIME = 10 * 60 * 1000; //10 min
+// Global variables
 let latitude, longitude, lastWeatherStatus, throttlingTimeout;
+/**
+ *
+ * Create query to fetch Open Weather Map API
+ * @param {*} latitude - latitude coordenate
+ * @param {*} longitude - longitude coordenate
+ * @return {string}
+ */
 function getWeatherQuery(latitude, longitude) {
     return `?lat=${latitude}&lon=${longitude}&appid=${WEATHER_API_KEY}`;
 }
+/**
+ * Fetches the Open Weather Map API with a query
+ * @param {*} latitude - latitude coordenate
+ * @param {*} longitude - longitude coordenate
+ * @return {Promise}
+ */
 function requestWeather(latitude, longitude) {
     let url = WEATHER_API + getWeatherQuery(latitude, longitude);
     return fetch(url);
 }
 const WeatherTagHandler = {
+    /**
+     * Adds a WeatherTag
+     * @param {WeatherTag} observer - Weather tag web component class
+     * @return {undefined}
+     */
     subscribe(observer) {
         let index = weatherObservers.indexOf(observer);
         if (index === -1) {
             weatherObservers.push(observer);
         }
         this.startWeatherUpdate();
+        // Change the weather status if there's a new one
         if (lastWeatherStatus) {
             Object.assign(observer, lastWeatherStatus);
         }
@@ -30,17 +51,28 @@ const WeatherTagHandler = {
             }, 500);
         }
     },
+    /**
+     * Removes a WeatherTag
+     * @param {WeatherTag} observer - Weather tag web component class
+     * @return {undefined}
+     */
     unsubscribe(observer) {
         let index = weatherObservers.indexOf(observer);
         if (index >= 0) {
+            // Removes the WeatherTag element from the array
             weatherObservers.splice(index, 1);
         }
+        // If there are no WeatherTag elements in the array, clear properties
         if (weatherObservers.length === 0) {
             clearInterval(weatherInterval);
             weatherInterval = undefined;
             lastWeatherStatus = undefined;
         }
     },
+    /**
+     * Gets weather from coordenates and updates status
+     * @return {Promise}
+     */
     getWeatherUpdate() {
         let geoinfo = window["geoinfo"];
         if (geoinfo) {
@@ -50,10 +82,12 @@ const WeatherTagHandler = {
         return requestWeather(latitude, longitude)
             .then((response) => {
             return response.json().then((data) => {
+                // Sets the current weather status
                 lastWeatherStatus = {
                     weather: data.weather,
                     temperature: data.main.temp,
                 };
+                // Dispatch new event
                 let weatherEvent = new CustomEvent("WEATHER_DATA_CHANGED", {
                     detail: lastWeatherStatus,
                 });
@@ -64,6 +98,10 @@ const WeatherTagHandler = {
             console.log("an error happen getting the weather", e);
         });
     },
+    /**
+     * Updates the weather interval if it's empty
+     * @return {undefined}
+     */
     startWeatherUpdate() {
         if (!weatherInterval) {
             weatherInterval = setInterval(this.getWeatherUpdate, WEATHER_INTERVAL_TIME);
@@ -76,12 +114,23 @@ export class WeatherTag {
         this.temperatureType = "temperature";
         this.latitude = 0;
         this.longitude = 0;
+        /**
+         *
+         */
         this.weatherChanged = (event) => {
             if (event.detail) {
                 Object.assign(this, Object.assign({}, event.detail));
             }
         };
     }
+    /**
+     * Updates the 'temperatureUnit' and 'temperatureType' props with the values of
+     * 'weatherObject' passed as argument
+     *
+     * As 'init' is called in 'componentWillLoad', it's only executed one time
+     * @param {any} attr
+     *
+     */
     init(attr) {
         try {
             Object.assign(this, Object.assign({}, attr), {
@@ -97,9 +146,17 @@ export class WeatherTag {
         let ele = this.el.querySelector(".text-wrapper");
         checkSlideState(slideState, ele, this, this.weatherObject);
     }
+    /**
+     * Lifecycle method that is called once when the component is first
+     * connected to the DOM.
+     */
     componentWillLoad() {
         this.init(this.weatherObject);
     }
+    /**
+     * Lifecycle method that is called once when the component is fully loaded
+     * and the first render() occurs.
+     */
     componentDidLoad() {
         window.addEventListener("WEATHER_DATA_CHANGED", this.weatherChanged);
         WeatherTagHandler.subscribe(this);
@@ -108,12 +165,21 @@ export class WeatherTag {
         window.removeEventListener("WEATHER_DATA_CHANGED", this.weatherChanged);
         WeatherTagHandler.unsubscribe(this);
     }
+    /**
+     * Generates the corresponding temperature text for the weather tag
+     * @param {string} text - Weather information
+     * @return {HTMLElement}
+     */
     renderTemperature(text) {
         if (this.temperatureType === "temperature") {
             return (h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}` },
                 h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX}, ${this.scaleY})` }, text)));
         }
     }
+    /**
+     * Generates the corresponding weather icon for the weather tag
+     * @return {HTMLElement}
+     */
     renderIcon() {
         if (this.temperatureType !== "temperature" &&
             this.weather &&

@@ -1,13 +1,27 @@
 import velocity from "velocity-animate";
 import SlideState from "../../common/slide-state";
+// import { duration } from "moment";
+/**
+ * Gets device size dimensions
+ * @return {object} deviceDimensions
+ */
 function getDeviceDimensions() {
     let deviceDimensions = window["device_window_size"];
     return deviceDimensions;
 }
+/**
+ * Gets player size dimensions
+ * @return {object} playerDimensions
+ */
 function getPlayerDimensions() {
     let playerDimensions = window["player_window_size"];
     return playerDimensions;
 }
+/**
+ * Calculates the device width attribute size as a percentage of the window width for the content
+ * @param {number} deviceWidth
+ * @return {number} Percetage for the width attribute
+ */
 function calculateWidthAdjustment(deviceWidth) {
     let playerDimensions = getPlayerDimensions();
     let windowWidthThreshold = playerDimensions.width;
@@ -16,6 +30,11 @@ function calculateWidthAdjustment(deviceWidth) {
     }
     return 100;
 }
+/**
+ * Calculates the device height attribute size as a percentage of the window height for the content
+ * @param {number} deviceHeight
+ * @return {number} Percetage for the height attribute
+ */
 function calculateHeightAdjustment(deviceHeight) {
     let playerDimensions = getPlayerDimensions();
     let windowHeightThreshold = playerDimensions.height;
@@ -24,6 +43,11 @@ function calculateHeightAdjustment(deviceHeight) {
     }
     return 100;
 }
+/**
+ * Renders a simple image tag to represent the content
+ * @prop {any} content
+ * @return {HTMLElement | null}
+ */
 function renderContentImage(content) {
     if (content.type === "image") {
         let deviceDimensions = getDeviceDimensions();
@@ -38,6 +62,12 @@ function renderContentImage(content) {
     }
     return null;
 }
+/**
+ * Renders the <video-tag /> to represent the content
+ * @prop {any} content
+ * @prop {SlideState} slideState
+ * @return {HTMLElement | null}
+ */
 function renderContentVideo(content, slideState) {
     if (content.type === "video") {
         let deviceDimensions = getDeviceDimensions();
@@ -47,6 +77,7 @@ function renderContentVideo(content, slideState) {
             width: `${width}%`,
             height: `${height}%`,
         };
+        // This is passed down to the video-tag as a videoObject prop
         let video = {
             src: content.url,
             top: 0,
@@ -62,6 +93,13 @@ function renderContentVideo(content, slideState) {
     }
     return null;
 }
+/**
+ * Renders the <custom-content-tag /> to represent custom content
+ * created by the user
+ * @prop {any} content
+ * @prop {SlideState} slideState
+ * @return {HTMLStencilElement | null}
+ */
 function renderCustomContent(content, slideState) {
     if (content.type === "customContent") {
         let deviceDimensions = getDeviceDimensions();
@@ -71,6 +109,7 @@ function renderCustomContent(content, slideState) {
             width: `${width}%`,
             height: `${height}%`,
         };
+        // This is passed down to the custom-content-tag as a data prop
         let data = Object.assign({}, content.__data__, {
             containerWidth: content.width,
             containerHeight: content.height,
@@ -116,40 +155,75 @@ export class ContentSlideTag {
                 this.lastContentId = content.id;
             }
         };
+        /**
+         * Gets animation for the content
+         * @return {Promise}
+         */
         this.getAnimation = () => {
             let container = this.el.querySelector(".content-slide-wrapper");
+            // Returns animation for the .content-slide-wrapper class
             switch (this.content.animation) {
+                // Animation from botton to top
                 case "slideUp":
                     return velocity(container, { translateY: "100%", opacity: 1 }, { duration: 0 }).then(() => {
                         return velocity(container, { translateY: "0%" }, { duration: 2 * 1000 });
                     });
+                // Animation from top to bottom
                 case "slideDown":
                     return velocity(container, { translateY: "-100%", opacity: 1 }, { duration: 0 }).then(() => {
                         return velocity(container, { translateY: "0%" }, { duration: 2 * 1000 });
                     });
+                // Animation from left to right
                 case "slideRight":
                     return velocity(container, { translateX: "-100%", opacity: 1 }, { duration: 0 }).then(() => {
                         return velocity(container, { translateX: "0%" }, { duration: 2 * 1000 });
                     });
+                // Animation from right to left
                 case "slideLeft":
                     return velocity(container, { translateX: "100%", opacity: 1 }, { duration: 0 }).then(() => {
                         return velocity(container, { translateX: "0%" }, { duration: 2 * 1000 });
                     });
+                // Fading animation
                 case "fade":
                     return velocity(container, { opacity: 0 }, { duration: 0 }).then(() => {
                         return velocity(container, { opacity: 1 }, { duration: 2 * 1000 });
                     });
+                // No animation by default
                 default:
                     return velocity(container, { opacity: 1 }, { duration: 1 });
             }
         };
     }
+    /**
+     * ContentSlideTag events
+     *
+     * Listens events:
+     *  CONTENT_PLAYER_CHANGED
+     *  HIDE_LAST_SLIDE
+     *
+     * Dispatches events:
+     *  HIDE_LAST_SLIDE
+     *
+     */
+    /**
+     * Updates the contentSlideObject with the value of 'att'
+     *
+     * As 'init' is called in 'componentWillLoad', it's only executed one time
+     */
     init(att) {
         Object.assign(this, Object.assign({}, att));
     }
+    /**
+     * Lifecycle method that is called once when the component is first
+     * connected to the DOM.
+     */
     componentWillLoad() {
         this.init(this.contentSlideObject);
     }
+    /**
+     * Lifecycle method that is called just after the component updates.
+     * It's never called during the first render()
+     */
     componentDidUpdate() {
         (function (status) {
             console.log([
@@ -162,6 +236,7 @@ export class ContentSlideTag {
             ][status]);
         })(this.status);
         let ele = this.el.querySelector(".content-slide-wrapper");
+        // According to the status of the content, change the opacity to show or hide
         switch (this.status) {
             case SlideState.INIT:
                 if (ele) {
@@ -187,11 +262,21 @@ export class ContentSlideTag {
                 break;
         }
     }
+    /**
+     * Lifecycle method that is called once when the component is fully loaded
+     * and the first render() occurs.
+     *
+     * Adds event listeners for "CONTENT_PLAYER_CHANGED" and for "HIDE_LAST_SLIDE"
+     */
     componentDidLoad() {
         this.status = SlideState.INIT;
         window.addEventListener("CONTENT_PLAYER_CHANGED", this.contentChanged);
         window.addEventListener("HIDE_LAST_SLIDE", this.hideLastSlide);
     }
+    /**
+     * When the component is no unloaded, it removes the events listeners for "CONTENT_PLAYER_CHANGED"
+     * and for "HIDE_LAST_SLIDE"
+     */
     componentDidUnload() {
         window.removeEventListener("CONTENT_PLAYER_CHANGED", this.contentChanged);
         window.removeEventListener("HIDE_LAST_SLIDE", this.hideLastSlide);
