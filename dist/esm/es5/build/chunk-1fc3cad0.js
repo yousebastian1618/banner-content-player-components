@@ -1,0 +1,1 @@
+var SlideState;!function(I){I[I.INIT=0]="INIT",I[I.WAIT_ANIMATION=1]="WAIT_ANIMATION",I[I.START_ANIMATION=2]="START_ANIMATION",I[I.SHOW=3]="SHOW",I[I.TRANSITION=4]="TRANSITION",I[I.HIDE=5]="HIDE"}(SlideState||(SlideState={}));var SlideState$1=SlideState;export{SlideState$1 as a};
