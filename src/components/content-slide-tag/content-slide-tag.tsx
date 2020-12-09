@@ -282,6 +282,7 @@ export class ContentSlideTag {
     if (!event.detail) {
       this.status = SlideState.HIDE;
       this.lastContentId = undefined;
+      this.content = null;
     } else {
       let { content } = event.detail;
       if (content === undefined) {
