@@ -5,8 +5,8 @@ import checkSlideState from "../../common/text-behaviour";
 
 let weatherInterval;
 let weatherObservers = [];
-// http://api.openweathermap.org/data/2.5/weather?lat=32.5149469&lon=-117.0382471&appid=<api-key>
-const WEATHER_API = "http://api.openweathermap.org/data/2.5/weather";
+// https://api.openweathermap.org/data/2.5/weather?lat=32.5149469&lon=-117.0382471&appid=<api-key>
+const WEATHER_API = "https://api.openweathermap.org/data/2.5/weather";
 const WEATHER_API_KEY = "0f93a4013a0b381ea772b09917255c1f";
 const WEATHER_INTERVAL_TIME = 10 * 60 * 1000; //10 min
 
@@ -262,7 +262,7 @@ export class WeatherTag implements BaseText {
       return (
         <img
           class="weather-icon"
-          src={`http://openweathermap.org/img/w/${this.weather[0].icon}.png`}
+          src={`https://openweathermap.org/img/w/${this.weather[0].icon}.png`}
         />
       );
     }
