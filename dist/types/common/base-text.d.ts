@@ -19,7 +19,6 @@ export interface BaseText {
     strokeWidth: number;
     strokeLineCap: string;
     strokeLineJoin: string;
-    zIndex: number;
     containerWidth: number;
     containerHeight: number;
 }

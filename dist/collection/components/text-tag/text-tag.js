@@ -53,7 +53,6 @@ export class TextTag {
             const deviceWidth = window["device_window_size"].width;
             let previewerAdjustment = 1;
             if (deviceWidth != contentPlayerWidth) {
-                console.log("in CMS previewer");
                 previewerAdjustment = contentPlayerWidth / deviceWidth;
             }
             let translation = 0;

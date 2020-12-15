@@ -15,7 +15,6 @@ function getBaseTextStyle(baseText) {
         left: `        ${(baseText.left / baseText.containerWidth) * 100}%`,
         width: `       ${(baseText.width / baseText.containerWidth) * 100}%`,
         height: `      ${(baseText.height / baseText.containerHeight) * 100}%`,
-        "z-index": `     ${baseText.zIndex}`,
         color: `       ${baseText.fill}`,
         "font-size": `   ${baseText.fontSize}px`,
         "font-weight": ` ${baseText.fontWeight}`,

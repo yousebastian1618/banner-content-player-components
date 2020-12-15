@@ -115,9 +115,7 @@ function renderImages({ content, containerHeight, containerWidth }) {
         height: `${
           ((content.height * content.scaleY) / containerHeight) * 100
         }%`,
-        "min-width": `${
-          ((content.width * content.scaleX) / containerWidth) * 100
-        }%`,
+        width: `${((content.width * content.scaleX) / containerWidth) * 100}%`,
         transform: `rotate(${content.angle}deg)`,
         "transform-origin": `${content.originX} ${content.originY}`,
         "z-index": `${content.zIndex}`,
