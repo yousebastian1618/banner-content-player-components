@@ -5680,7 +5680,6 @@ function getBaseTextStyle(baseText) {
         left: `        ${(baseText.left / baseText.containerWidth) * 100}%`,
         width: `       ${(baseText.width / baseText.containerWidth) * 100}%`,
         height: `      ${(baseText.height / baseText.containerHeight) * 100}%`,
-        "z-index": `     ${baseText.zIndex}`,
         color: `       ${baseText.fill}`,
         "font-size": `   ${baseText.fontSize}px`,
         "font-weight": ` ${baseText.fontWeight}`,
@@ -11254,7 +11253,7 @@ function renderImages({ content, containerHeight, containerWidth }) {
             top: `${(content.top / containerHeight) * 100}%`,
             left: `${(content.left / containerWidth) * 100}%`,
             height: `${((content.height * content.scaleY) / containerHeight) * 100}%`,
-            "min-width": `${((content.width * content.scaleX) / containerWidth) * 100}%`,
+            width: `${((content.width * content.scaleX) / containerWidth) * 100}%`,
             transform: `rotate(${content.angle}deg)`,
             "transform-origin": `${content.originX} ${content.originY}`,
             "z-index": `${content.zIndex}`,
@@ -11511,7 +11510,6 @@ class TextTag {
             const deviceWidth = window["device_window_size"].width;
             let previewerAdjustment = 1;
             if (deviceWidth != contentPlayerWidth) {
-                console.log("in CMS previewer");
                 previewerAdjustment = contentPlayerWidth / deviceWidth;
             }
             let translation = 0;

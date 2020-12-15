@@ -5,7 +5,6 @@ declare function getBaseTextStyle(baseText: BaseText): {
     left: string;
     width: string;
     height: string;
-    "z-index": string;
     color: string;
     "font-size": string;
     "font-weight": string;
