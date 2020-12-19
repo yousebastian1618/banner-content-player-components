@@ -35,7 +35,7 @@ function renderMultiline(
         dy={i === 0 ? `${decimal}em` : `${parseFloat(lineHeight) + decimal}em`}
         text-anchor={anchor}
       >
-        {t}
+        {t || " "}
       </tspan>
     );
   });
