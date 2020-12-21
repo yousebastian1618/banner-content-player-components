@@ -62,7 +62,7 @@ export class ContentPlayerTag {
 
   render() {
     return (
-      <div class="content-player-wrapper">
+      <div id="content-player" class="content-player-wrapper">
         {this.slides.map((slideObject) => {
           return (
             <content-slide-tag

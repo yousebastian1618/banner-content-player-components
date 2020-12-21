@@ -105,6 +105,37 @@ function renderWeathers({
  * @param {object}
  */
 function renderImages({ content, containerHeight, containerWidth }) {
+  // containerWidth and containerHeight are the dimensions of the LED Player
+
+  // contentPlayerHTML is what banner-content-player-components inserts into the LED Player and/or the Playlist Previewer
+  // Capturing it's dimensions and comparing it to the containerWidth/Height is how we determine which context the banner-content-player-components is being loaded into
+  const contentPlayerHTML = document.getElementById("content-player");
+  const contentPlayerHTMLWidth = contentPlayerHTML.clientWidth;
+  const contentPlayerHTMLHeight = contentPlayerHTML.clientHeight;
+
+  // Adjustment is for scaling image's original w and h to scale to either the Player or Playlist Previewer contexts
+  let adjustedImageWidth, adjustedImageHeight;
+
+  if (
+    contentPlayerHTMLWidth !== containerWidth ||
+    contentPlayerHTMLHeight !== containerHeight
+  ) {
+    // Playlist Previewer Context
+
+    const previewerScaleX =
+      (contentPlayerHTMLWidth / containerWidth) * content.scaleX;
+
+    const previewerScaleY =
+      (contentPlayerHTMLHeight / containerHeight) * content.scaleY;
+
+    adjustedImageHeight = `${content.height * previewerScaleY}px`;
+    adjustedImageWidth = `${content.width * previewerScaleX}px`;
+  } else {
+    // LED Player context
+    adjustedImageHeight = `${content.height * content.scaleY}px`;
+    adjustedImageWidth = `${content.width * content.scaleX}px`;
+  }
+
   return (
     <img
       class="custom-content-image"
@@ -112,12 +143,11 @@ function renderImages({ content, containerHeight, containerWidth }) {
       style={{
         top: `${(content.top / containerHeight) * 100}%`,
         left: `${(content.left / containerWidth) * 100}%`,
-        height: `${
-          ((content.height * content.scaleY) / containerHeight) * 100
-        }%`,
-        width: `${((content.width * content.scaleX) / containerWidth) * 100}%`,
+        height: adjustedImageHeight,
+        "min-width": adjustedImageWidth,
+        "max-width": adjustedImageWidth,
         transform: `rotate(${content.angle}deg)`,
-        "transform-origin": `${content.originX} ${content.originY}`
+        "transform-origin": `${content.originX} ${content.originY}`,
       }}
     />
   );
