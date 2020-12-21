@@ -15,16 +15,16 @@ export class ProgressBarTag {
   @Prop() secondaryColor: string;
   @Prop() containerWidth: number;
 
-  /**
-   * Lifecycle method that is called once when the component is first
-   * connected to the DOM.
-   */
+  //
+  //  Lifecycle method that is called once when the component is first
+  //  connected to the DOM.
+  //
   componentWillLoad() {}
 
-  /**
-   * Lifecycle method that is called once when the component is fully loaded
-   * and the first render() occurs.
-   */
+  //
+  //  Lifecycle method that is called once when the component is fully loaded
+  //  and the first render() occurs.
+  //
   componentDidLoad() {}
 
   render() {

@@ -30,24 +30,9 @@ export declare class ClockTag implements BaseText {
     slideState: number;
     time: any;
     clockId: any;
-    /**
-     * Updates the 'clockObject' and the 'customMask' properties
-     *
-     * As 'init' is called in 'componentWillLoad', it's only executed one time
-     * @param {any} attr
-     *
-     */
     init(attr: any): void;
     checkSlideState(slideState: any): void;
-    /**
-     * Lifecycle method that is called once when the component is first
-     * connected to the DOM.
-     */
     componentWillLoad(): void;
-    /**
-     * Lifecycle method that is called once when the component is fully loaded
-     * and the first render() occurs.
-     */
     componentDidLoad(): void;
     render(): JSX.Element;
 }

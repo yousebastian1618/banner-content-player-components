@@ -13,34 +13,34 @@ const WEATHER_INTERVAL_TIME = 10 * 60 * 1000; //10 min
 // Global variables
 let latitude, longitude, lastWeatherStatus, throttlingTimeout;
 
-/**
- *
- * Create query to fetch Open Weather Map API
- * @param {*} latitude - latitude coordenate
- * @param {*} longitude - longitude coordenate
- * @return {string}
- */
+//
+//
+//  Create query to fetch Open Weather Map API
+//  @param {*} latitude - latitude coordenate
+//  @param {*} longitude - longitude coordenate
+//  @return {string}
+//
 function getWeatherQuery(latitude: number, longitude: number) {
   return `?lat=${latitude}&lon=${longitude}&appid=${WEATHER_API_KEY}`;
 }
 
-/**
- * Fetches the Open Weather Map API with a query
- * @param {*} latitude - latitude coordenate
- * @param {*} longitude - longitude coordenate
- * @return {Promise}
- */
+//
+//  Fetches the Open Weather Map API with a query
+//  @param {*} latitude - latitude coordenate
+//  @param {*} longitude - longitude coordenate
+//  @return {Promise}
+//
 function requestWeather(latitude: number, longitude: number) {
   let url = WEATHER_API + getWeatherQuery(latitude, longitude);
   return fetch(url);
 }
 
 const WeatherTagHandler = {
-  /**
-   * Adds a WeatherTag
-   * @param {WeatherTag} observer - Weather tag web component class
-   * @return {undefined}
-   */
+  //
+  //  Adds a WeatherTag
+  //  @param {WeatherTag} observer - Weather tag web component class
+  //  @return {undefined}
+  //
   subscribe(observer: WeatherTag) {
     let index = weatherObservers.indexOf(observer);
     if (index === -1) {
@@ -58,11 +58,11 @@ const WeatherTagHandler = {
       }, 500);
     }
   },
-  /**
-   * Removes a WeatherTag
-   * @param {WeatherTag} observer - Weather tag web component class
-   * @return {undefined}
-   */
+  //
+  // Removes a WeatherTag
+  // @param {WeatherTag} observer - Weather tag web component class
+  //  @return {undefined}
+  //
   unsubscribe(observer: WeatherTag) {
     let index = weatherObservers.indexOf(observer);
     if (index >= 0) {
@@ -77,10 +77,10 @@ const WeatherTagHandler = {
       lastWeatherStatus = undefined;
     }
   },
-  /**
-   * Gets weather from coordenates and updates status
-   * @return {Promise}
-   */
+  //
+  //  Gets weather from coordenates and updates status
+  //  @return {Promise}
+  //
   getWeatherUpdate() {
     let geoinfo = window["geoinfo"];
     if (geoinfo) {
@@ -106,10 +106,10 @@ const WeatherTagHandler = {
         console.log("an error happen getting the weather", e);
       });
   },
-  /**
-   * Updates the weather interval if it's empty
-   * @return {undefined}
-   */
+  //
+  //  Updates the weather interval if it's empty
+  //  @return {undefined}
+  //
   startWeatherUpdate() {
     if (!weatherInterval) {
       weatherInterval = setInterval(
@@ -158,14 +158,14 @@ export class WeatherTag implements BaseText {
   @State() temperature: number;
   @State() weather: any;
 
-  /**
-   * Updates the 'temperatureUnit' and 'temperatureType' props with the values of
-   * 'weatherObject' passed as argument
-   *
-   * As 'init' is called in 'componentWillLoad', it's only executed one time
-   * @param {any} attr
-   *
-   */
+  //
+  //  Updates the 'temperatureUnit' and 'temperatureType' props with the values of
+  //  'weatherObject' passed as argument
+  //
+  //  As 'init' is called in 'componentWillLoad', it's only executed one time
+  //  @param {any} attr
+  //
+  //
   @Watch("weatherObject")
   init(attr: any) {
     try {
@@ -188,18 +188,18 @@ export class WeatherTag implements BaseText {
     checkSlideState(slideState, ele, this, this.weatherObject);
   }
 
-  /**
-   * Lifecycle method that is called once when the component is first
-   * connected to the DOM.
-   */
+  //
+  //  Lifecycle method that is called once when the component is first
+  //  connected to the DOM.
+  //
   componentWillLoad() {
     this.init(this.weatherObject);
   }
 
-  /**
-   * Lifecycle method that is called once when the component is fully loaded
-   * and the first render() occurs.
-   */
+  //
+  //  Lifecycle method that is called once when the component is fully loaded
+  //  and the first render() occurs.
+  //
   componentDidLoad() {
     window.addEventListener("WEATHER_DATA_CHANGED", this.weatherChanged);
     WeatherTagHandler.subscribe(this);
@@ -210,20 +210,17 @@ export class WeatherTag implements BaseText {
     WeatherTagHandler.unsubscribe(this);
   }
 
-  /**
-   *
-   */
   weatherChanged = (event) => {
     if (event.detail) {
       Object.assign(this, { ...event.detail });
     }
   };
 
-  /**
-   * Generates the corresponding temperature text for the weather tag
-   * @param {string} text - Weather information
-   * @return {HTMLElement}
-   */
+  //
+  //  Generates the corresponding temperature text for the weather tag
+  //  @param {string} text - Weather information
+  //  @return {HTMLElement}
+  //
   renderTemperature(text) {
     if (this.temperatureType === "temperature") {
       return (
@@ -248,10 +245,10 @@ export class WeatherTag implements BaseText {
     }
   }
 
-  /**
-   * Generates the corresponding weather icon for the weather tag
-   * @return {HTMLElement}
-   */
+  //
+  //  Generates the corresponding weather icon for the weather tag
+  //  @return {HTMLElement}
+  //
   renderIcon() {
     if (
       this.temperatureType !== "temperature" &&

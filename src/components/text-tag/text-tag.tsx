@@ -40,12 +40,12 @@ export class TextTag implements BaseText {
   @Prop({ mutable: true }) containerWidth: number;
   @Prop({ mutable: true }) slideState: number;
 
-  /**
-   * Updates the 'textObject' prop with the value of attr.
-   *
-   * As 'init' is called in 'componentWillLoad', it's only executed one time
-   * @param {any} attr
-   */
+  //
+  //  Updates the 'textObject' prop with the value of attr.
+  //
+  //  As 'init' is called in 'componentWillLoad', it's only executed one time
+  //  @param {any} attr
+  //
   @Watch("textObject")
   init(attr: any) {
     try {
@@ -61,18 +61,18 @@ export class TextTag implements BaseText {
     checkSlideState(slideState, ele, this, this.textObject);
   }
 
-  /**
-   * Lifecycle method that is called once when the component is first
-   * connected to the DOM.
-   */
+  //
+  //  Lifecycle method that is called once when the component is first
+  //  connected to the DOM.
+  //
   componentWillLoad() {
     this.init(this.textObject);
   }
 
-  /**
-   * Lifecycle method that is called once when the component is fully loaded
-   * and the first render() occurs.
-   */
+  //
+  //  Lifecycle method that is called once when the component is fully loaded
+  //  and the first render() occurs.
+  //
   componentDidLoad() {}
 
   render() {

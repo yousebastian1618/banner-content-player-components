@@ -33,41 +33,13 @@ export declare class WeatherTag implements BaseText {
     slideState: number;
     temperature: number;
     weather: any;
-    /**
-     * Updates the 'temperatureUnit' and 'temperatureType' props with the values of
-     * 'weatherObject' passed as argument
-     *
-     * As 'init' is called in 'componentWillLoad', it's only executed one time
-     * @param {any} attr
-     *
-     */
     init(attr: any): void;
     checkSlideState(slideState: any): void;
-    /**
-     * Lifecycle method that is called once when the component is first
-     * connected to the DOM.
-     */
     componentWillLoad(): void;
-    /**
-     * Lifecycle method that is called once when the component is fully loaded
-     * and the first render() occurs.
-     */
     componentDidLoad(): void;
     componentDidUnload(): void;
-    /**
-     *
-     */
     weatherChanged: (event: any) => void;
-    /**
-     * Generates the corresponding temperature text for the weather tag
-     * @param {string} text - Weather information
-     * @return {HTMLElement}
-     */
     renderTemperature(text: any): JSX.Element;
-    /**
-     * Generates the corresponding weather icon for the weather tag
-     * @return {HTMLElement}
-     */
     renderIcon(): JSX.Element;
     render(): JSX.Element;
 }

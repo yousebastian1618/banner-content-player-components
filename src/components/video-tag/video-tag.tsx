@@ -1,10 +1,10 @@
 import { Component, Element, Prop, Watch } from "@stencil/core";
 import SlideState from "../../common/slide-state";
 
-/**
- * STOP: 0
- * PLAYING: 1
- */
+//
+//  STOP: 0
+//  PLAYING: 1
+//
 enum PlayState {
   STOP,
   PLAYING,
@@ -44,22 +44,22 @@ export class VideoTag {
   alreadyEnded: boolean = true;
   playState: PlayState = PlayState.STOP;
 
-  /**
-   * VideoTag events
-   *
-   * Listens events:
-   *  ended
-   *
-   * Dispatches events:
-   *  VIDEO_CONTENT_ENDED
-   */
+  //
+  //  VideoTag events
+  //
+  //  Listens events:
+  //   ended
+  //
+  //  Dispatches events:
+  //   VIDEO_CONTENT_ENDED
+  //
 
-  /**
-   * Updates the 'videoObject' prop with the value of any.
-   *
-   * As 'init' is called in 'componentWillLoad', it's only executed one time
-   * @param {any} videoObject
-   */
+  //
+  //  Updates the 'videoObject' prop with the value of any.
+  //
+  //  As 'init' is called in 'componentWillLoad', it's only executed one time
+  //  @param {any} videoObject
+  //
   @Watch("videoObject")
   init(videoObject: any) {
     try {
@@ -69,9 +69,9 @@ export class VideoTag {
     }
   }
 
-  /**
-   * Styling hot fix for video-wrapper div
-   */
+  //
+  //  Styling hot fix for video-wrapper div
+  //
   @Watch("adjustment")
   changeStyle(attr: any) {
     try {
@@ -81,11 +81,11 @@ export class VideoTag {
     }
   }
 
-  /**
-   * Whenever 'slideState' changes, it runs 'checkSlideState'
-   * @param slideState
-   * @param oldState
-   */
+  //
+  //  Whenever 'slideState' changes, it runs 'checkSlideState'
+  //  @param slideState
+  //  @param oldState
+  //
   @Watch("slideState")
   checkSlideState(slideState, oldState) {
     if (
@@ -112,34 +112,34 @@ export class VideoTag {
     }
   }
 
-  /**
-   * Lifecycle method that is called once when the component is first
-   * connected to the DOM.
-   */
+  //
+  //  Lifecycle method that is called once when the component is first
+  //  connected to the DOM.
+  //
   componentWillLoad() {
     this.init(this.videoObject);
     this.changeStyle(this.adjustment);
   }
 
-  /**
-   * Lifecycle method that is called once when the component is fully loaded
-   * and the first render() occurs.
-   */
+  //
+  //  Lifecycle method that is called once when the component is fully loaded
+  //  and the first render() occurs.
+  //
   componentDidLoad() {}
 
-  /**
-   * Lifecycle method that is called ojust after the component updates. It's never
-   * called during the first render
-   */
+  //
+  //  Lifecycle method that is called ojust after the component updates. It's never
+  //  called during the first render
+  //
   componentDidUpdate() {}
 
-  /**
-   * Changes 'playState' from 'STOP' to 'PLAYING'
-   * and   playing the content.
-   *
-   * Adds an event listener for "ended" and passes function 'ended' as Callback
-   * @return {undefined}
-   */
+  //
+  //  Changes 'playState' from 'STOP' to 'PLAYING'
+  //  and   playing the content.
+  //
+  //  Adds an event listener for "ended" and passes function 'ended' as Callback
+  //  @return {undefined}
+  //
   play = () => {
     let ele = this.el.querySelector("video");
     if (ele && this.playState === PlayState.STOP) {
@@ -149,13 +149,13 @@ export class VideoTag {
     }
   };
 
-  /**
-   * Changes 'playState' from 'PLAYING' to 'STOP'
-   * and stops playing the content
-   *
-   * Removes "ended" event listener and dispatches "VIDEO_CONTENT_ENDED"
-   * for the Content Player
-   */
+  //
+  //  Changes 'playState' from 'PLAYING' to 'STOP'
+  //  and stops playing the content
+  //
+  //  Removes "ended" event listener and dispatches "VIDEO_CONTENT_ENDED"
+  //  for the Content Player
+  //
   ended = () => {
     let ele = this.el.querySelector("video");
     if (this.playState === PlayState.PLAYING) {
