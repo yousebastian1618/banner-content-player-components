@@ -15,27 +15,27 @@ export class LoadingContentTag {
   @Prop({ mutable: true }) containerWidth: number = 0;
   @Prop({ mutable: true }) containerHeight: number = 0;
 
-  /**
-   * LoadingContentTag events
-   *
-   * Listens events:
-   *  CONTENT_STATUS
-   *
-   */
+  //
+  //  LoadingContentTag events
+  //
+  //  Listens events:
+  //   CONTENT_STATUS
+  //
+  //
 
-  /**
-   * Lifecycle method that is called once when the component is fully loaded
-   * and the first render() occurs.
-   *
-   * Adds an event listener for 'CONTENT_STATUS' and passes changeState as a Callback
-   */
+  //
+  //  Lifecycle method that is called once when the component is fully loaded
+  //  and the first render() occurs.
+  //
+  //  Adds an event listener for 'CONTENT_STATUS' and passes changeState as a Callback
+  //
   componentDidLoad() {
     window.addEventListener("CONTENT_STATUS", this.changeState);
   }
 
-  /**
-   * Changes state according to the event presented
-   */
+  //
+  //  Changes state according to the event presented
+  //
   changeState = (event) => {
     let {
       state,

@@ -28,23 +28,9 @@ export declare class TextTag implements BaseText {
     containerHeight: number;
     containerWidth: number;
     slideState: number;
-    /**
-     * Updates the 'textObject' prop with the value of attr.
-     *
-     * As 'init' is called in 'componentWillLoad', it's only executed one time
-     * @param {any} attr
-     */
     init(attr: any): void;
     checkSlideState(slideState: any): void;
-    /**
-     * Lifecycle method that is called once when the component is first
-     * connected to the DOM.
-     */
     componentWillLoad(): void;
-    /**
-     * Lifecycle method that is called once when the component is fully loaded
-     * and the first render() occurs.
-     */
     componentDidLoad(): void;
     render(): JSX.Element;
 }

@@ -3,29 +3,29 @@ import velocity from "velocity-animate";
 import SlideState from "../../common/slide-state";
 // import { duration } from "moment";
 
-/**
- * Gets device size dimensions
- * @return {object} deviceDimensions
- */
+//
+//  Gets device size dimensions
+//  @return {object} deviceDimensions
+//
 function getDeviceDimensions() {
   let deviceDimensions = window["device_window_size"];
   return deviceDimensions;
 }
 
-/**
- * Gets player size dimensions
- * @return {object} playerDimensions
- */
+//
+//  Gets player size dimensions
+//  @return {object} playerDimensions
+//
 function getPlayerDimensions() {
   let playerDimensions = window["player_window_size"];
   return playerDimensions;
 }
 
-/**
- * Calculates the device width attribute size as a percentage of the window width for the content
- * @param {number} deviceWidth
- * @return {number} Percetage for the width attribute
- */
+//
+//  Calculates the device width attribute size as a percentage of the window width for the content
+//  @param {number} deviceWidth
+//  @return {number} Percetage for the width attribute
+//
 function calculateWidthAdjustment(deviceWidth) {
   let playerDimensions = getPlayerDimensions();
   let windowWidthThreshold = playerDimensions.width;
@@ -36,11 +36,11 @@ function calculateWidthAdjustment(deviceWidth) {
   return 100;
 }
 
-/**
- * Calculates the device height attribute size as a percentage of the window height for the content
- * @param {number} deviceHeight
- * @return {number} Percetage for the height attribute
- */
+//
+//  Calculates the device height attribute size as a percentage of the window height for the content
+//  @param {number} deviceHeight
+//  @return {number} Percetage for the height attribute
+//
 function calculateHeightAdjustment(deviceHeight) {
   let playerDimensions = getPlayerDimensions();
   let windowHeightThreshold = playerDimensions.height;
@@ -51,11 +51,11 @@ function calculateHeightAdjustment(deviceHeight) {
   return 100;
 }
 
-/**
- * Renders a simple image tag to represent the content
- * @prop {any} content
- * @return {HTMLElement | null}
- */
+//
+//  Renders a simple image tag to represent the content
+//  @prop {any} content
+//  @return {HTMLElement | null}
+//
 function renderContentImage(content) {
   if (content.type === "image") {
     let deviceDimensions = getDeviceDimensions();
@@ -76,12 +76,12 @@ function renderContentImage(content) {
   return null;
 }
 
-/**
- * Renders the <video-tag /> to represent the content
- * @prop {any} content
- * @prop {SlideState} slideState
- * @return {HTMLElement | null}
- */
+//
+//  Renders the <video-tag /> to represent the content
+//  @prop {any} content
+//  @prop {SlideState} slideState
+//  @return {HTMLElement | null}
+//
 function renderContentVideo(content, slideState) {
   if (content.type === "video") {
     let deviceDimensions = getDeviceDimensions();
@@ -116,13 +116,13 @@ function renderContentVideo(content, slideState) {
   return null;
 }
 
-/**
- * Renders the <custom-content-tag /> to represent custom content
- * created by the user
- * @prop {any} content
- * @prop {SlideState} slideState
- * @return {HTMLStencilElement | null}
- */
+//
+//  Renders the <custom-content-tag /> to represent custom content
+//  created by the user
+//  @prop {any} content
+//  @prop {SlideState} slideState
+//  @return {HTMLStencilElement | null}
+//
 function renderCustomContent(content, slideState) {
   if (content.type === "customContent") {
     let deviceDimensions = getDeviceDimensions();
@@ -167,40 +167,40 @@ export class ContentSlideTag {
   animationPromise: any = undefined;
   lastContentId: string;
 
-  /**
-   * ContentSlideTag events
-   *
-   * Listens events:
-   *  CONTENT_PLAYER_CHANGED
-   *  HIDE_LAST_SLIDE
-   *
-   * Dispatches events:
-   *  HIDE_LAST_SLIDE
-   *
-   */
+  //
+  //  ContentSlideTag events
+  //
+  //  Listens events:
+  //   CONTENT_PLAYER_CHANGED
+  //   HIDE_LAST_SLIDE
+  //
+  //  Dispatches events:
+  //  HIDE_LAST_SLIDE
+  //
+  //
 
-  /**
-   * Updates the contentSlideObject with the value of 'att'
-   *
-   * As 'init' is called in 'componentWillLoad', it's only executed one time
-   */
+  //
+  //  Updates the contentSlideObject with the value of 'att'
+  //
+  //  As 'init' is called in 'componentWillLoad', it's only executed one time
+  //
   @Watch("contentSlideObject")
   init(att) {
     Object.assign(this, { ...att });
   }
 
-  /**
-   * Lifecycle method that is called once when the component is first
-   * connected to the DOM.
-   */
+  //
+  //  Lifecycle method that is called once when the component is first
+  //  connected to the DOM.
+  //
   componentWillLoad() {
     this.init(this.contentSlideObject);
   }
 
-  /**
-   * Lifecycle method that is called just after the component updates.
-   * It's never called during the first render()
-   */
+  //
+  //  Lifecycle method that is called just after the component updates.
+  //  It's never called during the first render()
+  //
   componentDidUpdate() {
     (function (status) {
       console.log(
@@ -247,22 +247,22 @@ export class ContentSlideTag {
     }
   }
 
-  /**
-   * Lifecycle method that is called once when the component is fully loaded
-   * and the first render() occurs.
-   *
-   * Adds event listeners for "CONTENT_PLAYER_CHANGED" and for "HIDE_LAST_SLIDE"
-   */
+  //
+  //  Lifecycle method that is called once when the component is fully loaded
+  //  and the first render() occurs.
+  //
+  //  Adds event listeners for "CONTENT_PLAYER_CHANGED" and for "HIDE_LAST_SLIDE"
+  //
   componentDidLoad() {
     this.status = SlideState.INIT;
     window.addEventListener("CONTENT_PLAYER_CHANGED", this.contentChanged);
     window.addEventListener("HIDE_LAST_SLIDE", this.hideLastSlide);
   }
 
-  /**
-   * When the component is no unloaded, it removes the events listeners for "CONTENT_PLAYER_CHANGED"
-   * and for "HIDE_LAST_SLIDE"
-   */
+  //
+  //  When the component is no unloaded, it removes the events listeners for "CONTENT_PLAYER_CHANGED"
+  //  and for "HIDE_LAST_SLIDE"
+  //
   componentDidUnload() {
     window.removeEventListener("CONTENT_PLAYER_CHANGED", this.contentChanged);
     window.removeEventListener("HIDE_LAST_SLIDE", this.hideLastSlide);
@@ -303,10 +303,10 @@ export class ContentSlideTag {
     }
   };
 
-  /**
-   * Gets animation for the content
-   * @return {Promise}
-   */
+  //
+  //  Gets animation for the content
+  //  @return {Promise}
+  //
   getAnimation = () => {
     let container = this.el.querySelector(".content-slide-wrapper");
 

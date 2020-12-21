@@ -1,9 +1,9 @@
 import { Component, Prop } from "@stencil/core";
 
-/**
- * Generates CSS for custom-content-container
- * @return {object}
- */
+//
+//  Generates CSS for custom-content-container
+//  @return {object}
+//
 function getBackground(data, adjustment) {
   let bg = {};
   if (data.backgroundImage) {
@@ -23,11 +23,11 @@ function getBackground(data, adjustment) {
   return bg;
 }
 
-/**
- * Renders videos tags as <video-tag />
- * @param {object}
- * @return {HTMLStencilElement}
- */
+//
+//  Renders videos tags as <video-tag />
+//  @param {object}
+//  @return {HTMLStencilElement}
+//
 function renderVideos({
   content,
   containerWidth,
@@ -44,11 +44,11 @@ function renderVideos({
   );
 }
 
-/**
- * Renders text tags as <text-tag />
- * @param {object}
- * @return {HTMLStencilElement}
- */
+//
+//  Renders text tags as <text-tag />
+//  @param {object}
+//  @return {HTMLStencilElement}
+//
 function renderTexts({ content, containerWidth, containerHeight, slideState }) {
   return (
     <text-tag
@@ -60,10 +60,10 @@ function renderTexts({ content, containerWidth, containerHeight, slideState }) {
   );
 }
 
-/**
- * Renders clock tags as <clock-tag />
- * @param {object}
- */
+//
+//  Renders clock tags as <clock-tag />
+//  @param {object}
+//
 function renderClocks({
   content,
   containerWidth,
@@ -80,10 +80,10 @@ function renderClocks({
   );
 }
 
-/**
- * Renders weather tags as <weather-tag />
- * @param {object}
- */
+//
+//  Renders weather tags as <weather-tag />
+//  @param {object}
+//
 function renderWeathers({
   content,
   containerWidth,
@@ -100,10 +100,10 @@ function renderWeathers({
   );
 }
 
-/**
- * Renders images tags
- * @param {object}
- */
+//
+//  Renders images tags
+//  @param {object}
+//
 function renderImages({ content, containerHeight, containerWidth }) {
   // containerWidth and containerHeight are the dimensions of the LED Player
 
@@ -153,9 +153,9 @@ function renderImages({ content, containerHeight, containerWidth }) {
   );
 }
 
-/**
- * Pairs content type to rendering function
- */
+//
+//  Pairs content type to rendering function
+//
 const render = {
   "i-text": renderTexts,
   image: renderImages,
