@@ -30,28 +30,16 @@ function renderWeathers({ content, containerWidth, containerHeight, slideState, 
     return (h("weather-tag", { weatherObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
 function renderImages({ content, containerHeight, containerWidth, backgroundStyle, }) {
-    console.log("args", {
-        content,
-        containerHeight,
-        containerWidth,
-        backgroundStyle,
-    });
     const bStyleWidthDecimal = backgroundStyle.width.slice(0, -1) / 100;
     const bStyleHeightDecimal = backgroundStyle.height.slice(0, -1) / 100;
-    console.log("sWD", bStyleWidthDecimal);
-    console.log("bsh", bStyleHeightDecimal);
     const contentPlayerHTML = document.getElementById("content-player");
-    console.log("contentPlay", contentPlayerHTML);
     const customContentContainerWidth = contentPlayerHTML.clientWidth * bStyleWidthDecimal;
     const customContentContainerHeight = contentPlayerHTML.clientHeight * bStyleHeightDecimal;
     let adjustedImageWidth, adjustedImageHeight;
-    console.log("customContentContainerWidth", customContentContainerWidth);
     if (customContentContainerWidth !== containerWidth ||
         customContentContainerHeight !== containerHeight) {
         const previewerScaleX = (customContentContainerWidth / containerWidth) * content.scaleX;
-        console.log("pScaleY", previewerScaleX);
         const previewerScaleY = (customContentContainerHeight / containerHeight) * content.scaleY;
-        console.log("pScaleY", previewerScaleY);
         adjustedImageHeight = `${content.height * previewerScaleY}px`;
         adjustedImageWidth = `${content.width * previewerScaleX}px`;
     }
@@ -59,7 +47,6 @@ function renderImages({ content, containerHeight, containerWidth, backgroundStyl
         adjustedImageHeight = `${content.height * content.scaleY}px`;
         adjustedImageWidth = `${content.width * content.scaleX}px`;
     }
-    console.log("adjustWidth", adjustedImageWidth);
     return (h("img", { class: "custom-content-image", src: content.src, style: {
             top: `${(content.top / containerHeight) * 100}%`,
             left: `${(content.left / containerWidth) * 100}%`,

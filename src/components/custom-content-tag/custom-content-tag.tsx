@@ -110,25 +110,16 @@ function renderImages({
   containerWidth,
   backgroundStyle,
 }) {
-  console.log("args", {
-    content,
-    containerHeight,
-    containerWidth,
-    backgroundStyle,
-  });
   //  Need to use the calculated adjusted custom-content-container dimensions, but those are created after
   //  this function runs. So, using backgroundStyle and content-player to calculate those dimensions
   const bStyleWidthDecimal = backgroundStyle.width.slice(0, -1) / 100;
   const bStyleHeightDecimal = backgroundStyle.height.slice(0, -1) / 100;
-  console.log("sWD", bStyleWidthDecimal);
-  console.log("bsh", bStyleHeightDecimal);
 
   // containerWidth and containerHeight are the dimensions of the LED Player
 
   // contentPlayerHTML is what banner-content-player-components inserts into the LED Player and/or the Playlist Previewer
   // Capturing it's dimensions and comparing it to the containerWidth/Height is how we determine which context the banner-content-player-components is being loaded into
   const contentPlayerHTML = document.getElementById("content-player");
-  console.log("contentPlay", contentPlayerHTML);
   const customContentContainerWidth =
     contentPlayerHTML.clientWidth * bStyleWidthDecimal;
   const customContentContainerHeight =
@@ -137,7 +128,6 @@ function renderImages({
   // Adjustment is for scaling image's original w and h to scale to either the Player or Playlist Previewer contexts
   let adjustedImageWidth, adjustedImageHeight;
 
-  console.log("customContentContainerWidth", customContentContainerWidth);
   if (
     customContentContainerWidth !== containerWidth ||
     customContentContainerHeight !== containerHeight
@@ -145,11 +135,9 @@ function renderImages({
     // Playlist Previewer Context
     const previewerScaleX =
       (customContentContainerWidth / containerWidth) * content.scaleX;
-    console.log("pScaleY", previewerScaleX);
 
     const previewerScaleY =
       (customContentContainerHeight / containerHeight) * content.scaleY;
-    console.log("pScaleY", previewerScaleY);
 
     adjustedImageHeight = `${content.height * previewerScaleY}px`;
     adjustedImageWidth = `${content.width * previewerScaleX}px`;
@@ -158,7 +146,6 @@ function renderImages({
     adjustedImageHeight = `${content.height * content.scaleY}px`;
     adjustedImageWidth = `${content.width * content.scaleX}px`;
   }
-  console.log("adjustWidth", adjustedImageWidth);
 
   return (
     <img
