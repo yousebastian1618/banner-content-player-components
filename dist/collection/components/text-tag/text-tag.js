@@ -35,11 +35,11 @@ export class TextTag {
     componentDidLoad() { }
     render() {
         if (this.text) {
-            const contentPlayerWidth = document.getElementsByClassName("content-player-wrapper")[0].clientWidth;
+            const customContentContainerWidth = document.getElementsByClassName("custom-content-container")[0].clientWidth;
             const deviceWidth = window["device_window_size"].width;
             let previewerAdjustment = 1;
-            if (deviceWidth != contentPlayerWidth) {
-                previewerAdjustment = contentPlayerWidth / deviceWidth;
+            if (deviceWidth != customContentContainerWidth) {
+                previewerAdjustment = customContentContainerWidth / deviceWidth;
             }
             let translation = 0;
             if (this.textAlign === "right") {

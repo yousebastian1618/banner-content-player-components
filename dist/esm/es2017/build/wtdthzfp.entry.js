@@ -11248,15 +11248,17 @@ function renderClocks({ content, containerWidth, containerHeight, slideState, })
 function renderWeathers({ content, containerWidth, containerHeight, slideState, }) {
     return (h("weather-tag", { weatherObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-function renderImages({ content, containerHeight, containerWidth }) {
+function renderImages({ content, containerHeight, containerWidth, backgroundStyle, }) {
+    const bStyleWidthDecimal = backgroundStyle.width.slice(0, -1) / 100;
+    const bStyleHeightDecimal = backgroundStyle.height.slice(0, -1) / 100;
     const contentPlayerHTML = document.getElementById("content-player");
-    const contentPlayerHTMLWidth = contentPlayerHTML.clientWidth;
-    const contentPlayerHTMLHeight = contentPlayerHTML.clientHeight;
+    const customContentContainerWidth = contentPlayerHTML.clientWidth * bStyleWidthDecimal;
+    const customContentContainerHeight = contentPlayerHTML.clientHeight * bStyleHeightDecimal;
     let adjustedImageWidth, adjustedImageHeight;
-    if (contentPlayerHTMLWidth !== containerWidth ||
-        contentPlayerHTMLHeight !== containerHeight) {
-        const previewerScaleX = (contentPlayerHTMLWidth / containerWidth) * content.scaleX;
-        const previewerScaleY = (contentPlayerHTMLHeight / containerHeight) * content.scaleY;
+    if (customContentContainerWidth !== containerWidth ||
+        customContentContainerHeight !== containerHeight) {
+        const previewerScaleX = (customContentContainerWidth / containerWidth) * content.scaleX;
+        const previewerScaleY = (customContentContainerHeight / containerHeight) * content.scaleY;
         adjustedImageHeight = `${content.height * previewerScaleY}px`;
         adjustedImageWidth = `${content.width * previewerScaleX}px`;
     }
@@ -11284,6 +11286,7 @@ const render = {
 class CustomContentTag {
     render() {
         const content = [];
+        const backgroundStyle = getBackground(this.data, this.adjustment);
         this.data.objects.forEach((obj) => {
             const singleObj = {
                 background: this.data.background,
@@ -11291,10 +11294,14 @@ class CustomContentTag {
                 containerWidth: this.data.containerWidth,
                 content: obj,
                 slideState: this.data.slideState,
+                backgroundStyle: null,
             };
+            if (obj.type === "image") {
+                singleObj.backgroundStyle = backgroundStyle;
+            }
             content.push(render[obj.type](singleObj));
         });
-        return (h("div", { class: "custom-content-container", style: getBackground(this.data, this.adjustment) }, content));
+        return (h("div", { class: "custom-content-container", style: backgroundStyle }, content));
     }
     static get is() { return "custom-content-tag"; }
     static get properties() { return {
@@ -11521,11 +11528,11 @@ class TextTag {
     componentDidLoad() { }
     render() {
         if (this.text) {
-            const contentPlayerWidth = document.getElementsByClassName("content-player-wrapper")[0].clientWidth;
+            const customContentContainerWidth = document.getElementsByClassName("custom-content-container")[0].clientWidth;
             const deviceWidth = window["device_window_size"].width;
             let previewerAdjustment = 1;
-            if (deviceWidth != contentPlayerWidth) {
-                previewerAdjustment = contentPlayerWidth / deviceWidth;
+            if (deviceWidth != customContentContainerWidth) {
+                previewerAdjustment = customContentContainerWidth / deviceWidth;
             }
             let translation = 0;
             if (this.textAlign === "right") {

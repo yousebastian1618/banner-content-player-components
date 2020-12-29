@@ -77,20 +77,21 @@ export class TextTag implements BaseText {
 
   render() {
     if (this.text) {
-      const contentPlayerWidth = document.getElementsByClassName(
-        "content-player-wrapper"
+      const customContentContainerWidth = document.getElementsByClassName(
+        "custom-content-container"
       )[0].clientWidth;
       const deviceWidth = window["device_window_size"].width;
 
       let previewerAdjustment = 1;
-      if (deviceWidth != contentPlayerWidth) {
-        previewerAdjustment = contentPlayerWidth / deviceWidth;
+      if (deviceWidth != customContentContainerWidth) {
+        previewerAdjustment = customContentContainerWidth / deviceWidth;
       }
 
       let translation = 0;
       if (this.textAlign === "right") {
         translation = (this.width * previewerAdjustment * this.scaleX) / 2;
       }
+
       return (
         <div class="text-wrapper" style={getBaseTextStyle(this)}>
           <svg>

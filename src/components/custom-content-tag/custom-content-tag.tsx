@@ -104,29 +104,40 @@ function renderWeathers({
 //  Renders images tags
 //  @param {object}
 //
-function renderImages({ content, containerHeight, containerWidth }) {
+function renderImages({
+  content,
+  containerHeight,
+  containerWidth,
+  backgroundStyle,
+}) {
+  //  Need to use the calculated adjusted custom-content-container dimensions, but those are created after
+  //  this function runs. So, using backgroundStyle and content-player to calculate those dimensions
+  const bStyleWidthDecimal = backgroundStyle.width.slice(0, -1) / 100;
+  const bStyleHeightDecimal = backgroundStyle.height.slice(0, -1) / 100;
+
   // containerWidth and containerHeight are the dimensions of the LED Player
 
   // contentPlayerHTML is what banner-content-player-components inserts into the LED Player and/or the Playlist Previewer
   // Capturing it's dimensions and comparing it to the containerWidth/Height is how we determine which context the banner-content-player-components is being loaded into
   const contentPlayerHTML = document.getElementById("content-player");
-  const contentPlayerHTMLWidth = contentPlayerHTML.clientWidth;
-  const contentPlayerHTMLHeight = contentPlayerHTML.clientHeight;
+  const customContentContainerWidth =
+    contentPlayerHTML.clientWidth * bStyleWidthDecimal;
+  const customContentContainerHeight =
+    contentPlayerHTML.clientHeight * bStyleHeightDecimal;
 
   // Adjustment is for scaling image's original w and h to scale to either the Player or Playlist Previewer contexts
   let adjustedImageWidth, adjustedImageHeight;
 
   if (
-    contentPlayerHTMLWidth !== containerWidth ||
-    contentPlayerHTMLHeight !== containerHeight
+    customContentContainerWidth !== containerWidth ||
+    customContentContainerHeight !== containerHeight
   ) {
     // Playlist Previewer Context
-
     const previewerScaleX =
-      (contentPlayerHTMLWidth / containerWidth) * content.scaleX;
+      (customContentContainerWidth / containerWidth) * content.scaleX;
 
     const previewerScaleY =
-      (contentPlayerHTMLHeight / containerHeight) * content.scaleY;
+      (customContentContainerHeight / containerHeight) * content.scaleY;
 
     adjustedImageHeight = `${content.height * previewerScaleY}px`;
     adjustedImageWidth = `${content.width * previewerScaleX}px`;
@@ -146,6 +157,7 @@ function renderImages({ content, containerHeight, containerWidth }) {
         height: adjustedImageHeight,
         "min-width": adjustedImageWidth,
         "max-width": adjustedImageWidth,
+        // width: adjustedImageWidth + "!important",
         transform: `rotate(${content.angle}deg)`,
         "transform-origin": `${content.originX} ${content.originY}`,
       }}
@@ -175,6 +187,8 @@ export class CustomContentTag {
   render() {
     const content = [];
 
+    const backgroundStyle = getBackground(this.data, this.adjustment);
+
     this.data.objects.forEach((obj) => {
       const singleObj = {
         background: this.data.background,
@@ -182,16 +196,17 @@ export class CustomContentTag {
         containerWidth: this.data.containerWidth,
         content: obj,
         slideState: this.data.slideState,
+        backgroundStyle: null,
       };
+      if (obj.type === "image") {
+        singleObj.backgroundStyle = backgroundStyle;
+      }
 
       content.push(render[obj.type](singleObj));
     });
 
     return (
-      <div
-        class="custom-content-container"
-        style={getBackground(this.data, this.adjustment)}
-      >
+      <div class="custom-content-container" style={backgroundStyle}>
         {content}
       </div>
     );
