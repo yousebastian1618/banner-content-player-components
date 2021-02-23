@@ -71,11 +71,13 @@ function renderCustomContent(content, slideState) {
             width: `${width}%`,
             height: `${height}%`,
         };
+        console.log('adjust', adjustment);
         let data = Object.assign({}, content.__data__, {
             containerWidth: content.width,
             containerHeight: content.height,
             slideState: slideState,
         });
+        console.log('this data', data);
         return (h("custom-content-tag", { class: "full-screen", data: data, adjustment: adjustment }));
     }
     return null;

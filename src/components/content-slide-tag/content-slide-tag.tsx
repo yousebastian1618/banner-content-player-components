@@ -134,12 +134,17 @@ function renderCustomContent(content, slideState) {
       height: `${height}%`,
     };
 
+    console.log('adjust', adjustment)
+
     // This is passed down to the custom-content-tag as a data prop
     let data = Object.assign({}, content.__data__, {
       containerWidth: content.width,
       containerHeight: content.height,
       slideState: slideState,
     });
+
+    console.log('this data', data)
+
     return (
       <custom-content-tag
         class={"full-screen"}

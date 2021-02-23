@@ -3,7 +3,7 @@ import { h } from '../contentplayer.core.js';
 import { a as SlideState } from './chunk-1fc3cad0.js';
 
 //! moment.js
-//! version : 2.29.1
+//! version : 2.28.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -2538,7 +2538,8 @@ function configFromString(config) {
 hooks.createFromInputFallback = deprecate(
     'value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date(), ' +
         'which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are ' +
-        'discouraged. Please refer to http://momentjs.com/guides/#/warnings/js-date/ for more info.',
+        'discouraged and will be removed in an upcoming major release. Please refer to ' +
+        'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
     function (config) {
         config._d = new Date(config._i + (config._useUTC ? ' UTC' : ''));
     }
@@ -3723,10 +3724,7 @@ function getCalendarFormat(myMoment, now) {
 function calendar$1(time, formats) {
     // Support for single parameter, formats only overload to the calendar function
     if (arguments.length === 1) {
-        if (!arguments[0]) {
-            time = undefined;
-            formats = undefined;
-        } else if (isMomentInput(arguments[0])) {
+        if (isMomentInput(arguments[0])) {
             time = arguments[0];
             formats = undefined;
         } else if (isCalendarSpec(arguments[0])) {
@@ -5618,7 +5616,7 @@ addParseToken('x', function (input, array, config) {
 
 //! moment.js
 
-hooks.version = '2.29.1';
+hooks.version = '2.28.0';
 
 setHookCallback(createLocal);
 
@@ -5676,8 +5674,8 @@ function getSvgTextStyle(baseText) {
 }
 function getBaseTextStyle(baseText) {
     let style = {
-        top: `         ${(baseText.top / baseText.containerHeight) * 100}%`,
-        left: `        ${(baseText.left / baseText.containerWidth) * 100}%`,
+        top: `         ${(baseText.top / 150) * 100}%`,
+        left: `        ${(baseText.left / 300) * 100}%`,
         width: `       ${(baseText.width / baseText.containerWidth) * 100}%`,
         height: `      ${(baseText.height / baseText.containerHeight) * 100}%`,
         color: `       ${baseText.fill}`,
@@ -11048,11 +11046,13 @@ function renderCustomContent(content, slideState) {
             width: `${width}%`,
             height: `${height}%`,
         };
+        console.log('adjust', adjustment);
         let data = Object.assign({}, content.__data__, {
             containerWidth: content.width,
             containerHeight: content.height,
             slideState: slideState,
         });
+        console.log('this data', data);
         return (h("custom-content-tag", { class: "full-screen", data: data, adjustment: adjustment }));
     }
     return null;
@@ -11239,7 +11239,17 @@ function getBackground(data, adjustment) {
 function renderVideos({ content, containerWidth, containerHeight, slideState, }) {
     return (h("video-tag", { videoObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-function renderTexts({ content, containerWidth, containerHeight, slideState }) {
+function renderTexts({ content, containerWidth, containerHeight, slideState, backgroundStyle }) {
+    console.log("containerH", containerHeight);
+    console.log('containerW', containerWidth);
+    const contentPlayerHTML = document.getElementById("content-player");
+    console.log('contentPlayerHTML', contentPlayerHTML);
+    const bStyleWidthDecimal = backgroundStyle.width.slice(0, -1) / 100;
+    const bStyleHeightDecimal = backgroundStyle.height.slice(0, -1) / 100;
+    const customContentContainerWidth = contentPlayerHTML.clientWidth * bStyleWidthDecimal;
+    const customContentContainerHeight = contentPlayerHTML.clientHeight * bStyleHeightDecimal;
+    console.log('customW', customContentContainerWidth);
+    console.log('customH', customContentContainerHeight);
     return (h("text-tag", { textObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
 function renderClocks({ content, containerWidth, containerHeight, slideState, }) {
@@ -11294,7 +11304,7 @@ class CustomContentTag {
                 containerWidth: this.data.containerWidth,
                 content: obj,
                 slideState: this.data.slideState,
-                backgroundStyle: null,
+                backgroundStyle: backgroundStyle
             };
             if (obj.type === "image") {
                 singleObj.backgroundStyle = backgroundStyle;

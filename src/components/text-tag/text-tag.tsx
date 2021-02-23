@@ -84,6 +84,7 @@ export class TextTag implements BaseText {
 
       let previewerAdjustment = 1;
       if (deviceWidth != customContentContainerWidth) {
+        console.log('here')
         previewerAdjustment = customContentContainerWidth / deviceWidth;
       }
 
