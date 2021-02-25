@@ -5673,9 +5673,12 @@ function getSvgTextStyle(baseText) {
     return style;
 }
 function getBaseTextStyle(baseText) {
+    console.log('base', baseText);
+    let topStyle = (baseText.top / baseText.containerHeight) * 100;
+    let leftStyle = (baseText.left / baseText.containerWidth) * 100;
     let style = {
-        top: `         ${(baseText.top / 150) * 100}%`,
-        left: `        ${(baseText.left / 300) * 100}%`,
+        top: `        ${topStyle}%`,
+        left: `        ${leftStyle}%`,
         width: `       ${(baseText.width / baseText.containerWidth) * 100}%`,
         height: `      ${(baseText.height / baseText.containerHeight) * 100}%`,
         color: `       ${baseText.fill}`,
@@ -11239,17 +11242,9 @@ function getBackground(data, adjustment) {
 function renderVideos({ content, containerWidth, containerHeight, slideState, }) {
     return (h("video-tag", { videoObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-function renderTexts({ content, containerWidth, containerHeight, slideState, backgroundStyle }) {
+function renderTexts({ content, containerWidth, containerHeight, slideState }) {
     console.log("containerH", containerHeight);
     console.log('containerW', containerWidth);
-    const contentPlayerHTML = document.getElementById("content-player");
-    console.log('contentPlayerHTML', contentPlayerHTML);
-    const bStyleWidthDecimal = backgroundStyle.width.slice(0, -1) / 100;
-    const bStyleHeightDecimal = backgroundStyle.height.slice(0, -1) / 100;
-    const customContentContainerWidth = contentPlayerHTML.clientWidth * bStyleWidthDecimal;
-    const customContentContainerHeight = contentPlayerHTML.clientHeight * bStyleHeightDecimal;
-    console.log('customW', customContentContainerWidth);
-    console.log('customH', customContentContainerHeight);
     return (h("text-tag", { textObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
 function renderClocks({ content, containerWidth, containerHeight, slideState, }) {
@@ -11489,6 +11484,7 @@ function renderMultiline({ text, lineHeight, textAlign, fontSize, width, scaleX 
             fontSize: fontSize + "px",
             lineHeight: lineHeight + "px",
         };
+        console.log('previewer', previewerAdjustment);
         if (previewerAdjustment) {
             const newFontSize = fontSize * previewerAdjustment;
             const newLineHeight = lineHeight / previewerAdjustment;
@@ -11542,15 +11538,31 @@ class TextTag {
             const deviceWidth = window["device_window_size"].width;
             let previewerAdjustment = 1;
             if (deviceWidth != customContentContainerWidth) {
+                console.log('here');
                 previewerAdjustment = customContentContainerWidth / deviceWidth;
             }
             let translation = 0;
             if (this.textAlign === "right") {
                 translation = (this.width * previewerAdjustment * this.scaleX) / 2;
             }
+            const getTextYAttribute = function (baseText) {
+                let adj = 0;
+                if (baseText.fontFamily === 'Tahoma') {
+                    console.log('tahoma');
+                    const f = baseText.fontSize;
+                    if (f < 20) {
+                        adj = -.3;
+                    }
+                    else {
+                        adj = -.3 + ((f - 20) / 10) * -.325;
+                    }
+                }
+                console.log('FONT SIZE', baseText.fontSize, "---ADJ:", adj);
+                return adj;
+            };
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
                 h("svg", null,
-                    h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment)))));
+                    h("text", { x: "0", y: getTextYAttribute(this), width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment)))));
         }
     }
     static get is() { return "text-tag"; }

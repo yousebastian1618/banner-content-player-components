@@ -10,9 +10,12 @@ function getSvgTextStyle(baseText) {
     return style;
 }
 function getBaseTextStyle(baseText) {
+    console.log('base', baseText);
+    let topStyle = (baseText.top / baseText.containerHeight) * 100;
+    let leftStyle = (baseText.left / baseText.containerWidth) * 100;
     let style = {
-        top: `         ${(baseText.top / 150) * 100}%`,
-        left: `        ${(baseText.left / 300) * 100}%`,
+        top: `        ${topStyle}%`,
+        left: `        ${leftStyle}%`,
         width: `       ${(baseText.width / baseText.containerWidth) * 100}%`,
         height: `      ${(baseText.height / baseText.containerHeight) * 100}%`,
         color: `       ${baseText.fill}`,

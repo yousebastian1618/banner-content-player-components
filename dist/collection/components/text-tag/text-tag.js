@@ -39,15 +39,31 @@ export class TextTag {
             const deviceWidth = window["device_window_size"].width;
             let previewerAdjustment = 1;
             if (deviceWidth != customContentContainerWidth) {
+                console.log('here');
                 previewerAdjustment = customContentContainerWidth / deviceWidth;
             }
             let translation = 0;
             if (this.textAlign === "right") {
                 translation = (this.width * previewerAdjustment * this.scaleX) / 2;
             }
+            const getTextYAttribute = function (baseText) {
+                let adj = 0;
+                if (baseText.fontFamily === 'Tahoma') {
+                    console.log('tahoma');
+                    const f = baseText.fontSize;
+                    if (f < 20) {
+                        adj = -.3;
+                    }
+                    else {
+                        adj = -.3 + ((f - 20) / 10) * -.325;
+                    }
+                }
+                console.log('FONT SIZE', baseText.fontSize, "---ADJ:", adj);
+                return adj;
+            };
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
                 h("svg", null,
-                    h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment)))));
+                    h("text", { x: "0", y: getTextYAttribute(this), width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment)))));
         }
     }
     static get is() { return "text-tag"; }

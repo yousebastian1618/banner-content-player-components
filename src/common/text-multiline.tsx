@@ -15,6 +15,8 @@ function renderMultiline(
       lineHeight: lineHeight + "px",
     };
 
+    console.log('previewer', previewerAdjustment)
+    
     if (previewerAdjustment) {
       const newFontSize = fontSize * previewerAdjustment;
       const newLineHeight = lineHeight / previewerAdjustment;

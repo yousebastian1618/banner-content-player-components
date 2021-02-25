@@ -20,17 +20,9 @@ function getBackground(data, adjustment) {
 function renderVideos({ content, containerWidth, containerHeight, slideState, }) {
     return (h("video-tag", { videoObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
-function renderTexts({ content, containerWidth, containerHeight, slideState, backgroundStyle }) {
+function renderTexts({ content, containerWidth, containerHeight, slideState }) {
     console.log("containerH", containerHeight);
     console.log('containerW', containerWidth);
-    const contentPlayerHTML = document.getElementById("content-player");
-    console.log('contentPlayerHTML', contentPlayerHTML);
-    const bStyleWidthDecimal = backgroundStyle.width.slice(0, -1) / 100;
-    const bStyleHeightDecimal = backgroundStyle.height.slice(0, -1) / 100;
-    const customContentContainerWidth = contentPlayerHTML.clientWidth * bStyleWidthDecimal;
-    const customContentContainerHeight = contentPlayerHTML.clientHeight * bStyleHeightDecimal;
-    console.log('customW', customContentContainerWidth);
-    console.log('customH', customContentContainerHeight);
     return (h("text-tag", { textObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
 function renderClocks({ content, containerWidth, containerHeight, slideState, }) {

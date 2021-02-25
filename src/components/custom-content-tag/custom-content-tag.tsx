@@ -49,22 +49,22 @@ function renderVideos({
 //  @param {object}
 //  @return {HTMLStencilElement}
 //
-function renderTexts({ content, containerWidth, containerHeight, slideState, backgroundStyle }) {
+function renderTexts({ content, containerWidth, containerHeight, slideState }) {
   console.log("containerH", containerHeight)
   console.log('containerW', containerWidth)
-  const contentPlayerHTML = document.getElementById("content-player");
-  console.log('contentPlayerHTML', contentPlayerHTML)
+//   const contentPlayerHTML = document.getElementById("content-player");
+//   console.log('contentPlayerHTML', contentPlayerHTML)
 
-  const bStyleWidthDecimal = backgroundStyle.width.slice(0, -1) / 100;
-  const bStyleHeightDecimal = backgroundStyle.height.slice(0, -1) / 100;
+//   const bStyleWidthDecimal = backgroundStyle.width.slice(0, -1) / 100;
+//   const bStyleHeightDecimal = backgroundStyle.height.slice(0, -1) / 100;
 
-  const customContentContainerWidth =
-  contentPlayerHTML.clientWidth * bStyleWidthDecimal;
-const customContentContainerHeight =
-  contentPlayerHTML.clientHeight * bStyleHeightDecimal;
+//   const customContentContainerWidth =
+//   contentPlayerHTML.clientWidth * bStyleWidthDecimal;
+// const customContentContainerHeight =
+//   contentPlayerHTML.clientHeight * bStyleHeightDecimal;
 
-  console.log('customW', customContentContainerWidth)
-  console.log('customH', customContentContainerHeight)
+//   console.log('customW', customContentContainerWidth)
+//   console.log('customH', customContentContainerHeight)
   return (
     <text-tag
       textObject={content}
