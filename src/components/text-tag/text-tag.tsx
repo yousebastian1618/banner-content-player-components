@@ -141,19 +141,19 @@ export class TextTag implements BaseText {
         return adj
       }
 
-      const xAdjustment = function(baseText){
-        if(baseText.fontFamily === 'Georgia'){
-          console.log('x geo')
-          if(baseText.fontSize <=65){
-            return .3
-          }
-          else return .4
-        }
-        if(baseText.fontfamily === 'Times New Roman'){
-          return .3
-        }
-        return .2
-      }
+      // const xAdjustment = function(baseText){
+      //   if(baseText.fontFamily === 'Georgia'){
+      //     console.log('x geo')
+      //     if(baseText.fontSize <=65){
+      //       return .3
+      //     }
+      //     else return .4
+      //   }
+      //   if(baseText.fontfamily === 'Times New Roman'){
+      //     return .3
+      //   }
+      //   return .2
+      // }
 
       return (
         <div class="text-wrapper" style={getBaseTextStyle(this)}>
@@ -168,7 +168,7 @@ export class TextTag implements BaseText {
               style={getSvgTextStyle(this)}
               transform={`translate(${translation})`}
             >
-              {renderMultiline(this, previewerAdjustment, xAdjustment(this))}
+              {renderMultiline(this, previewerAdjustment, 0)}
             </text>
           </svg>
         </div>

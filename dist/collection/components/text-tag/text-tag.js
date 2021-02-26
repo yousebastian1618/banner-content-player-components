@@ -92,23 +92,9 @@ export class TextTag {
                 console.log('FONT SIZE', baseText.fontSize, "---ADJ:", adj);
                 return adj;
             };
-            const xAdjustment = function (baseText) {
-                if (baseText.fontFamily === 'Georgia') {
-                    console.log('x geo');
-                    if (baseText.fontSize <= 65) {
-                        return .3;
-                    }
-                    else
-                        return .4;
-                }
-                if (baseText.fontfamily === 'Times New Roman') {
-                    return .3;
-                }
-                return .2;
-            };
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
                 h("svg", null,
-                    h("text", { x: "0", y: `${getTextYAttribute(this)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment, xAdjustment(this))))));
+                    h("text", { x: "0", y: `${getTextYAttribute(this)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment, 0)))));
         }
     }
     static get is() { return "text-tag"; }
