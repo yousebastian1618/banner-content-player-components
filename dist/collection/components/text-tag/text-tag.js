@@ -89,12 +89,116 @@ export class TextTag {
                         adj = -.8 - ((f - 50) / 10) * .3;
                     }
                 }
+                else if (baseText.fontFamily === 'Galada') {
+                    console.log('galada');
+                    if (f < 25) {
+                        adj = -.3;
+                    }
+                    else if (f > -25) {
+                        adj = -.3 + ((f - 20) / 10) * -.3;
+                    }
+                }
+                else if (baseText.fontFamily === 'Damion') {
+                    console.log('damion');
+                    if (f < 25) {
+                        adj = -.3;
+                    }
+                    else if (f > -25) {
+                        adj = -.3 + ((f - 20) / 10) * -.22;
+                    }
+                }
+                else if (baseText.fontFamily === 'Permanent Marker') {
+                    console.log('permanent');
+                    if (f < 10) {
+                        adj = 0;
+                    }
+                    else if (f < 30) {
+                        adj = -.8;
+                    }
+                    else {
+                        adj = -.8 + ((f - 30) / 10) * -.55;
+                    }
+                }
+                else if (baseText.fontFamily === 'Courgette') {
+                    adj = -.1;
+                    if (f > 10) {
+                        adj += (f / 10) * -.1;
+                    }
+                }
+                else if (baseText.fontFamily === 'Baloo') {
+                    adj = -.4;
+                    if (f > 20) {
+                        adj += ((f - 20) / 10) * -.45;
+                    }
+                }
+                else if (baseText.fontFamily === 'Fredoka One') {
+                    adj = -.2;
+                    if (f > 20) {
+                        adj += ((f - 20) / 10) * -.2;
+                    }
+                }
+                else if (baseText.fontFamily === 'Comfortaa') {
+                    adj = .3;
+                    if (f > 30) {
+                        adj = .5 + ((f - 30) / 10) * .1;
+                    }
+                }
+                else if (baseText.fontFamily === 'Keania One') {
+                    adj = .3;
+                    if (f > 20) {
+                        adj = -.4 + ((f - 20) / 10) * -.15;
+                    }
+                }
                 console.log('FONT SIZE', baseText.fontSize, "---ADJ:", adj);
                 return adj;
             };
+            const xAdjustment = function (baseText) {
+                const { fontSize, fontFamily } = baseText;
+                if (fontFamily === 'Georgia') {
+                    console.log('x geo');
+                    if (fontSize <= 65) {
+                        return .3;
+                    }
+                    else
+                        return .4;
+                }
+                if (fontFamily === 'Times New Roman') {
+                    return .3;
+                }
+                if (fontFamily === 'Verdana') {
+                    return .2;
+                }
+                if (fontFamily === 'Galada') {
+                    return .3;
+                }
+                if (fontFamily === 'Damion') {
+                    if (fontSize > 55) {
+                        return .2;
+                    }
+                    else
+                        return 0;
+                }
+                if (fontFamily === 'Permanent Marker') {
+                    if (fontSize < 70) {
+                        return .1;
+                    }
+                    else
+                        return .2;
+                }
+                if (fontFamily === 'Baloo') {
+                    return .3;
+                }
+                if (fontFamily === 'Fredoka One') {
+                    return .3;
+                }
+                if (fontFamily === 'Keania One') {
+                    return .3;
+                }
+                return .2;
+            };
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
                 h("svg", null,
-                    h("text", { x: "0", y: `${getTextYAttribute(this)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment, 0)))));
+                    h("text", { x: "0", y: `${getTextYAttribute(this)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment, xAdjustment(this))))));
         }
     }
     static get is() { return "text-tag"; }
