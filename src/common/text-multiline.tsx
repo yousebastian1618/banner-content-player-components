@@ -1,6 +1,6 @@
 function renderMultiline(
   { text, lineHeight, textAlign, fontSize, width, scaleX }: any,
-  previewerAdjustment
+  previewerAdjustment, xAdjustment
 ) {
   let decimal = parseFloat(lineHeight) % 1;
   let anchor = "start";
@@ -24,10 +24,10 @@ function renderMultiline(
       style.lineHeight = newLineHeight + "px";
     }
 
-    let xPosition = 0;
+    let xPosition = xAdjustment;
 
     if (textAlign !== "left") {
-      xPosition = (width * previewerAdjustment * scaleX) / 2;
+      xPosition += (width * previewerAdjustment * scaleX) / 2;
     }
 
     return (

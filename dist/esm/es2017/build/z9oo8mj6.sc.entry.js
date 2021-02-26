@@ -5673,12 +5673,9 @@ function getSvgTextStyle(baseText) {
     return style;
 }
 function getBaseTextStyle(baseText) {
-    console.log('base', baseText);
-    let topStyle = (baseText.top / baseText.containerHeight) * 100;
-    let leftStyle = (baseText.left / baseText.containerWidth) * 100;
     let style = {
-        top: `        ${topStyle}%`,
-        left: `        ${leftStyle}%`,
+        top: `        ${(baseText.top / baseText.containerHeight) * 100}%`,
+        left: `        ${(baseText.left / baseText.containerWidth) * 100}%`,
         width: `       ${(baseText.width / baseText.containerWidth) * 100}%`,
         height: `      ${(baseText.height / baseText.containerHeight) * 100}%`,
         color: `       ${baseText.fill}`,
@@ -11470,7 +11467,7 @@ class ProgressBarTag {
     static get style() { return ".progress-bar{width:100%;padding-top:4.1%;background-color:#fff;-webkit-box-sizing:border-box;box-sizing:border-box;border-radius:50px;border:2px solid #fff;overflow:hidden;position:relative}.progress-bar .message{position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);color:#fff;font-size:1.5em;z-index:4;font-family:Roboto,Arial,Helvetica,sans-serif}.progress-animation,.progress-bar-indicator,.progress-bar .black-layer{position:absolute;top:0;left:0;width:100%;height:100%}.progress-bar .progress-bar-indicator{width:0;background-color:#8f8e92;z-index:3}.progress-bar .progress-animation{z-index:1}.progress-bar .black-layer{z-index:2;background-color:rgba(0,0,0,.5)}"; }
 }
 
-function renderMultiline({ text, lineHeight, textAlign, fontSize, width, scaleX }, previewerAdjustment) {
+function renderMultiline({ text, lineHeight, textAlign, fontSize, width, scaleX }, previewerAdjustment, xAdjustment) {
     let decimal = parseFloat(lineHeight) % 1;
     let anchor = "start";
     if (textAlign === "center") {
@@ -11491,9 +11488,9 @@ function renderMultiline({ text, lineHeight, textAlign, fontSize, width, scaleX 
             style.fontSize = newFontSize + "px";
             style.lineHeight = newLineHeight + "px";
         }
-        let xPosition = 0;
+        let xPosition = xAdjustment;
         if (textAlign !== "left") {
-            xPosition = (width * previewerAdjustment * scaleX) / 2;
+            xPosition += (width * previewerAdjustment * scaleX) / 2;
         }
         return (h("tspan", { style: style, x: xPosition, dy: i === 0 ? `${decimal}em` : `${parseFloat(lineHeight) + decimal}em`, "text-anchor": anchor }, t || " "));
     });
@@ -11547,22 +11544,67 @@ class TextTag {
             }
             const getTextYAttribute = function (baseText) {
                 let adj = 0;
+                const f = baseText.fontSize;
                 if (baseText.fontFamily === 'Tahoma') {
                     console.log('tahoma');
-                    const f = baseText.fontSize;
+                    adj = -.3;
+                    if (f >= 21) {
+                        adj += ((f - 20) / 10) * -.325;
+                    }
+                }
+                else if (baseText.fontFamily === 'Impact') {
+                    console.log('Impact');
+                    adj = -.3;
+                    if (f >= 21) {
+                        adj += ((f - 20) / 10) * -.25;
+                    }
+                }
+                else if (baseText.fontFamily === 'Georgia') {
+                    console.log("GEORGIA");
+                    adj = .2;
+                    if (f >= 21) {
+                        adj = .2 - ((f - 20) / 10) * .06;
+                        console.log('adj', adj);
+                    }
+                }
+                else if (baseText.fontFamily === 'Times New Roman') {
+                    adj = .2;
+                    if (f >= 21) {
+                        adj = .2 + ((f - 20) / 10) * .085;
+                    }
+                }
+                else if (baseText.fontFamily === 'Verdana') {
+                    console.log('verdana');
                     if (f < 20) {
-                        adj = -.3;
+                        adj = -.2;
+                    }
+                    else if (f >= 21 && f <= 59) {
+                        adj = -.8;
                     }
                     else {
-                        adj = -.3 + ((f - 20) / 10) * -.325;
+                        adj = -.8 - ((f - 50) / 10) * .3;
                     }
                 }
                 console.log('FONT SIZE', baseText.fontSize, "---ADJ:", adj);
                 return adj;
             };
+            const xAdjustment = function (baseText) {
+                if (baseText.fontFamily === 'Georgia') {
+                    console.log('x geo');
+                    if (baseText.fontSize <= 65) {
+                        return .3;
+                    }
+                    else
+                        return .4;
+                }
+                if (baseText.fontfamily === 'Times New Roman') {
+                    return .3;
+                }
+                return .2;
+            };
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
                 h("svg", null,
-                    h("text", { x: "0", y: getTextYAttribute(this), width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment)))));
+                    h("text", { x: "0", y: `${getTextYAttribute(this)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment, xAdjustment(this))))));
         }
     }
     static get is() { return "text-tag"; }

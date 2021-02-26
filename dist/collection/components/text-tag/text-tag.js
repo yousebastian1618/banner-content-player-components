@@ -48,22 +48,67 @@ export class TextTag {
             }
             const getTextYAttribute = function (baseText) {
                 let adj = 0;
+                const f = baseText.fontSize;
                 if (baseText.fontFamily === 'Tahoma') {
                     console.log('tahoma');
-                    const f = baseText.fontSize;
+                    adj = -.3;
+                    if (f >= 21) {
+                        adj += ((f - 20) / 10) * -.325;
+                    }
+                }
+                else if (baseText.fontFamily === 'Impact') {
+                    console.log('Impact');
+                    adj = -.3;
+                    if (f >= 21) {
+                        adj += ((f - 20) / 10) * -.25;
+                    }
+                }
+                else if (baseText.fontFamily === 'Georgia') {
+                    console.log("GEORGIA");
+                    adj = .2;
+                    if (f >= 21) {
+                        adj = .2 - ((f - 20) / 10) * .06;
+                        console.log('adj', adj);
+                    }
+                }
+                else if (baseText.fontFamily === 'Times New Roman') {
+                    adj = .2;
+                    if (f >= 21) {
+                        adj = .2 + ((f - 20) / 10) * .085;
+                    }
+                }
+                else if (baseText.fontFamily === 'Verdana') {
+                    console.log('verdana');
                     if (f < 20) {
-                        adj = -.3;
+                        adj = -.2;
+                    }
+                    else if (f >= 21 && f <= 59) {
+                        adj = -.8;
                     }
                     else {
-                        adj = -.3 + ((f - 20) / 10) * -.325;
+                        adj = -.8 - ((f - 50) / 10) * .3;
                     }
                 }
                 console.log('FONT SIZE', baseText.fontSize, "---ADJ:", adj);
                 return adj;
             };
+            const xAdjustment = function (baseText) {
+                if (baseText.fontFamily === 'Georgia') {
+                    console.log('x geo');
+                    if (baseText.fontSize <= 65) {
+                        return .3;
+                    }
+                    else
+                        return .4;
+                }
+                if (baseText.fontfamily === 'Times New Roman') {
+                    return .3;
+                }
+                return .2;
+            };
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
                 h("svg", null,
-                    h("text", { x: "0", y: getTextYAttribute(this), width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment)))));
+                    h("text", { x: "0", y: `${getTextYAttribute(this)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment, xAdjustment(this))))));
         }
     }
     static get is() { return "text-tag"; }
