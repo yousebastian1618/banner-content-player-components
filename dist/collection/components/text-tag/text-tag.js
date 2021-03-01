@@ -149,6 +149,110 @@ export class TextTag {
                         adj = -.4 + ((f - 20) / 10) * -.15;
                     }
                 }
+                else if (baseText.fontFamily === 'Timmana') {
+                    adj = .25;
+                    if (f > 80) {
+                        adj = .25 + ((f - 80) / 10) * .1;
+                    }
+                }
+                else if (baseText.fontFamily === 'Contrail One') {
+                    adj = 0;
+                    if (f > 50) {
+                        adj = ((f - 50) / 10) * -.2;
+                    }
+                }
+                else if (baseText.fontFamily === 'Khand') {
+                    adj = ((f) / 10) * -.3;
+                }
+                else if (baseText.fontFamily === 'Seymour One') {
+                    adj = -.2;
+                    if (f > 20) {
+                        adj = -.2 + ((f - 20) / 10) * -.15;
+                    }
+                }
+                else if (baseText.fontFamily === 'Gidugu') {
+                    adj = -.2;
+                    if (f > 10) {
+                        adj = -.5 + ((f - 10) / 10) * -.5;
+                    }
+                }
+                else if (baseText.fontFamily === 'Lalezar') {
+                    adj = 0;
+                    if (f > 30) {
+                        adj = -.2 + ((f - 30) / 10) * -.2;
+                    }
+                }
+                else if (baseText.fontFamily === 'Bowlby One SC') {
+                    if (f < 40) {
+                        adj = (f / 10) * -.2;
+                    }
+                    else if (f < 70) {
+                        adj = -1 + ((f - 40) / 10) * -.3;
+                    }
+                    else {
+                        adj = -3 + ((f - 70) / 10) * -.4;
+                    }
+                }
+                else if (baseText.fontFamily === 'Hind Madurai') {
+                    adj = (f / 10) * -.17;
+                }
+                else if (baseText.fontFamily === 'thin') {
+                    if (f < 15) {
+                        adj = 1.2;
+                    }
+                    else if (f < 25) {
+                        adj = 1.7;
+                    }
+                    else if (f < 40) {
+                        adj = 3;
+                    }
+                    else {
+                        adj = 3.3 + ((f - 40) / 10) * .9;
+                    }
+                }
+                else if (baseText.fontFamily === 'Montserrat Alternates') {
+                    adj = (f / 10) * -.125;
+                }
+                else if (baseText.fontFamily === 'Mada') {
+                    if (f > 50) {
+                        adj = .75;
+                    }
+                    else {
+                        adj = (f / 10) * .10;
+                    }
+                }
+                else if (baseText.fontFamily === 'Quando') {
+                    adj = (f / 10) * -.15;
+                }
+                else if (baseText.fontFamily === 'Alike') {
+                    adj = (f / 10) * -.15;
+                }
+                else if (baseText.fontFamily === 'Sree Krushnadevaraya') {
+                    adj = (f / 10) * -1.35;
+                }
+                else if (baseText.fontFamily === 'Paytone One') {
+                    adj = .2;
+                    if (f > 10) {
+                        adj = (f / 10) * -.4;
+                    }
+                }
+                else if (baseText.fontFamily === 'Chango') {
+                    adj = (f / 10) * -.2;
+                }
+                else if (baseText.fontFamily === 'Bevan') {
+                    adj = (f / 10) * -.52;
+                }
+                else if (baseText.fontFamily === "Bowlby One") {
+                    if (f < 11) {
+                        adj = -.2;
+                    }
+                    else if (f < 40) {
+                        adj = -.8;
+                    }
+                    else {
+                        adj = -1.6 + ((f - 40) / 10) * -.4;
+                    }
+                }
                 console.log('FONT SIZE', baseText.fontSize, "---ADJ:", adj);
                 return adj;
             };
@@ -161,15 +265,6 @@ export class TextTag {
                     }
                     else
                         return .4;
-                }
-                if (fontFamily === 'Times New Roman') {
-                    return .3;
-                }
-                if (fontFamily === 'Verdana') {
-                    return .2;
-                }
-                if (fontFamily === 'Galada') {
-                    return .3;
                 }
                 if (fontFamily === 'Damion') {
                     if (fontSize > 55) {
@@ -185,16 +280,36 @@ export class TextTag {
                     else
                         return .2;
                 }
-                if (fontFamily === 'Baloo') {
+                if (fontFamily === 'Times New Roman' || fontFamily === 'Baloo' || fontFamily === 'Fredoka One' || fontFamily === 'Keania One' || fontFamily === 'Galada') {
                     return .3;
                 }
-                if (fontFamily === 'Fredoka One') {
-                    return .3;
+                if (fontFamily === 'Timmana') {
+                    if (fontSize < 50) {
+                        return .1;
+                    }
+                    else
+                        return .2;
                 }
-                if (fontFamily === 'Keania One') {
-                    return .3;
+                if (fontFamily === 'Contrail One') {
+                    console.log('contrao');
+                    if (fontSize > 50) {
+                        console.log('font size');
+                        return .2;
+                    }
+                    else {
+                        return 0;
+                    }
                 }
-                return .2;
+                if (fontFamily === 'Bowlby One' || fontFamily === 'Bevan' || fontFamily === 'Chango' || fontFamily === 'Paytone One' || fontFamily === "Sree Krushnadevaraya" || fontFamily === 'Alike' || fontFamily === 'Quando' || fontFamily === 'Seymour One' || fontFamily === 'Gidugu' || fontFamily === 'thin') {
+                    return 0;
+                }
+                if (fontFamily === 'Verdana' || fontFamily === 'Lalezar' || fontFamily === 'Montserrat Alternates' || fontFamily === 'Bowlby One SC' || fontFamily === 'Khand') {
+                    return .2;
+                }
+                if (fontFamily === 'Mada' || fontFamily === 'Hind Madurai') {
+                    return .1;
+                }
+                return 0;
             };
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
                 h("svg", null,

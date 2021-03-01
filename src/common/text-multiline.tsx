@@ -30,7 +30,7 @@ function renderMultiline(
       xPosition += (width * previewerAdjustment * scaleX) / 2;
     }
 
-    xPosition = 0
+    // xPosition = 0
 
     return (
       <tspan
