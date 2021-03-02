@@ -4606,6 +4606,13 @@ function getSvgTextStyle(baseText) {
     return style;
 }
 function getBaseTextStyle(baseText) {
+    let translation = '0%, 0%';
+    if (baseText.textAlign === 'center') {
+        translation = '50%, 0%';
+    }
+    else if (baseText.textAlign === 'right') {
+        translation = '100%, 0%';
+    }
     let style = {
         top: `        ${(baseText.top / baseText.containerHeight) * 100}%`,
         left: `        ${(baseText.left / baseText.containerWidth) * 100}%`,
@@ -4617,7 +4624,7 @@ function getBaseTextStyle(baseText) {
         "font-family": ` ${baseText.fontFamily}`,
         "text-align": `  ${baseText.textAlign}`,
         "font-style": `  ${baseText.fontStyle}`,
-        transform: `   rotate(${baseText.angle}deg) scale(${baseText.scaleX}, ${baseText.scaleY})`,
+        transform: `   rotate(${baseText.angle}deg) scale(${baseText.scaleX}, ${baseText.scaleY}) translate(${translation})`,
         "transform-origin": `${baseText.originX} ${baseText.originY}`,
         "white-space": "nowrap",
     };
@@ -10424,7 +10431,9 @@ function renderMultiline({ text, lineHeight, textAlign, fontSize, width, scaleX 
         let xPosition = xAdjustment;
         if (textAlign !== "left") {
             xPosition += (width * previewerAdjustment * scaleX) / 2;
+            console.log('fontSize:', fontSize, "cal xposition: ", xPosition);
         }
+        xPosition = 0;
         return (h("tspan", { style: style, x: xPosition, dy: i === 0 ? `${decimal}em` : `${parseFloat(lineHeight) + decimal}em`, "text-anchor": anchor }, t || " "));
     });
     return lines;
@@ -10470,10 +10479,6 @@ class TextTag {
             if (deviceWidth != customContentContainerWidth) {
                 console.log('here');
                 previewerAdjustment = customContentContainerWidth / deviceWidth;
-            }
-            let translation = 0;
-            if (this.textAlign === "right") {
-                translation = (this.width * previewerAdjustment * this.scaleX) / 2;
             }
             const getTextYAttribute = function (baseText) {
                 let adj = 0;
@@ -10686,7 +10691,7 @@ class TextTag {
                 return adj;
             };
             const xAdjustment = function (baseText) {
-                const { fontSize, fontFamily } = baseText;
+                const { fontSize, fontFamily, textAlign } = baseText;
                 if (fontFamily === 'Georgia') {
                     console.log('x geo');
                     if (fontSize <= 65) {
@@ -10729,10 +10734,14 @@ class TextTag {
                         return 0;
                     }
                 }
+                if (fontFamily === 'Montserrat Alternates') {
+                    console.log('text align', textAlign);
+                    return 0;
+                }
                 if (fontFamily === 'Bowlby One' || fontFamily === 'Bevan' || fontFamily === 'Chango' || fontFamily === 'Paytone One' || fontFamily === "Sree Krushnadevaraya" || fontFamily === 'Alike' || fontFamily === 'Quando' || fontFamily === 'Seymour One' || fontFamily === 'Gidugu' || fontFamily === 'thin') {
                     return 0;
                 }
-                if (fontFamily === 'Verdana' || fontFamily === 'Lalezar' || fontFamily === 'Montserrat Alternates' || fontFamily === 'Bowlby One SC' || fontFamily === 'Khand') {
+                if (fontFamily === 'Verdana' || fontFamily === 'Lalezar' || fontFamily === 'Bowlby One SC' || fontFamily === 'Khand') {
                     return .2;
                 }
                 if (fontFamily === 'Mada' || fontFamily === 'Hind Madurai') {
@@ -10742,7 +10751,7 @@ class TextTag {
             };
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
                 h("svg", null,
-                    h("text", { x: "0", y: `${getTextYAttribute(this)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment, xAdjustment(this))))));
+                    h("text", { x: "0", y: `${getTextYAttribute(this)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this) }, renderMultiline(this, previewerAdjustment, xAdjustment(this))))));
         }
     }
     static get is() { return "text-tag"; }

@@ -22,7 +22,9 @@ function renderMultiline({ text, lineHeight, textAlign, fontSize, width, scaleX 
         let xPosition = xAdjustment;
         if (textAlign !== "left") {
             xPosition += (width * previewerAdjustment * scaleX) / 2;
+            console.log('fontSize:', fontSize, "cal xposition: ", xPosition);
         }
+        xPosition = 0;
         return (h("tspan", { style: style, x: xPosition, dy: i === 0 ? `${decimal}em` : `${parseFloat(lineHeight) + decimal}em`, "text-anchor": anchor }, t || " "));
     });
     return lines;

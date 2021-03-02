@@ -28,9 +28,10 @@ function renderMultiline(
 
     if (textAlign !== "left") {
       xPosition += (width * previewerAdjustment * scaleX) / 2;
+      console.log('fontSize:', fontSize, "cal xposition: ", xPosition)
     }
 
-    // xPosition = 0
+    xPosition = 0
 
     return (
       <tspan

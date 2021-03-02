@@ -88,10 +88,13 @@ export class TextTag implements BaseText {
         previewerAdjustment = customContentContainerWidth / deviceWidth;
       }
 
-      let translation = 0;
-      if (this.textAlign === "right") {
-        translation = (this.width * previewerAdjustment * this.scaleX) / 2;
-      }
+      // let translation = "0";
+      // if (this.textAlign === "right") {
+      //   translation = (this.width * previewerAdjustment * this.scaleX) / 2;
+      // }
+      // if(this.textAlign === 'center'){
+      //   translation = '50%, 0%';
+      // }
 
       const getTextYAttribute = function(baseText){
         let adj = 0
@@ -306,7 +309,7 @@ export class TextTag implements BaseText {
       }
 
       const xAdjustment = function(baseText){
-        const {fontSize, fontFamily} = baseText
+        const {fontSize, fontFamily, textAlign} = baseText
 
         if(fontFamily === 'Georgia'){
           console.log('x geo')
@@ -345,10 +348,23 @@ export class TextTag implements BaseText {
             return 0
           }
         }
+        if(fontFamily === 'Montserrat Alternates'){
+          console.log('text align', textAlign)
+          return 0
+          // if(textAlign === 'left'){
+          //   return 0
+          // }
+          // else if(textAlign === 'center'){
+          //   if(fontSize)
+          // }
+          // else{
+
+          // }
+        }
         if(fontFamily === 'Bowlby One' || fontFamily === 'Bevan' || fontFamily === 'Chango' || fontFamily === 'Paytone One' ||  fontFamily === "Sree Krushnadevaraya" || fontFamily === 'Alike' || fontFamily === 'Quando' || fontFamily === 'Seymour One' || fontFamily === 'Gidugu' || fontFamily === 'thin'){
           return 0
         }
-        if(fontFamily === 'Verdana'|| fontFamily === 'Lalezar' || fontFamily === 'Montserrat Alternates' || fontFamily === 'Bowlby One SC' || fontFamily === 'Khand'){
+        if(fontFamily === 'Verdana'|| fontFamily === 'Lalezar' || fontFamily === 'Bowlby One SC' || fontFamily === 'Khand'){
           return .2
         }
         if(fontFamily === 'Mada' || fontFamily === 'Hind Madurai'){
@@ -368,7 +384,7 @@ export class TextTag implements BaseText {
               dominant-baseline="hanging"
               fill={this.fill}
               style={getSvgTextStyle(this)}
-              transform={`translate(${translation})`}
+              // transform={`translate(${translation})`}
             >
               {renderMultiline(this, previewerAdjustment, xAdjustment(this))}
             </text>

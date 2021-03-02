@@ -42,10 +42,6 @@ export class TextTag {
                 console.log('here');
                 previewerAdjustment = customContentContainerWidth / deviceWidth;
             }
-            let translation = 0;
-            if (this.textAlign === "right") {
-                translation = (this.width * previewerAdjustment * this.scaleX) / 2;
-            }
             const getTextYAttribute = function (baseText) {
                 let adj = 0;
                 const f = baseText.fontSize;
@@ -257,7 +253,7 @@ export class TextTag {
                 return adj;
             };
             const xAdjustment = function (baseText) {
-                const { fontSize, fontFamily } = baseText;
+                const { fontSize, fontFamily, textAlign } = baseText;
                 if (fontFamily === 'Georgia') {
                     console.log('x geo');
                     if (fontSize <= 65) {
@@ -300,10 +296,14 @@ export class TextTag {
                         return 0;
                     }
                 }
+                if (fontFamily === 'Montserrat Alternates') {
+                    console.log('text align', textAlign);
+                    return 0;
+                }
                 if (fontFamily === 'Bowlby One' || fontFamily === 'Bevan' || fontFamily === 'Chango' || fontFamily === 'Paytone One' || fontFamily === "Sree Krushnadevaraya" || fontFamily === 'Alike' || fontFamily === 'Quando' || fontFamily === 'Seymour One' || fontFamily === 'Gidugu' || fontFamily === 'thin') {
                     return 0;
                 }
-                if (fontFamily === 'Verdana' || fontFamily === 'Lalezar' || fontFamily === 'Montserrat Alternates' || fontFamily === 'Bowlby One SC' || fontFamily === 'Khand') {
+                if (fontFamily === 'Verdana' || fontFamily === 'Lalezar' || fontFamily === 'Bowlby One SC' || fontFamily === 'Khand') {
                     return .2;
                 }
                 if (fontFamily === 'Mada' || fontFamily === 'Hind Madurai') {
@@ -313,7 +313,7 @@ export class TextTag {
             };
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
                 h("svg", null,
-                    h("text", { x: "0", y: `${getTextYAttribute(this)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this), transform: `translate(${translation})` }, renderMultiline(this, previewerAdjustment, xAdjustment(this))))));
+                    h("text", { x: "0", y: `${getTextYAttribute(this)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this) }, renderMultiline(this, previewerAdjustment, xAdjustment(this))))));
         }
     }
     static get is() { return "text-tag"; }
