@@ -9662,6 +9662,159 @@ function checkSlideState(slideState, ele, baseText, data) {
     }
 }
 
+const getYAdjustment = function (clock) {
+    const size = clock.fontSize;
+    const font = clock.fontFamily;
+    let adj = 0;
+    if (font === 'Arial') {
+        if (size < 40) {
+            adj = 1 + (size / 10) * 1;
+        }
+        else if (size < 80) {
+            adj = 7 + ((size - 30) / 10) * 1;
+        }
+        else {
+            adj = 12 + ((size - 70) / 10) * 3;
+        }
+    }
+    else if (font === 'Impact') {
+        if (size < 60) {
+            adj = 2.5 + ((size - 10) / 10) * .5;
+        }
+        else {
+            adj = 6 + ((size - 60) / 10) * .25;
+        }
+    }
+    else if (font === 'Georgia' || font === 'Times New Roman') {
+        adj = 2.5 + ((size - 10) / 10) * 1.4;
+    }
+    else if (font === 'Tahoma') {
+        if (size < 20) {
+            adj = 2.5;
+        }
+        else if (size < 60) {
+            adj = 5;
+        }
+        else {
+            adj = 5 + ((size - 60) / 10) * 1;
+        }
+    }
+    else if (font === 'Verdana') {
+        adj = 2;
+        if (size > 10) {
+            adj += ((size - 10) / 10) * .8;
+        }
+    }
+    else if (font === 'Galada') {
+        adj = 1.5;
+        if (size > 10) {
+            adj += ((size - 10) / 10) * .6;
+        }
+    }
+    else if (font === 'Damion') {
+        adj = .5;
+        if (size > 10) {
+            adj += ((size - 10) / 10) * .85;
+        }
+    }
+    else if (font === 'Courgette') {
+        adj = 1;
+        if (size > 10) {
+            adj += ((size - 10) / 10) * 1.25;
+        }
+    }
+    else if (font === 'Baloo') {
+        if (size > 10) {
+            adj = ((size - 10) / 10) * .75;
+        }
+    }
+    else if (font === 'Fredoka One' || font === 'Chango' || font === 'Quando') {
+        adj = size / 10;
+    }
+    else if (font === 'Comfortaa') {
+        adj = ((size / 10) * 2) - 1;
+    }
+    else if (font === 'Keania One') {
+        adj = (size / 10) * 1.1;
+    }
+    else if (font === 'Russo One') {
+        adj = (size / 10) * 1.5;
+    }
+    else if (font === 'Timmana') {
+        adj = (size / 10) * 1.8;
+    }
+    else if (font === 'Contrail One') {
+        adj = (size / 10) * 1.3;
+    }
+    else if (font === 'Khand') {
+        adj = (size / 10) * .45;
+    }
+    else if (font === 'Seymour One') {
+        adj = 2;
+        if (size > 10) {
+            adj += ((size - 10) / 10) * .85;
+        }
+    }
+    else if (font === 'Gidugu') {
+        if (size > 35) {
+            adj = (size) / 10 * -.3;
+        }
+    }
+    else if (font === 'Lalezar') {
+        adj = .5;
+        if (size > 10) {
+            adj += (size - 10) / 10 * 1.25;
+        }
+    }
+    else if (font === 'Bevan') {
+        adj = (size / 10) * -.25;
+    }
+    else if (font === 'Sree Krushnadevaraya') {
+        adj = -4;
+        if (size > 10) {
+            adj += (size - 10) / 10 * -3.2;
+        }
+    }
+    else if (font === 'Alike') {
+        adj = 1;
+        if (size > 10) {
+            adj += (size - 10) / 10;
+        }
+    }
+    else if (font === 'Mada') {
+        adj = 2;
+        if (size > 10) {
+            adj = ((size - 10) / 10) * 1.75;
+        }
+    }
+    else if (font === 'Hind Madurai' || font === "Montserrat Alternates") {
+        adj = (size / 10) * 1.25;
+    }
+    else if (font === "IM Fell DW Pica") {
+        adj = 2;
+        if (size > 10 && size < 80) {
+            adj = ((size - 10) / 10) * 2;
+        }
+        else {
+            adj = 10 + ((size - 80) / 10) * 3.5;
+        }
+    }
+    else if (font === "IM Fell English") {
+        console.log('adj', adj);
+        if (size <= 10) {
+            adj = 2;
+        }
+        else if (size > 10 && size < 80) {
+            adj = 2 + ((size - 10) / 10) * 1.5;
+        }
+        else {
+            adj = 12 + ((size - 80) / 10) * 2.5;
+        }
+    }
+    console.log('FONT:', font, "size:", size, "adj:", adj);
+    return adj;
+};
+
 let clockInterval;
 let clockObservers;
 const clockHandler = {
@@ -9723,9 +9876,13 @@ class ClockTag {
         if (this.time) {
             time = this.time.format(this.customMask);
         }
+        const svgStyle = {
+            'text-anchor': 'middle',
+            transform: 'translate(50%, 0%)'
+        };
         return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
-            h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}` },
-                h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX},${this.scaleY})` }, time))));
+            h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}`, style: svgStyle },
+                h("text", { x: "0", y: getYAdjustment(this), width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX},${this.scaleY})` }, time))));
     }
     static get is() { return "clock-tag"; }
     static get properties() { return {
@@ -10407,7 +10564,7 @@ class ProgressBarTag {
     static get style() { return ".progress-bar{width:100%;padding-top:4.1%;background-color:#fff;-webkit-box-sizing:border-box;box-sizing:border-box;border-radius:50px;border-style:solid;border-width:2px;border-color:#fff;overflow:hidden;position:relative}.progress-bar .message{position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);color:#fff;font-size:1.5em;z-index:4;font-family:Roboto,Arial,Helvetica,sans-serif}.progress-animation,.progress-bar-indicator,.progress-bar .black-layer{position:absolute;top:0;left:0;width:100%;height:100%}.progress-bar .progress-bar-indicator{width:0;background-color:#8f8e92;z-index:3}.progress-bar .progress-animation{z-index:1}.progress-bar .black-layer{z-index:2;background-color:rgba(0,0,0,.5)}"; }
 }
 
-function renderMultiline({ text, lineHeight, textAlign, fontSize, width, scaleX }, previewerAdjustment, xAdjustment) {
+function renderMultiline({ text, lineHeight, textAlign, fontSize }, previewerAdjustment, xAdjustment) {
     let decimal = parseFloat(lineHeight) % 1;
     let anchor = "start";
     if (textAlign === "center") {
@@ -10421,7 +10578,6 @@ function renderMultiline({ text, lineHeight, textAlign, fontSize, width, scaleX 
             fontSize: fontSize + "px",
             lineHeight: lineHeight + "px",
         };
-        console.log('previewer', previewerAdjustment);
         if (previewerAdjustment) {
             const newFontSize = fontSize * previewerAdjustment;
             const newLineHeight = lineHeight / previewerAdjustment;
@@ -10429,14 +10585,260 @@ function renderMultiline({ text, lineHeight, textAlign, fontSize, width, scaleX 
             style.lineHeight = newLineHeight + "px";
         }
         let xPosition = xAdjustment;
-        if (textAlign !== "left") {
-            xPosition += (width * previewerAdjustment * scaleX) / 2;
-            console.log('fontSize:', fontSize, "cal xposition: ", xPosition);
-        }
-        xPosition = 0;
         return (h("tspan", { style: style, x: xPosition, dy: i === 0 ? `${decimal}em` : `${parseFloat(lineHeight) + decimal}em`, "text-anchor": anchor }, t || " "));
     });
     return lines;
+}
+
+function getXAdjustment(baseText) {
+    const { fontSize, fontFamily } = baseText;
+    let adj = 0;
+    if (fontFamily === 'Georgia') {
+        if (fontSize <= 65) {
+            adj = .3;
+        }
+        else {
+            adj = .4;
+        }
+    }
+    else if (fontFamily === 'Damion') {
+        if (fontSize > 55) {
+            adj = .2;
+        }
+    }
+    else if (fontFamily === 'Permanent Marker') {
+        if (fontSize < 70) {
+            adj = .1;
+        }
+        else {
+            adj = .2;
+        }
+    }
+    else if (fontFamily === 'Timmana') {
+        if (fontSize < 50) {
+            adj = .1;
+        }
+        else {
+            adj = .2;
+        }
+    }
+    else if (fontFamily === 'Contrail One') {
+        if (fontSize > 50) {
+            adj = .2;
+        }
+    }
+    else if (fontFamily === 'Times New Roman' || fontFamily === 'Baloo' || fontFamily === 'Fredoka One' || fontFamily === 'Keania One' || fontFamily === 'Galada') {
+        adj = .3;
+    }
+    else if (fontFamily === 'Montserrat Alternates' || fontFamily === 'Bowlby One' || fontFamily === 'Bevan' || fontFamily === 'Chango' || fontFamily === 'Paytone One' || fontFamily === "Sree Krushnadevaraya" || fontFamily === 'Alike' || fontFamily === 'Quando' || fontFamily === 'Seymour One' || fontFamily === 'Gidugu' || fontFamily === 'thin') {
+        adj = 0;
+    }
+    else if (fontFamily === 'Verdana' || fontFamily === 'Lalezar' || fontFamily === 'Bowlby One SC' || fontFamily === 'Khand') {
+        adj = .2;
+    }
+    else if (fontFamily === 'Mada' || fontFamily === 'Hind Madurai') {
+        adj = .1;
+    }
+    return adj;
+}
+
+function getTextYAdjustment(baseText) {
+    let adj = 0;
+    const f = baseText.fontSize;
+    if (baseText.fontFamily === 'Tahoma') {
+        adj = -.3;
+        if (f >= 21) {
+            adj += ((f - 20) / 10) * -.325;
+        }
+    }
+    else if (baseText.fontFamily === 'Impact') {
+        adj = -.3;
+        if (f >= 21) {
+            adj += ((f - 20) / 10) * -.25;
+        }
+    }
+    else if (baseText.fontFamily === 'Georgia') {
+        adj = .2;
+        if (f >= 21) {
+            adj = .2 - ((f - 20) / 10) * .06;
+        }
+    }
+    else if (baseText.fontFamily === 'Times New Roman') {
+        adj = .2;
+        if (f >= 21) {
+            adj = .2 + ((f - 20) / 10) * .085;
+        }
+    }
+    else if (baseText.fontFamily === 'Verdana') {
+        if (f < 20) {
+            adj = -.2;
+        }
+        else if (f >= 21 && f <= 59) {
+            adj = -.8;
+        }
+        else {
+            adj = -.8 - ((f - 50) / 10) * .3;
+        }
+    }
+    else if (baseText.fontFamily === 'Galada') {
+        if (f < 25) {
+            adj = -.3;
+        }
+        else if (f > -25) {
+            adj = -.3 + ((f - 20) / 10) * -.3;
+        }
+    }
+    else if (baseText.fontFamily === 'Damion') {
+        if (f < 25) {
+            adj = -.3;
+        }
+        else if (f > -25) {
+            adj = -.3 + ((f - 20) / 10) * -.22;
+        }
+    }
+    else if (baseText.fontFamily === 'Permanent Marker') {
+        if (f < 10) {
+            adj = 0;
+        }
+        else if (f < 30) {
+            adj = -.8;
+        }
+        else {
+            adj = -.8 + ((f - 30) / 10) * -.55;
+        }
+    }
+    else if (baseText.fontFamily === 'Courgette') {
+        adj = -.1;
+        if (f > 10) {
+            adj += (f / 10) * -.1;
+        }
+    }
+    else if (baseText.fontFamily === 'Baloo') {
+        adj = -.4;
+        if (f > 20) {
+            adj += ((f - 20) / 10) * -.45;
+        }
+    }
+    else if (baseText.fontFamily === 'Fredoka One') {
+        adj = -.2;
+        if (f > 20) {
+            adj += ((f - 20) / 10) * -.2;
+        }
+    }
+    else if (baseText.fontFamily === 'Comfortaa') {
+        adj = .3;
+        if (f > 30) {
+            adj = .5 + ((f - 30) / 10) * .1;
+        }
+    }
+    else if (baseText.fontFamily === 'Keania One') {
+        adj = .3;
+        if (f > 20) {
+            adj = -.4 + ((f - 20) / 10) * -.15;
+        }
+    }
+    else if (baseText.fontFamily === 'Timmana') {
+        adj = .25;
+        if (f > 80) {
+            adj = .25 + ((f - 80) / 10) * .1;
+        }
+    }
+    else if (baseText.fontFamily === 'Contrail One') {
+        adj = 0;
+        if (f > 50) {
+            adj = ((f - 50) / 10) * -.2;
+        }
+    }
+    else if (baseText.fontFamily === 'Khand') {
+        adj = ((f) / 10) * -.3;
+    }
+    else if (baseText.fontFamily === 'Seymour One') {
+        adj = -.2;
+        if (f > 20) {
+            adj = -.2 + ((f - 20) / 10) * -.15;
+        }
+    }
+    else if (baseText.fontFamily === 'Gidugu') {
+        adj = -.2;
+        if (f > 10) {
+            adj = -.5 + ((f - 10) / 10) * -.5;
+        }
+    }
+    else if (baseText.fontFamily === 'Lalezar') {
+        adj = 0;
+        if (f > 30) {
+            adj = -.2 + ((f - 30) / 10) * -.2;
+        }
+    }
+    else if (baseText.fontFamily === 'Bowlby One SC') {
+        if (f < 40) {
+            adj = (f / 10) * -.2;
+        }
+        else if (f < 70) {
+            adj = -1 + ((f - 40) / 10) * -.3;
+        }
+        else {
+            adj = -3 + ((f - 70) / 10) * -.4;
+        }
+    }
+    else if (baseText.fontFamily === 'Hind Madurai') {
+        adj = (f / 10) * -.17;
+    }
+    else if (baseText.fontFamily === 'thin') {
+        if (f < 15) {
+            adj = 1.2;
+        }
+        else if (f < 25) {
+            adj = 1.7;
+        }
+        else if (f < 40) {
+            adj = 3;
+        }
+        else {
+            adj = 3.3 + ((f - 40) / 10) * 1;
+        }
+    }
+    else if (baseText.fontFamily === 'Montserrat Alternates') {
+        adj = (f / 10) * -.125;
+    }
+    else if (baseText.fontFamily === 'Mada') {
+        if (f > 50) {
+            adj = .75;
+        }
+        else {
+            adj = (f / 10) * .10;
+        }
+    }
+    else if (baseText.fontFamily === 'Quando' || baseText.fontFamily === 'Alike') {
+        adj = (f / 10) * -.15;
+    }
+    else if (baseText.fontFamily === 'Sree Krushnadevaraya') {
+        adj = (f / 10) * -1.35;
+    }
+    else if (baseText.fontFamily === 'Paytone One') {
+        adj = .2;
+        if (f > 10) {
+            adj = (f / 10) * -.4;
+        }
+    }
+    else if (baseText.fontFamily === 'Chango') {
+        adj = (f / 10) * -.2;
+    }
+    else if (baseText.fontFamily === 'Bevan') {
+        adj = (f / 10) * -.52;
+    }
+    else if (baseText.fontFamily === "Bowlby One") {
+        if (f < 11) {
+            adj = -.2;
+        }
+        else if (f < 40) {
+            adj = -.8;
+        }
+        else {
+            adj = -1.6 + ((f - 40) / 10) * -.4;
+        }
+    }
+    return adj;
 }
 
 class TextTag {
@@ -10477,281 +10879,11 @@ class TextTag {
             const deviceWidth = window["device_window_size"].width;
             let previewerAdjustment = 1;
             if (deviceWidth != customContentContainerWidth) {
-                console.log('here');
                 previewerAdjustment = customContentContainerWidth / deviceWidth;
             }
-            const getTextYAttribute = function (baseText) {
-                let adj = 0;
-                const f = baseText.fontSize;
-                if (baseText.fontFamily === 'Tahoma') {
-                    console.log('tahoma');
-                    adj = -.3;
-                    if (f >= 21) {
-                        adj += ((f - 20) / 10) * -.325;
-                    }
-                }
-                else if (baseText.fontFamily === 'Impact') {
-                    console.log('Impact');
-                    adj = -.3;
-                    if (f >= 21) {
-                        adj += ((f - 20) / 10) * -.25;
-                    }
-                }
-                else if (baseText.fontFamily === 'Georgia') {
-                    console.log("GEORGIA");
-                    adj = .2;
-                    if (f >= 21) {
-                        adj = .2 - ((f - 20) / 10) * .06;
-                        console.log('adj', adj);
-                    }
-                }
-                else if (baseText.fontFamily === 'Times New Roman') {
-                    adj = .2;
-                    if (f >= 21) {
-                        adj = .2 + ((f - 20) / 10) * .085;
-                    }
-                }
-                else if (baseText.fontFamily === 'Verdana') {
-                    console.log('verdana');
-                    if (f < 20) {
-                        adj = -.2;
-                    }
-                    else if (f >= 21 && f <= 59) {
-                        adj = -.8;
-                    }
-                    else {
-                        adj = -.8 - ((f - 50) / 10) * .3;
-                    }
-                }
-                else if (baseText.fontFamily === 'Galada') {
-                    console.log('galada');
-                    if (f < 25) {
-                        adj = -.3;
-                    }
-                    else if (f > -25) {
-                        adj = -.3 + ((f - 20) / 10) * -.3;
-                    }
-                }
-                else if (baseText.fontFamily === 'Damion') {
-                    console.log('damion');
-                    if (f < 25) {
-                        adj = -.3;
-                    }
-                    else if (f > -25) {
-                        adj = -.3 + ((f - 20) / 10) * -.22;
-                    }
-                }
-                else if (baseText.fontFamily === 'Permanent Marker') {
-                    console.log('permanent');
-                    if (f < 10) {
-                        adj = 0;
-                    }
-                    else if (f < 30) {
-                        adj = -.8;
-                    }
-                    else {
-                        adj = -.8 + ((f - 30) / 10) * -.55;
-                    }
-                }
-                else if (baseText.fontFamily === 'Courgette') {
-                    adj = -.1;
-                    if (f > 10) {
-                        adj += (f / 10) * -.1;
-                    }
-                }
-                else if (baseText.fontFamily === 'Baloo') {
-                    adj = -.4;
-                    if (f > 20) {
-                        adj += ((f - 20) / 10) * -.45;
-                    }
-                }
-                else if (baseText.fontFamily === 'Fredoka One') {
-                    adj = -.2;
-                    if (f > 20) {
-                        adj += ((f - 20) / 10) * -.2;
-                    }
-                }
-                else if (baseText.fontFamily === 'Comfortaa') {
-                    adj = .3;
-                    if (f > 30) {
-                        adj = .5 + ((f - 30) / 10) * .1;
-                    }
-                }
-                else if (baseText.fontFamily === 'Keania One') {
-                    adj = .3;
-                    if (f > 20) {
-                        adj = -.4 + ((f - 20) / 10) * -.15;
-                    }
-                }
-                else if (baseText.fontFamily === 'Timmana') {
-                    adj = .25;
-                    if (f > 80) {
-                        adj = .25 + ((f - 80) / 10) * .1;
-                    }
-                }
-                else if (baseText.fontFamily === 'Contrail One') {
-                    adj = 0;
-                    if (f > 50) {
-                        adj = ((f - 50) / 10) * -.2;
-                    }
-                }
-                else if (baseText.fontFamily === 'Khand') {
-                    adj = ((f) / 10) * -.3;
-                }
-                else if (baseText.fontFamily === 'Seymour One') {
-                    adj = -.2;
-                    if (f > 20) {
-                        adj = -.2 + ((f - 20) / 10) * -.15;
-                    }
-                }
-                else if (baseText.fontFamily === 'Gidugu') {
-                    adj = -.2;
-                    if (f > 10) {
-                        adj = -.5 + ((f - 10) / 10) * -.5;
-                    }
-                }
-                else if (baseText.fontFamily === 'Lalezar') {
-                    adj = 0;
-                    if (f > 30) {
-                        adj = -.2 + ((f - 30) / 10) * -.2;
-                    }
-                }
-                else if (baseText.fontFamily === 'Bowlby One SC') {
-                    if (f < 40) {
-                        adj = (f / 10) * -.2;
-                    }
-                    else if (f < 70) {
-                        adj = -1 + ((f - 40) / 10) * -.3;
-                    }
-                    else {
-                        adj = -3 + ((f - 70) / 10) * -.4;
-                    }
-                }
-                else if (baseText.fontFamily === 'Hind Madurai') {
-                    adj = (f / 10) * -.17;
-                }
-                else if (baseText.fontFamily === 'thin') {
-                    if (f < 15) {
-                        adj = 1.2;
-                    }
-                    else if (f < 25) {
-                        adj = 1.7;
-                    }
-                    else if (f < 40) {
-                        adj = 3;
-                    }
-                    else {
-                        adj = 3.3 + ((f - 40) / 10) * .9;
-                    }
-                }
-                else if (baseText.fontFamily === 'Montserrat Alternates') {
-                    adj = (f / 10) * -.125;
-                }
-                else if (baseText.fontFamily === 'Mada') {
-                    if (f > 50) {
-                        adj = .75;
-                    }
-                    else {
-                        adj = (f / 10) * .10;
-                    }
-                }
-                else if (baseText.fontFamily === 'Quando') {
-                    adj = (f / 10) * -.15;
-                }
-                else if (baseText.fontFamily === 'Alike') {
-                    adj = (f / 10) * -.15;
-                }
-                else if (baseText.fontFamily === 'Sree Krushnadevaraya') {
-                    adj = (f / 10) * -1.35;
-                }
-                else if (baseText.fontFamily === 'Paytone One') {
-                    adj = .2;
-                    if (f > 10) {
-                        adj = (f / 10) * -.4;
-                    }
-                }
-                else if (baseText.fontFamily === 'Chango') {
-                    adj = (f / 10) * -.2;
-                }
-                else if (baseText.fontFamily === 'Bevan') {
-                    adj = (f / 10) * -.52;
-                }
-                else if (baseText.fontFamily === "Bowlby One") {
-                    if (f < 11) {
-                        adj = -.2;
-                    }
-                    else if (f < 40) {
-                        adj = -.8;
-                    }
-                    else {
-                        adj = -1.6 + ((f - 40) / 10) * -.4;
-                    }
-                }
-                console.log('FONT SIZE', baseText.fontSize, "---ADJ:", adj);
-                return adj;
-            };
-            const xAdjustment = function (baseText) {
-                const { fontSize, fontFamily, textAlign } = baseText;
-                if (fontFamily === 'Georgia') {
-                    console.log('x geo');
-                    if (fontSize <= 65) {
-                        return .3;
-                    }
-                    else
-                        return .4;
-                }
-                if (fontFamily === 'Damion') {
-                    if (fontSize > 55) {
-                        return .2;
-                    }
-                    else
-                        return 0;
-                }
-                if (fontFamily === 'Permanent Marker') {
-                    if (fontSize < 70) {
-                        return .1;
-                    }
-                    else
-                        return .2;
-                }
-                if (fontFamily === 'Times New Roman' || fontFamily === 'Baloo' || fontFamily === 'Fredoka One' || fontFamily === 'Keania One' || fontFamily === 'Galada') {
-                    return .3;
-                }
-                if (fontFamily === 'Timmana') {
-                    if (fontSize < 50) {
-                        return .1;
-                    }
-                    else
-                        return .2;
-                }
-                if (fontFamily === 'Contrail One') {
-                    console.log('contrao');
-                    if (fontSize > 50) {
-                        console.log('font size');
-                        return .2;
-                    }
-                    else {
-                        return 0;
-                    }
-                }
-                if (fontFamily === 'Montserrat Alternates') {
-                    console.log('text align', textAlign);
-                    return 0;
-                }
-                if (fontFamily === 'Bowlby One' || fontFamily === 'Bevan' || fontFamily === 'Chango' || fontFamily === 'Paytone One' || fontFamily === "Sree Krushnadevaraya" || fontFamily === 'Alike' || fontFamily === 'Quando' || fontFamily === 'Seymour One' || fontFamily === 'Gidugu' || fontFamily === 'thin') {
-                    return 0;
-                }
-                if (fontFamily === 'Verdana' || fontFamily === 'Lalezar' || fontFamily === 'Bowlby One SC' || fontFamily === 'Khand') {
-                    return .2;
-                }
-                if (fontFamily === 'Mada' || fontFamily === 'Hind Madurai') {
-                    return .1;
-                }
-                return 0;
-            };
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
                 h("svg", null,
-                    h("text", { x: "0", y: `${getTextYAttribute(this)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this) }, renderMultiline(this, previewerAdjustment, xAdjustment(this))))));
+                    h("text", { x: "0", y: `${getTextYAdjustment(this)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this) }, renderMultiline(this, previewerAdjustment, getXAdjustment(this))))));
         }
     }
     static get is() { return "text-tag"; }
@@ -11004,8 +11136,12 @@ class WeatherTag {
     }
     renderTemperature(text) {
         if (this.temperatureType === "temperature") {
-            return (h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}` },
-                h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX}, ${this.scaleY})` }, text)));
+            const svgStyle = {
+                'text-anchor': 'middle',
+                transform: 'translate(50%, 0%)'
+            };
+            return (h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}`, style: svgStyle },
+                h("text", { x: "0", y: getYAdjustment(this), width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX}, ${this.scaleY})` }, text)));
         }
     }
     renderIcon() {

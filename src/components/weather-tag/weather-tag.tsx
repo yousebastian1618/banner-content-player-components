@@ -2,6 +2,7 @@ import { Component, State, Prop, Watch, Element } from "@stencil/core";
 import { BaseText } from "../../common/base-text";
 import { getBaseTextStyle } from "../../common/get-base-text-style";
 import checkSlideState from "../../common/text-behaviour";
+import { getYAdjustment } from "../../common/get-weather-time-text-y-attribute"
 
 let weatherInterval;
 let weatherObservers = [];
@@ -223,15 +224,22 @@ export class WeatherTag implements BaseText {
   //
   renderTemperature(text) {
     if (this.temperatureType === "temperature") {
+
+      const svgStyle = {
+        'text-anchor': 'middle',
+        transform: 'translate(50%, 0%)'
+      }
+
       return (
         <svg
           viewBox={`0 0 ${this.width * this.scaleX} ${
             this.height * this.scaleY
           }`}
+          style={svgStyle}
         >
           <text
             x="0"
-            y="0"
+            y={getYAdjustment(this)}
             width="100%"
             height="100%"
             dominant-baseline="hanging"

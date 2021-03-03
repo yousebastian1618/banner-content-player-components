@@ -1,9 +1,11 @@
 function renderMultiline(
-  { text, lineHeight, textAlign, fontSize, width, scaleX }: any,
+  { text, lineHeight, textAlign, fontSize }: any,
   previewerAdjustment, xAdjustment
 ) {
+  
   let decimal = parseFloat(lineHeight) % 1;
   let anchor = "start";
+
   if (textAlign === "center") {
     anchor = "middle";
   } else if (textAlign === "right") {
@@ -15,8 +17,6 @@ function renderMultiline(
       lineHeight: lineHeight + "px",
     };
 
-    console.log('previewer', previewerAdjustment)
-    
     if (previewerAdjustment) {
       const newFontSize = fontSize * previewerAdjustment;
       const newLineHeight = lineHeight / previewerAdjustment;
@@ -25,13 +25,6 @@ function renderMultiline(
     }
 
     let xPosition = xAdjustment;
-
-    if (textAlign !== "left") {
-      xPosition += (width * previewerAdjustment * scaleX) / 2;
-      console.log('fontSize:', fontSize, "cal xposition: ", xPosition)
-    }
-
-    xPosition = 0
 
     return (
       <tspan

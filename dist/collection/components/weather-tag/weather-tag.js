@@ -1,5 +1,6 @@
 import { getBaseTextStyle } from "../../common/get-base-text-style";
 import checkSlideState from "../../common/text-behaviour";
+import { getYAdjustment } from "../../common/get-weather-time-text-y-attribute";
 let weatherInterval;
 let weatherObservers = [];
 const WEATHER_API = "https://api.openweathermap.org/data/2.5/weather";
@@ -110,8 +111,12 @@ export class WeatherTag {
     }
     renderTemperature(text) {
         if (this.temperatureType === "temperature") {
-            return (h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}` },
-                h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX}, ${this.scaleY})` }, text)));
+            const svgStyle = {
+                'text-anchor': 'middle',
+                transform: 'translate(50%, 0%)'
+            };
+            return (h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}`, style: svgStyle },
+                h("text", { x: "0", y: getYAdjustment(this), width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX}, ${this.scaleY})` }, text)));
         }
     }
     renderIcon() {
