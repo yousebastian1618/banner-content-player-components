@@ -8,10 +8,10 @@ const getYAdjustment = function(clock: BaseText){
     let adj = 0;
     if(font === 'Arial'){
         if(size < 40){
-            adj = 1 + (size/10) * 1
+            adj = 1 + (size/10) 
         }
         else if (size < 80){
-            adj = 7 + ((size- 30)/10) * 1
+            adj = 7 + ((size- 30)/10) 
         }
         else{
             adj = 12 + ((size - 70)/10) * 3
@@ -29,42 +29,42 @@ const getYAdjustment = function(clock: BaseText){
         adj = 2.5 + ((size - 10)/10) * 1.4
     }
     else if(font === 'Tahoma'){
-        if(size<20){
+        if(size < 20){
           adj = 2.5
         }
         else if(size < 60){
             adj = 5;
         }
         else{
-            adj = 5 + ((size - 60)/10) * 1
+            adj = 5 + ((size-60)/10) 
         }
     }
     else if(font === 'Verdana'){
         adj = 2;
-        if(size>10){
+        if(size > 10){
             adj += ((size-10)/10) * .8
         }
     }
     else if(font === 'Galada'){
         adj = 1.5;
-        if(size>10){
+        if(size > 10){
             adj += ((size-10)/10) * .6
         }
     }
     else if(font === 'Damion'){
         adj = .5;
-        if(size>10){
+        if(size > 10){
             adj += ((size-10)/10) * .85
         }
     }
     else if(font === 'Courgette'){
         adj = 1;
-        if(size>10){
+        if(size > 10){
             adj += ((size-10)/10) * 1.25
         }
     }
     else if(font === 'Baloo'){
-        if(size>10){
+        if(size > 10){
             adj = ((size-10)/10) * .75
         }
     }
@@ -91,7 +91,7 @@ const getYAdjustment = function(clock: BaseText){
     }
     else if(font === 'Seymour One'){
       adj = 2;
-      if(size>10){
+      if(size > 10){
         adj += ((size-10)/10) * .85
       }
     }
@@ -151,8 +151,6 @@ const getYAdjustment = function(clock: BaseText){
             adj = 12 + ((size-80)/10) * 2.5
         }
     }
-    console.log('FONT:', font, "size:", size, "adj:", adj)
-
     return adj;
   }
 
