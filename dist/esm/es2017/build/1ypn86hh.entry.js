@@ -9474,8 +9474,11 @@ function disappearSlideRight(element, delay, duration) {
     }, { duration: duration, delay: delay, easing: 'easeOutCubic' });
 }
 function disappearSlideLeft(element, delay, duration) {
+    console.log('element disappearLeft');
+    console.log('offsetWidth', element.offsetWidth);
+    console.log('initLeft', element.initLeft);
     return velocity(element, {
-        left: [`-${element.offsetWidth}px`, `${element.initLeft}`],
+        left: [`-${(element.parentElement.offsetWidth * 0.05) + element.offsetWidth}px`, `${element.initLeft}`],
         opacity: [1, 1]
     }, { duration: duration, delay: delay, easing: 'easeOutCubic' });
 }
