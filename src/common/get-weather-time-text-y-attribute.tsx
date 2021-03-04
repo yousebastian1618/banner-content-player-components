@@ -1,9 +1,9 @@
 import { BaseText } from "./base-text";
 
 
-const getYAdjustment = function(clock: BaseText){
-    const size = clock.fontSize
-    const font = clock.fontFamily;
+const getYAdjustment = function(text: BaseText, containerHeight){
+    const size = text.fontSize
+    const font = text.fontFamily;
 
     let adj = 0;
     if(font === 'Arial'){
@@ -151,7 +151,10 @@ const getYAdjustment = function(clock: BaseText){
             adj = 12 + ((size-80)/10) * 2.5
         }
     }
-    return adj;
+    // The adjustment scales with the hieght of the player window. That was unknown till after
+    // all measurements were taken on the preview window with a height of 255px. That's why below we
+    // divide by 255 to get the adjustment per pixel, and then multiply by the player window height
+    return (adj/255) * containerHeight;
   }
 
 export {getYAdjustment}

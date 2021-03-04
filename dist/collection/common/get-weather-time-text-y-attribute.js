@@ -1,13 +1,13 @@
-const getYAdjustment = function (clock) {
-    const size = clock.fontSize;
-    const font = clock.fontFamily;
+const getYAdjustment = function (text, containerHeight) {
+    const size = text.fontSize;
+    const font = text.fontFamily;
     let adj = 0;
     if (font === 'Arial') {
         if (size < 40) {
-            adj = 1 + (size / 10) * 1;
+            adj = 1 + (size / 10);
         }
         else if (size < 80) {
-            adj = 7 + ((size - 30) / 10) * 1;
+            adj = 7 + ((size - 30) / 10);
         }
         else {
             adj = 12 + ((size - 70) / 10) * 3;
@@ -32,7 +32,7 @@ const getYAdjustment = function (clock) {
             adj = 5;
         }
         else {
-            adj = 5 + ((size - 60) / 10) * 1;
+            adj = 5 + ((size - 60) / 10);
         }
     }
     else if (font === 'Verdana') {
@@ -147,7 +147,6 @@ const getYAdjustment = function (clock) {
             adj = 12 + ((size - 80) / 10) * 2.5;
         }
     }
-    console.log('FONT:', font, "size:", size, "adj:", adj);
-    return adj;
+    return (adj / 255) * containerHeight;
 };
 export { getYAdjustment };

@@ -110,13 +110,10 @@ export class WeatherTag {
         WeatherTagHandler.unsubscribe(this);
     }
     renderTemperature(text) {
+        const containerHeight = document.getElementsByClassName('custom-content-container')[0].clientHeight;
         if (this.temperatureType === "temperature") {
-            const svgStyle = {
-                'text-anchor': 'middle',
-                transform: 'translate(50%, 0%)'
-            };
-            return (h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}`, style: svgStyle },
-                h("text", { x: "0", y: getYAdjustment(this), width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX}, ${this.scaleY})` }, text)));
+            return (h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}` },
+                h("text", { x: "0", y: getYAdjustment(this, containerHeight), width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX}, ${this.scaleY})` }, text)));
         }
     }
     renderIcon() {

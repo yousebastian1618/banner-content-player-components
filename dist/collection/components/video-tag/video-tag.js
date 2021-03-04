@@ -84,8 +84,6 @@ export class VideoTag {
     componentDidUpdate() { }
     render() {
         if (this.src) {
-            console.log('video', `${((this.height * this.scaleY) / this.containerHeight) * 100}%`);
-            console.log('this', this);
             let style = {
                 top: `${(this.top / this.containerHeight) * 100}%`,
                 left: `${(this.left / this.containerWidth) * 100}%`,

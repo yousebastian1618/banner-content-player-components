@@ -1,3 +1,3 @@
 import { BaseText } from "./base-text";
-declare const getYAdjustment: (clock: BaseText) => number;
+declare const getYAdjustment: (text: BaseText, containerHeight: any) => number;
 export { getYAdjustment };

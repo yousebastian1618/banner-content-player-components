@@ -223,6 +223,8 @@ export class WeatherTag implements BaseText {
   //  @return {HTMLElement}
   //
   renderTemperature(text) {
+    const containerHeight = document.getElementsByClassName('custom-content-container')[0].clientHeight;
+
     if (this.temperatureType === "temperature") {
 
       return (
@@ -233,7 +235,7 @@ export class WeatherTag implements BaseText {
         >
           <text
             x="0"
-            y={getYAdjustment(this)}
+            y={getYAdjustment(this, containerHeight)}
             width="100%"
             height="100%"
             dominant-baseline="hanging"

@@ -1,6 +1,6 @@
 import { BaseText } from "./base-text";
 
-function getTextYAdjustment(baseText: BaseText){
+function getTextYAdjustment(baseText: BaseText, containerHeight){
     let adj = 0
     const font = baseText.fontFamily;
     const size = baseText.fontSize
@@ -198,7 +198,11 @@ function getTextYAdjustment(baseText: BaseText){
         adj = -1.6 + ((size-40)/10) * -.4
       }
     }
-    return adj
+    
+    // The adjustment scales with the hieght of the player window. That was unknown till after
+    // all measurements were taken on the preview window with a height of 255px. That's why below we
+    // divide by 255 to get the adjustment per pixel, and then multiply by the player window height
+    return (adj/255) * containerHeight
 }
 
 export {getTextYAdjustment}

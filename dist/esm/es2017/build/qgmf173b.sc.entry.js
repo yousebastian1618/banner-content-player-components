@@ -9474,9 +9474,6 @@ function disappearSlideRight(element, delay, duration) {
     }, { duration: duration, delay: delay, easing: 'easeOutCubic' });
 }
 function disappearSlideLeft(element, delay, duration) {
-    console.log('element disappearLeft');
-    console.log('offsetWidth', element.offsetWidth);
-    console.log('initLeft', element.initLeft);
     return velocity(element, {
         left: [`-${(element.parentElement.offsetWidth * 0.05) + element.offsetWidth}px`, `${element.initLeft}`],
         opacity: [1, 1]
@@ -9665,16 +9662,16 @@ function checkSlideState(slideState, ele, baseText, data) {
     }
 }
 
-const getYAdjustment = function (clock) {
-    const size = clock.fontSize;
-    const font = clock.fontFamily;
+const getYAdjustment = function (text, containerHeight) {
+    const size = text.fontSize;
+    const font = text.fontFamily;
     let adj = 0;
     if (font === 'Arial') {
         if (size < 40) {
-            adj = 1 + (size / 10) * 1;
+            adj = 1 + (size / 10);
         }
         else if (size < 80) {
-            adj = 7 + ((size - 30) / 10) * 1;
+            adj = 7 + ((size - 30) / 10);
         }
         else {
             adj = 12 + ((size - 70) / 10) * 3;
@@ -9699,7 +9696,7 @@ const getYAdjustment = function (clock) {
             adj = 5;
         }
         else {
-            adj = 5 + ((size - 60) / 10) * 1;
+            adj = 5 + ((size - 60) / 10);
         }
     }
     else if (font === 'Verdana') {
@@ -9814,8 +9811,7 @@ const getYAdjustment = function (clock) {
             adj = 12 + ((size - 80) / 10) * 2.5;
         }
     }
-    console.log('FONT:', font, "size:", size, "adj:", adj);
-    return adj;
+    return (adj / 255) * containerHeight;
 };
 
 let clockInterval;
@@ -9879,13 +9875,10 @@ class ClockTag {
         if (this.time) {
             time = this.time.format(this.customMask);
         }
-        const svgStyle = {
-            'text-anchor': 'middle',
-            transform: 'translate(50%, 0%)'
-        };
+        const containerHeight = document.getElementsByClassName('custom-content-container')[0].clientHeight;
         return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
-            h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}`, style: svgStyle },
-                h("text", { x: "0", y: getYAdjustment(this), width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX},${this.scaleY})` }, time))));
+            h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}` },
+                h("text", { x: "0", y: getYAdjustment(this, containerHeight), width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX},${this.scaleY})` }, time))));
     }
     static get is() { return "clock-tag"; }
     static get properties() { return {
@@ -10146,13 +10139,11 @@ function renderCustomContent(content, slideState) {
             width: `${width}%`,
             height: `${height}%`,
         };
-        console.log('adjust', adjustment);
         let data = Object.assign({}, content.__data__, {
             containerWidth: content.width,
             containerHeight: content.height,
             slideState: slideState,
         });
-        console.log('this data', data);
         return (h("custom-content-tag", { class: "full-screen", data: data, adjustment: adjustment }));
     }
     return null;
@@ -10340,8 +10331,6 @@ function renderVideos({ content, containerWidth, containerHeight, slideState, })
     return (h("video-tag", { videoObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
 function renderTexts({ content, containerWidth, containerHeight, slideState }) {
-    console.log("containerH", containerHeight);
-    console.log('containerW', containerWidth);
     return (h("text-tag", { textObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
 function renderClocks({ content, containerWidth, containerHeight, slideState, }) {
@@ -10396,7 +10385,7 @@ class CustomContentTag {
                 containerWidth: this.data.containerWidth,
                 content: obj,
                 slideState: this.data.slideState,
-                backgroundStyle: backgroundStyle
+                backgroundStyle: null,
             };
             if (obj.type === "image") {
                 singleObj.backgroundStyle = backgroundStyle;
@@ -10645,203 +10634,205 @@ function getXAdjustment(baseText) {
     return adj;
 }
 
-function getTextYAdjustment(baseText) {
+function getTextYAdjustment(baseText, containerHeight) {
     let adj = 0;
-    const f = baseText.fontSize;
-    if (baseText.fontFamily === 'Tahoma') {
+    const font = baseText.fontFamily;
+    const size = baseText.fontSize;
+    if (font === 'Tahoma') {
         adj = -.3;
-        if (f >= 21) {
-            adj += ((f - 20) / 10) * -.325;
+        if (size >= 21) {
+            adj += ((size - 20) / 10) * -.325;
         }
     }
-    else if (baseText.fontFamily === 'Impact') {
+    else if (font === 'Impact') {
         adj = -.3;
-        if (f >= 21) {
-            adj += ((f - 20) / 10) * -.25;
+        if (size >= 21) {
+            adj += ((size - 20) / 10) * -.25;
         }
     }
-    else if (baseText.fontFamily === 'Georgia') {
+    else if (font === 'Georgia') {
         adj = .2;
-        if (f >= 21) {
-            adj = .2 - ((f - 20) / 10) * .06;
+        if (size >= 21) {
+            adj = .2 - ((size - 20) / 10) * .06;
         }
     }
-    else if (baseText.fontFamily === 'Times New Roman') {
+    else if (font === 'Times New Roman') {
         adj = .2;
-        if (f >= 21) {
-            adj = .2 + ((f - 20) / 10) * .085;
+        if (size >= 21) {
+            adj = .2 + ((size - 20) / 10) * .085;
         }
     }
-    else if (baseText.fontFamily === 'Verdana') {
-        if (f < 20) {
+    else if (font === 'Verdana') {
+        if (size < 20) {
             adj = -.2;
         }
-        else if (f >= 21 && f <= 59) {
+        else if (size >= 21 && size <= 59) {
             adj = -.8;
         }
         else {
-            adj = -.8 - ((f - 50) / 10) * .3;
+            adj = -.8 - ((size - 50) / 10) * .3;
         }
     }
-    else if (baseText.fontFamily === 'Galada') {
-        if (f < 25) {
+    else if (font === 'Galada') {
+        if (size < 25) {
             adj = -.3;
         }
-        else if (f > -25) {
-            adj = -.3 + ((f - 20) / 10) * -.3;
+        else if (size >= 25) {
+            adj = -.3 + ((size - 20) / 10) * -.3;
         }
     }
-    else if (baseText.fontFamily === 'Damion') {
-        if (f < 25) {
+    else if (font === 'Damion') {
+        if (size < 25) {
             adj = -.3;
         }
-        else if (f > -25) {
-            adj = -.3 + ((f - 20) / 10) * -.22;
+        else if (size >= 25) {
+            adj = -.3 + ((size - 20) / 10) * -.22;
         }
     }
-    else if (baseText.fontFamily === 'Permanent Marker') {
-        if (f < 10) {
+    else if (font === 'Permanent Marker') {
+        if (size < 10) {
             adj = 0;
         }
-        else if (f < 30) {
+        else if (size < 30) {
             adj = -.8;
         }
         else {
-            adj = -.8 + ((f - 30) / 10) * -.55;
+            adj = -.8 + ((size - 30) / 10) * -.55;
         }
     }
-    else if (baseText.fontFamily === 'Courgette') {
+    else if (font === 'Courgette') {
         adj = -.1;
-        if (f > 10) {
-            adj += (f / 10) * -.1;
+        if (size > 10) {
+            adj += (size / 10) * -.1;
         }
     }
-    else if (baseText.fontFamily === 'Baloo') {
+    else if (font === 'Baloo') {
         adj = -.4;
-        if (f > 20) {
-            adj += ((f - 20) / 10) * -.45;
+        if (size > 20) {
+            adj += ((size - 20) / 10) * -.45;
         }
     }
-    else if (baseText.fontFamily === 'Fredoka One') {
+    else if (font === 'Fredoka One') {
         adj = -.2;
-        if (f > 20) {
-            adj += ((f - 20) / 10) * -.2;
+        if (size > 20) {
+            adj += ((size - 20) / 10) * -.2;
         }
     }
-    else if (baseText.fontFamily === 'Comfortaa') {
+    else if (font === 'Comfortaa') {
         adj = .3;
-        if (f > 30) {
-            adj = .5 + ((f - 30) / 10) * .1;
+        if (size > 30) {
+            adj = .5 + ((size - 30) / 10) * .1;
         }
     }
-    else if (baseText.fontFamily === 'Keania One') {
+    else if (font === 'Keania One') {
         adj = .3;
-        if (f > 20) {
-            adj = -.4 + ((f - 20) / 10) * -.15;
+        if (size > 20) {
+            adj = -.4 + ((size - 20) / 10) * -.15;
         }
     }
-    else if (baseText.fontFamily === 'Timmana') {
+    else if (font === 'Timmana') {
         adj = .25;
-        if (f > 80) {
-            adj = .25 + ((f - 80) / 10) * .1;
+        if (size > 80) {
+            adj = .25 + ((size - 80) / 10) * .1;
         }
     }
-    else if (baseText.fontFamily === 'Contrail One') {
+    else if (font === 'Contrail One') {
         adj = 0;
-        if (f > 50) {
-            adj = ((f - 50) / 10) * -.2;
+        if (size > 50) {
+            adj = ((size - 50) / 10) * -.2;
         }
     }
-    else if (baseText.fontFamily === 'Khand') {
-        adj = ((f) / 10) * -.3;
+    else if (font === 'Khand') {
+        adj = (size / 10) * -.3;
     }
-    else if (baseText.fontFamily === 'Seymour One') {
+    else if (font === 'Seymour One') {
         adj = -.2;
-        if (f > 20) {
-            adj = -.2 + ((f - 20) / 10) * -.15;
+        if (size > 20) {
+            adj = -.2 + ((size - 20) / 10) * -.15;
         }
     }
-    else if (baseText.fontFamily === 'Gidugu') {
+    else if (font === 'Gidugu') {
         adj = -.2;
-        if (f > 10) {
-            adj = -.5 + ((f - 10) / 10) * -.5;
+        if (size > 10) {
+            adj = -.5 + ((size - 10) / 10) * -.5;
         }
     }
-    else if (baseText.fontFamily === 'Lalezar') {
+    else if (font === 'Lalezar') {
         adj = 0;
-        if (f > 30) {
-            adj = -.2 + ((f - 30) / 10) * -.2;
+        if (size > 30) {
+            adj = -.2 + ((size - 30) / 10) * -.2;
         }
     }
-    else if (baseText.fontFamily === 'Bowlby One SC') {
-        if (f < 40) {
-            adj = (f / 10) * -.2;
+    else if (font === 'Bowlby One SC') {
+        if (size < 40) {
+            adj = (size / 10) * -.2;
         }
-        else if (f < 70) {
-            adj = -1 + ((f - 40) / 10) * -.3;
+        else if (size < 70) {
+            adj = -1 + ((size - 40) / 10) * -.3;
         }
         else {
-            adj = -3 + ((f - 70) / 10) * -.4;
+            adj = -3 + ((size - 70) / 10) * -.4;
         }
     }
-    else if (baseText.fontFamily === 'Hind Madurai') {
-        adj = (f / 10) * -.17;
+    else if (font === 'Hind Madurai') {
+        adj = (size / 10) * -.17;
     }
-    else if (baseText.fontFamily === 'thin') {
-        if (f < 15) {
+    else if (font === 'thin') {
+        if (size < 15) {
             adj = 1.2;
         }
-        else if (f < 25) {
+        else if (size < 25) {
             adj = 1.7;
         }
-        else if (f < 40) {
+        else if (size < 40) {
             adj = 3;
         }
         else {
-            adj = 3.3 + ((f - 40) / 10) * 1;
+            adj = 3.3 + ((size - 40) / 10);
         }
     }
-    else if (baseText.fontFamily === 'Montserrat Alternates') {
-        adj = (f / 10) * -.125;
+    else if (font === 'Montserrat Alternates') {
+        adj = (size / 10) * -.125;
     }
-    else if (baseText.fontFamily === 'Mada') {
-        if (f > 50) {
+    else if (font === 'Mada') {
+        if (size > 50) {
             adj = .75;
         }
         else {
-            adj = (f / 10) * .10;
+            adj = (size / 10) * .1;
         }
     }
-    else if (baseText.fontFamily === 'Quando' || baseText.fontFamily === 'Alike') {
-        adj = (f / 10) * -.15;
+    else if (font === 'Quando' || font === 'Alike') {
+        adj = (size / 10) * -.15;
     }
-    else if (baseText.fontFamily === 'Sree Krushnadevaraya') {
-        adj = (f / 10) * -1.35;
+    else if (font === 'Sree Krushnadevaraya') {
+        adj = (size / 10) * -1.35;
     }
-    else if (baseText.fontFamily === 'Paytone One') {
+    else if (font === 'Paytone One') {
         adj = .2;
-        if (f > 10) {
-            adj = (f / 10) * -.4;
+        if (size > 10) {
+            adj = (size / 10) * -.4;
         }
     }
-    else if (baseText.fontFamily === 'Chango') {
-        adj = (f / 10) * -.2;
+    else if (font === 'Chango') {
+        adj = (size / 10) * -.2;
     }
-    else if (baseText.fontFamily === 'Bevan') {
-        adj = (f / 10) * -.52;
+    else if (font === 'Bevan') {
+        adj = (size / 10) * -.52;
     }
-    else if (baseText.fontFamily === "Bowlby One") {
-        if (f < 11) {
+    else if (font === "Bowlby One") {
+        if (size < 11) {
             adj = -.2;
         }
-        else if (f < 40) {
+        else if (size < 40) {
             adj = -.8;
         }
         else {
-            adj = -1.6 + ((f - 40) / 10) * -.4;
+            adj = -1.6 + ((size - 40) / 10) * -.4;
         }
     }
-    return adj;
+    console.log("FONT", font, "SIZE:", size, "Y ADJ:", adj);
+    return (adj / 255) * containerHeight;
 }
 
 class TextTag {
@@ -10877,16 +10868,20 @@ class TextTag {
     }
     componentDidLoad() { }
     render() {
+        console.log('this.', this);
         if (this.text) {
             const customContentContainerWidth = document.getElementsByClassName("custom-content-container")[0].clientWidth;
+            console.log('c width', customContentContainerWidth);
             const deviceWidth = window["device_window_size"].width;
             let previewerAdjustment = 1;
             if (deviceWidth != customContentContainerWidth) {
                 previewerAdjustment = customContentContainerWidth / deviceWidth;
             }
+            const containerHeight = document.getElementsByClassName('custom-content-container')[0].clientHeight;
+            console.log('c heght', containerHeight);
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
                 h("svg", null,
-                    h("text", { x: "0", y: `${getTextYAdjustment(this)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this) }, renderMultiline(this, previewerAdjustment, getXAdjustment(this))))));
+                    h("text", { x: "0", y: `${getTextYAdjustment(this, containerHeight)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this) }, renderMultiline(this, previewerAdjustment, getXAdjustment(this))))));
         }
     }
     static get is() { return "text-tag"; }
@@ -11138,13 +11133,10 @@ class WeatherTag {
         WeatherTagHandler.unsubscribe(this);
     }
     renderTemperature(text) {
+        const containerHeight = document.getElementsByClassName('custom-content-container')[0].clientHeight;
         if (this.temperatureType === "temperature") {
-            const svgStyle = {
-                'text-anchor': 'middle',
-                transform: 'translate(50%, 0%)'
-            };
-            return (h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}`, style: svgStyle },
-                h("text", { x: "0", y: getYAdjustment(this), width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX}, ${this.scaleY})` }, text)));
+            return (h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}` },
+                h("text", { x: "0", y: getYAdjustment(this, containerHeight), width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX}, ${this.scaleY})` }, text)));
         }
     }
     renderIcon() {

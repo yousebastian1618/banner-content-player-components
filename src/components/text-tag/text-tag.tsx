@@ -78,10 +78,12 @@ export class TextTag implements BaseText {
   componentDidLoad() {}
 
   render() {
+    console.log('this.', this)
     if (this.text) {
       const customContentContainerWidth = document.getElementsByClassName(
         "custom-content-container"
       )[0].clientWidth;
+      console.log('c width', customContentContainerWidth)
       const deviceWidth = window["device_window_size"].width;
 
       let previewerAdjustment = 1;
@@ -89,12 +91,14 @@ export class TextTag implements BaseText {
         previewerAdjustment = customContentContainerWidth / deviceWidth;
       }
 
+      const containerHeight = document.getElementsByClassName('custom-content-container')[0].clientHeight;
+      console.log('c heght', containerHeight)
       return (
         <div class="text-wrapper" style={getBaseTextStyle(this)}>
           <svg>
             <text 
               x="0"
-              y={`${getTextYAdjustment(this)}`}
+              y={`${getTextYAdjustment(this, containerHeight)}`}
               width="100%"
               height="100%"
               dominant-baseline="hanging"

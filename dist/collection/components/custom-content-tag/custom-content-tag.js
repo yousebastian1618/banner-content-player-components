@@ -21,8 +21,6 @@ function renderVideos({ content, containerWidth, containerHeight, slideState, })
     return (h("video-tag", { videoObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
 function renderTexts({ content, containerWidth, containerHeight, slideState }) {
-    console.log("containerH", containerHeight);
-    console.log('containerW', containerWidth);
     return (h("text-tag", { textObject: content, containerWidth: containerWidth, containerHeight: containerHeight, slideState: slideState }));
 }
 function renderClocks({ content, containerWidth, containerHeight, slideState, }) {
@@ -77,7 +75,7 @@ export class CustomContentTag {
                 containerWidth: this.data.containerWidth,
                 content: obj,
                 slideState: this.data.slideState,
-                backgroundStyle: backgroundStyle
+                backgroundStyle: null,
             };
             if (obj.type === "image") {
                 singleObj.backgroundStyle = backgroundStyle;
