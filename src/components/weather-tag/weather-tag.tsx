@@ -225,17 +225,11 @@ export class WeatherTag implements BaseText {
   renderTemperature(text) {
     if (this.temperatureType === "temperature") {
 
-      const svgStyle = {
-        'text-anchor': 'middle',
-        transform: 'translate(50%, 0%)'
-      }
-
       return (
         <svg
           viewBox={`0 0 ${this.width * this.scaleX} ${
             this.height * this.scaleY
           }`}
-          style={svgStyle}
         >
           <text
             x="0"

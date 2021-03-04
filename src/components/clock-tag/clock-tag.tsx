@@ -143,18 +143,12 @@ export class ClockTag implements BaseText {
       time = this.time.format(this.customMask);
     }
 
-    const svgStyle = {
-      'text-anchor': 'middle',
-      transform: 'translate(50%, 0%)'
-    }
-
     return (
       <div class="text-wrapper" style={getBaseTextStyle(this)}>
         <svg
           viewBox={`0 0 ${this.width * this.scaleX} ${
             this.height * this.scaleY
           }`}
-          style={svgStyle}
         >
           <text
             x="0"
