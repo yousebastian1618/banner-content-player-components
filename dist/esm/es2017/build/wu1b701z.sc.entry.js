@@ -10831,7 +10831,6 @@ function getTextYAdjustment(baseText, containerHeight) {
             adj = -1.6 + ((size - 40) / 10) * -.4;
         }
     }
-    console.log("FONT", font, "SIZE:", size, "Y ADJ:", adj);
     return (adj / 255) * containerHeight;
 }
 
@@ -10868,17 +10867,14 @@ class TextTag {
     }
     componentDidLoad() { }
     render() {
-        console.log('this.', this);
         if (this.text) {
             const customContentContainerWidth = document.getElementsByClassName("custom-content-container")[0].clientWidth;
-            console.log('c width', customContentContainerWidth);
             const deviceWidth = window["device_window_size"].width;
             let previewerAdjustment = 1;
             if (deviceWidth != customContentContainerWidth) {
                 previewerAdjustment = customContentContainerWidth / deviceWidth;
             }
             const containerHeight = document.getElementsByClassName('custom-content-container')[0].clientHeight;
-            console.log('c heght', containerHeight);
             return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
                 h("svg", null,
                     h("text", { x: "0", y: `${getTextYAdjustment(this, containerHeight)}`, width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, style: getSvgTextStyle(this) }, renderMultiline(this, previewerAdjustment, getXAdjustment(this))))));

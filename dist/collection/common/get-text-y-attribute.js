@@ -195,7 +195,6 @@ function getTextYAdjustment(baseText, containerHeight) {
             adj = -1.6 + ((size - 40) / 10) * -.4;
         }
     }
-    console.log("FONT", font, "SIZE:", size, "Y ADJ:", adj);
     return (adj / 255) * containerHeight;
 }
 export { getTextYAdjustment };
