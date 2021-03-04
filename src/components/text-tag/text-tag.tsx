@@ -6,6 +6,8 @@ import {
 } from "../../common/get-base-text-style";
 import checkSlideState from "../../common/text-behaviour";
 import renderMultiline from "../../common/text-multiline";
+import {getXAdjustment} from '../../common/get-span-x-attribute'
+import {getTextYAdjustment} from '../../common/get-text-y-attribute'
 
 @Component({
   tag: "text-tag",
@@ -87,25 +89,20 @@ export class TextTag implements BaseText {
         previewerAdjustment = customContentContainerWidth / deviceWidth;
       }
 
-      let translation = 0;
-      if (this.textAlign === "right") {
-        translation = (this.width * previewerAdjustment * this.scaleX) / 2;
-      }
-
+      const containerHeight = document.getElementsByClassName('custom-content-container')[0].clientHeight;
       return (
         <div class="text-wrapper" style={getBaseTextStyle(this)}>
           <svg>
-            <text
+            <text 
               x="0"
-              y="0"
+              y={`${getTextYAdjustment(this, containerHeight)}`}
               width="100%"
               height="100%"
               dominant-baseline="hanging"
               fill={this.fill}
               style={getSvgTextStyle(this)}
-              transform={`translate(${translation})`}
             >
-              {renderMultiline(this, previewerAdjustment)}
+              {renderMultiline(this, previewerAdjustment, getXAdjustment(this))}
             </text>
           </svg>
         </div>

@@ -1,6 +1,7 @@
 import moment from "moment";
 import { getBaseTextStyle } from "../../common/get-base-text-style";
 import checkSlideState from "../../common/text-behaviour";
+import { getYAdjustment } from "../../common/get-weather-time-text-y-attribute";
 let clockInterval;
 let clockObservers;
 const clockHandler = {
@@ -62,9 +63,10 @@ export class ClockTag {
         if (this.time) {
             time = this.time.format(this.customMask);
         }
+        const containerHeight = document.getElementsByClassName('custom-content-container')[0].clientHeight;
         return (h("div", { class: "text-wrapper", style: getBaseTextStyle(this) },
             h("svg", { viewBox: `0 0 ${this.width * this.scaleX} ${this.height * this.scaleY}` },
-                h("text", { x: "0", y: "0", width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX},${this.scaleY})` }, time))));
+                h("text", { x: "0", y: getYAdjustment(this, containerHeight), width: "100%", height: "100%", "dominant-baseline": "hanging", fill: this.fill, transform: `scale(${this.scaleX},${this.scaleY})` }, time))));
     }
     static get is() { return "clock-tag"; }
     static get properties() { return {

@@ -10,8 +10,15 @@ function getSvgTextStyle(baseText) {
     return style;
 }
 function getBaseTextStyle(baseText) {
+    let translation = '0%, 0%';
+    if (baseText.textAlign === 'center') {
+        translation = '50%, 0%';
+    }
+    else if (baseText.textAlign === 'right') {
+        translation = '100%, 0%';
+    }
     let style = {
-        top: `         ${(baseText.top / baseText.containerHeight) * 100}%`,
+        top: `        ${(baseText.top / baseText.containerHeight) * 100}%`,
         left: `        ${(baseText.left / baseText.containerWidth) * 100}%`,
         width: `       ${(baseText.width / baseText.containerWidth) * 100}%`,
         height: `      ${(baseText.height / baseText.containerHeight) * 100}%`,
@@ -21,7 +28,7 @@ function getBaseTextStyle(baseText) {
         "font-family": ` ${baseText.fontFamily}`,
         "text-align": `  ${baseText.textAlign}`,
         "font-style": `  ${baseText.fontStyle}`,
-        transform: `   rotate(${baseText.angle}deg) scale(${baseText.scaleX}, ${baseText.scaleY})`,
+        transform: `   rotate(${baseText.angle}deg) scale(${baseText.scaleX}, ${baseText.scaleY}) translate(${translation})`,
         "transform-origin": `${baseText.originX} ${baseText.originY}`,
         "white-space": "nowrap",
     };

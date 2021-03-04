@@ -2,6 +2,7 @@ import { Component, State, Prop, Watch, Element } from "@stencil/core";
 import { BaseText } from "../../common/base-text";
 import { getBaseTextStyle } from "../../common/get-base-text-style";
 import checkSlideState from "../../common/text-behaviour";
+import { getYAdjustment } from "../../common/get-weather-time-text-y-attribute"
 
 let weatherInterval;
 let weatherObservers = [];
@@ -222,7 +223,10 @@ export class WeatherTag implements BaseText {
   //  @return {HTMLElement}
   //
   renderTemperature(text) {
+    const containerHeight = document.getElementsByClassName('custom-content-container')[0].clientHeight;
+
     if (this.temperatureType === "temperature") {
+
       return (
         <svg
           viewBox={`0 0 ${this.width * this.scaleX} ${
@@ -231,7 +235,7 @@ export class WeatherTag implements BaseText {
         >
           <text
             x="0"
-            y="0"
+            y={getYAdjustment(this, containerHeight)}
             width="100%"
             height="100%"
             dominant-baseline="hanging"

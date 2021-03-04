@@ -1,4 +1,4 @@
-function renderMultiline({ text, lineHeight, textAlign, fontSize, width, scaleX }, previewerAdjustment) {
+function renderMultiline({ text, lineHeight, textAlign, fontSize }, previewerAdjustment, xAdjustment) {
     let decimal = parseFloat(lineHeight) % 1;
     let anchor = "start";
     if (textAlign === "center") {
@@ -18,10 +18,7 @@ function renderMultiline({ text, lineHeight, textAlign, fontSize, width, scaleX 
             style.fontSize = newFontSize + "px";
             style.lineHeight = newLineHeight + "px";
         }
-        let xPosition = 0;
-        if (textAlign !== "left") {
-            xPosition = (width * previewerAdjustment * scaleX) / 2;
-        }
+        let xPosition = xAdjustment;
         return (h("tspan", { style: style, x: xPosition, dy: i === 0 ? `${decimal}em` : `${parseFloat(lineHeight) + decimal}em`, "text-anchor": anchor }, t || " "));
     });
     return lines;

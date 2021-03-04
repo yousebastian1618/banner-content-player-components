@@ -5,6 +5,7 @@ import moment from "moment";
 import { BaseText } from "../../common/base-text";
 import { getBaseTextStyle } from "../../common/get-base-text-style";
 import checkSlideState from "../../common/text-behaviour";
+import { getYAdjustment } from "../../common/get-weather-time-text-y-attribute"
 
 let clockInterval;
 
@@ -141,6 +142,9 @@ export class ClockTag implements BaseText {
     if (this.time) {
       time = this.time.format(this.customMask);
     }
+
+    const containerHeight = document.getElementsByClassName('custom-content-container')[0].clientHeight;
+
     return (
       <div class="text-wrapper" style={getBaseTextStyle(this)}>
         <svg
@@ -150,7 +154,7 @@ export class ClockTag implements BaseText {
         >
           <text
             x="0"
-            y="0"
+            y={getYAdjustment(this, containerHeight)}
             width="100%"
             height="100%"
             dominant-baseline="hanging"

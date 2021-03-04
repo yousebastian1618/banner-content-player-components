@@ -140,6 +140,7 @@ function renderCustomContent(content, slideState) {
       containerHeight: content.height,
       slideState: slideState,
     });
+
     return (
       <custom-content-tag
         class={"full-screen"}
