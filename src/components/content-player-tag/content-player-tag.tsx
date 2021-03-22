@@ -66,6 +66,7 @@ export class ContentPlayerTag {
         {this.slides.map((slideObject) => {
           return (
             <content-slide-tag
+              key={slideObject.content.playlist_item_id}
               contentSlideObject={slideObject}
             ></content-slide-tag>
           );

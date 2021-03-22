@@ -88,6 +88,7 @@ export class VideoTag {
   //
   @Watch("slideState")
   checkSlideState(slideState, oldState) {
+    console.log("PLAY - (" + this.videoObject.src +") SLIDE STATE " + getSlideState(oldState) + " -> " + getSlideState(slideState))
     if (
       oldState === SlideState.SHOW &&
       slideState === SlideState.START_ANIMATION
