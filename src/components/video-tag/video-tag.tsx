@@ -88,7 +88,6 @@ export class VideoTag {
   //
   @Watch("slideState")
   checkSlideState(slideState, oldState) {
-    console.log("PLAY - (" + this.videoObject.src +") SLIDE STATE " + getSlideState(oldState) + " -> " + getSlideState(slideState))
     if (
       oldState === SlideState.SHOW &&
       slideState === SlideState.START_ANIMATION
@@ -147,8 +146,6 @@ export class VideoTag {
       this.playState = PlayState.PLAYING;
       ele.addEventListener("ended", this.ended);
       ele.play();
-    } else {
-      console.log("PLAY - This was already playing")
     }
   };
 
@@ -205,14 +202,3 @@ export class VideoTag {
     } else return null;
   }
 }
-
-function getSlideState(status) {
-  return [
-      "INIT",
-      "WAIT_ANIMATION",
-      "START_ANIMATION",
-      "SHOW",
-      "TRANSITION",
-      "HIDE",
-    ][status];
-  };
