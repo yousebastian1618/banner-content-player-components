@@ -10046,7 +10046,7 @@ class ContentPlayerTag {
     }
     render() {
         return (h("div", { id: "content-player", class: "content-player-wrapper" }, this.slides.map((slideObject) => {
-            return (h("content-slide-tag", { contentSlideObject: slideObject }));
+            return (h("content-slide-tag", { key: slideObject.content.playlist_item_id, contentSlideObject: slideObject }));
         })));
     }
     static get is() { return "content-player-tag"; }
