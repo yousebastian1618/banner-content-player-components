@@ -31,6 +31,9 @@ class VideoTag {
                 ele.addEventListener("ended", this.ended);
                 ele.play();
             }
+            else {
+                console.log("PLAY - This was already playing");
+            }
         };
         this.ended = () => {
             let ele = this.el.querySelector("video");
@@ -59,6 +62,7 @@ class VideoTag {
         }
     }
     checkSlideState(slideState, oldState) {
+        console.log("PLAY - (" + this.videoObject.src + ") SLIDE STATE " + getSlideState(oldState) + " -> " + getSlideState(slideState));
         if (oldState === SlideState.SHOW &&
             slideState === SlideState.START_ANIMATION) {
             this.el.querySelector("video").currentTime = 0;
@@ -205,6 +209,16 @@ class VideoTag {
         }
     }; }
     static get style() { return "video-tag div.video-wrapper{display:block;position:absolute;background-color:#1e1e1e}video-tag div.video-wrapper .video-helper{position:relative;height:100%;padding-left:100%}video-tag .video-helper video{position:absolute;top:0;left:0;width:100%;height:100%;-o-object-fit:fill;object-fit:fill}"; }
+}
+function getSlideState(status) {
+    return [
+        "INIT",
+        "WAIT_ANIMATION",
+        "START_ANIMATION",
+        "SHOW",
+        "TRANSITION",
+        "HIDE",
+    ][status];
 }
 
 export { VideoTag };
